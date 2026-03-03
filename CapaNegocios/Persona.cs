@@ -2,7 +2,6 @@
 
 namespace CapaNegocios
 {
-
     public abstract class Persona
     {
         public string Cedula { get; set; }

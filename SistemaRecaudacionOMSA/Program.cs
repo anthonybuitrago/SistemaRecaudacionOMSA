@@ -13,7 +13,7 @@ namespace SistemaRecaudacionOMSA
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmChoferes());
+            Application.Run(new FrmPrincipal());
         }
     }
 }

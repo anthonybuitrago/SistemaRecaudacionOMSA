@@ -100,9 +100,9 @@
             // dgvChoferes
             // 
             this.dgvChoferes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvChoferes.Location = new System.Drawing.Point(287, 43);
+            this.dgvChoferes.Location = new System.Drawing.Point(172, 43);
             this.dgvChoferes.Name = "dgvChoferes";
-            this.dgvChoferes.Size = new System.Drawing.Size(379, 316);
+            this.dgvChoferes.Size = new System.Drawing.Size(587, 316);
             this.dgvChoferes.TabIndex = 7;
             // 
             // FrmChoferes

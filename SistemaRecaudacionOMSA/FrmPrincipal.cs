@@ -21,5 +21,10 @@ namespace SistemaRecaudacionOMSA
             FrmChoferes pantallaChoferes = new FrmChoferes();
             pantallaChoferes.ShowDialog();
         }
+        private void btnAbrirRutas_Click(object sender, EventArgs e)
+        {
+            FrmRutas pantallaRutas = new FrmRutas();
+            pantallaRutas.ShowDialog();
+        }
     }
 }

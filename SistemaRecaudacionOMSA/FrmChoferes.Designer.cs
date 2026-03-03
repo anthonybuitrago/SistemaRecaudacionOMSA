@@ -89,9 +89,9 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(47, 267);
+            this.btnGuardar.Location = new System.Drawing.Point(47, 271);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardar.Size = new System.Drawing.Size(119, 23);
             this.btnGuardar.TabIndex = 6;
             this.btnGuardar.Text = "Guardar Chofer";
             this.btnGuardar.UseVisualStyleBackColor = true;

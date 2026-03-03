@@ -12,5 +12,13 @@ namespace CapaNegocios
             ID_Chofer = idChofer;
             NumeroLicencia = numeroLicencia;
         }
+        public override string ObtenerDetalles()
+        {
+            return base.ObtenerDetalles() + $" - Licencia: {NumeroLicencia}";
+        }
+        public override string ObtenerTipoEmpleado()
+        {
+            return "Chofer de Ruta OMSA";
+        }
     }
 }

@@ -11,5 +11,10 @@ namespace CapaNegocios
             Cedula = cedula;
             NombreCompleto = nombreCompleto;
         }
+        public virtual string ObtenerDetalles()
+        {
+            return $"Cédula: {Cedula} - Nombre: {NombreCompleto}";
+        }
+        public abstract string ObtenerTipoEmpleado();
     }
 }

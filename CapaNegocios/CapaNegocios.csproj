@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Chofer.cs" />
     <Compile Include="N_Chofer.cs" />
+    <Compile Include="N_Reporte.cs" />
     <Compile Include="N_Ruta.cs" />
+    <Compile Include="N_Ticket.cs" />
     <Compile Include="N_Vehiculo.cs" />
     <Compile Include="N_Viaje.cs" />
     <Compile Include="Persona.cs" />

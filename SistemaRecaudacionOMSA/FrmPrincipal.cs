@@ -38,5 +38,17 @@ namespace SistemaRecaudacionOMSA
             FrmViajes pantallaViajes = new FrmViajes();
             pantallaViajes.ShowDialog();
         }
+
+        private void btnAbrirTickets_Click(object sender, EventArgs e)
+        {
+            FrmTickets pantallaTickets = new FrmTickets();
+            pantallaTickets.ShowDialog();
+        }
+
+        private void btnAbrirReportes_Click(object sender, EventArgs e)
+        {
+            FrmReportes pantallaReportes = new FrmReportes();
+            pantallaReportes.ShowDialog();
+        }
     }
 }

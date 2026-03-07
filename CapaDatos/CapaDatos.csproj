@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="ConexionBD.cs" />
     <Compile Include="D_Chofer.cs" />
+    <Compile Include="D_Reporte.cs" />
     <Compile Include="D_Ruta.cs" />
+    <Compile Include="D_Ticket.cs" />
     <Compile Include="D_Vehiculo.cs" />
     <Compile Include="D_Viaje.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

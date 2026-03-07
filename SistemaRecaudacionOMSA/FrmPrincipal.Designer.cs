@@ -33,6 +33,8 @@
             this.btnAbrirRutas = new System.Windows.Forms.Button();
             this.btnAbrirVehiculos = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.btnAbrirTickets = new System.Windows.Forms.Button();
+            this.btnAbrirReportes = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -84,11 +86,33 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // btnAbrirTickets
+            // 
+            this.btnAbrirTickets.Location = new System.Drawing.Point(346, 326);
+            this.btnAbrirTickets.Name = "btnAbrirTickets";
+            this.btnAbrirTickets.Size = new System.Drawing.Size(114, 23);
+            this.btnAbrirTickets.TabIndex = 5;
+            this.btnAbrirTickets.Text = "Vender Tickets";
+            this.btnAbrirTickets.UseVisualStyleBackColor = true;
+            this.btnAbrirTickets.Click += new System.EventHandler(this.btnAbrirTickets_Click);
+            // 
+            // btnAbrirReportes
+            // 
+            this.btnAbrirReportes.Location = new System.Drawing.Point(327, 383);
+            this.btnAbrirReportes.Name = "btnAbrirReportes";
+            this.btnAbrirReportes.Size = new System.Drawing.Size(148, 23);
+            this.btnAbrirReportes.TabIndex = 6;
+            this.btnAbrirReportes.Text = "Ver Reportes / Cierre";
+            this.btnAbrirReportes.UseVisualStyleBackColor = true;
+            this.btnAbrirReportes.Click += new System.EventHandler(this.btnAbrirReportes_Click);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnAbrirReportes);
+            this.Controls.Add(this.btnAbrirTickets);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnAbrirVehiculos);
             this.Controls.Add(this.btnAbrirRutas);
@@ -108,5 +132,7 @@
         private System.Windows.Forms.Button btnAbrirRutas;
         private System.Windows.Forms.Button btnAbrirVehiculos;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAbrirTickets;
+        private System.Windows.Forms.Button btnAbrirReportes;
     }
 }

@@ -32,5 +32,11 @@ namespace SistemaRecaudacionOMSA
             FrmVehiculos pantallaVehiculos = new FrmVehiculos();
             pantallaVehiculos.ShowDialog();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmViajes pantallaViajes = new FrmViajes();
+            pantallaViajes.ShowDialog();
+        }
     }
 }

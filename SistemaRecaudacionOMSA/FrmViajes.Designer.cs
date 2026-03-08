@@ -128,7 +128,6 @@
             this.dgvViajes.Name = "dgvViajes";
             this.dgvViajes.Size = new System.Drawing.Size(612, 465);
             this.dgvViajes.TabIndex = 11;
-            this.dgvViajes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvViajes_CellContentClick);
             // 
             // label5
             // 

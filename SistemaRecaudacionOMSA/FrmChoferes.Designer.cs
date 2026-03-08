@@ -36,94 +36,193 @@
             this.txtLicencia = new System.Windows.Forms.TextBox();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.dgvChoferes = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnEditar = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvChoferes)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 43);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.Location = new System.Drawing.Point(50, 72);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.Size = new System.Drawing.Size(51, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "Cédula";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 119);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.Location = new System.Drawing.Point(50, 129);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 13);
+            this.label2.Size = new System.Drawing.Size(123, 19);
             this.label2.TabIndex = 1;
             this.label2.Text = "Nombre Completo";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(44, 202);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label3.Location = new System.Drawing.Point(50, 191);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.Size = new System.Drawing.Size(81, 19);
             this.label3.TabIndex = 2;
             this.label3.Text = "No. Licencia";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtCedula
             // 
-            this.txtCedula.Location = new System.Drawing.Point(47, 59);
+            this.txtCedula.Location = new System.Drawing.Point(54, 94);
+            this.txtCedula.MaxLength = 11;
             this.txtCedula.Name = "txtCedula";
-            this.txtCedula.Size = new System.Drawing.Size(100, 20);
+            this.txtCedula.Size = new System.Drawing.Size(180, 20);
             this.txtCedula.TabIndex = 3;
+            this.txtCedula.TextChanged += new System.EventHandler(this.txtCedula_TextChanged);
+            this.txtCedula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCedula_KeyPress);
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(47, 135);
+            this.txtNombre.Location = new System.Drawing.Point(54, 151);
+            this.txtNombre.MaxLength = 50;
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(100, 20);
+            this.txtNombre.Size = new System.Drawing.Size(180, 20);
             this.txtNombre.TabIndex = 4;
+            this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
+            this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
             // 
             // txtLicencia
             // 
-            this.txtLicencia.Location = new System.Drawing.Point(47, 218);
+            this.txtLicencia.Location = new System.Drawing.Point(54, 213);
+            this.txtLicencia.MaxLength = 11;
             this.txtLicencia.Name = "txtLicencia";
-            this.txtLicencia.Size = new System.Drawing.Size(100, 20);
+            this.txtLicencia.Size = new System.Drawing.Size(180, 20);
             this.txtLicencia.TabIndex = 5;
+            this.txtLicencia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLicencia_KeyPress);
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(47, 271);
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(132)))), ((int)(((byte)(61)))));
+            this.btnGuardar.FlatAppearance.BorderSize = 0;
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Location = new System.Drawing.Point(54, 264);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(119, 23);
+            this.btnGuardar.Size = new System.Drawing.Size(180, 31);
             this.btnGuardar.TabIndex = 6;
             this.btnGuardar.Text = "Guardar Chofer";
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // dgvChoferes
             // 
+            this.dgvChoferes.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvChoferes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvChoferes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvChoferes.Location = new System.Drawing.Point(172, 43);
+            this.dgvChoferes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvChoferes.Location = new System.Drawing.Point(280, 0);
             this.dgvChoferes.Name = "dgvChoferes";
-            this.dgvChoferes.Size = new System.Drawing.Size(587, 316);
+            this.dgvChoferes.RowHeadersVisible = false;
+            this.dgvChoferes.Size = new System.Drawing.Size(520, 450);
             this.dgvChoferes.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.btnEliminar);
+            this.panel1.Controls.Add(this.btnLimpiar);
+            this.panel1.Controls.Add(this.btnEditar);
+            this.panel1.Controls.Add(this.txtNombre);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.txtLicencia);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.txtCedula);
+            this.panel1.Controls.Add(this.btnGuardar);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(280, 450);
+            this.panel1.TabIndex = 8;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btnEliminar.FlatAppearance.BorderSize = 0;
+            this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEliminar.ForeColor = System.Drawing.Color.White;
+            this.btnEliminar.Location = new System.Drawing.Point(54, 375);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(180, 33);
+            this.btnEliminar.TabIndex = 9;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.UseVisualStyleBackColor = false;
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btnLimpiar.FlatAppearance.BorderSize = 0;
+            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.White;
+            this.btnLimpiar.Location = new System.Drawing.Point(54, 301);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(180, 31);
+            this.btnLimpiar.TabIndex = 8;
+            this.btnLimpiar.Text = "Limpiar Campos";
+            this.btnLimpiar.UseVisualStyleBackColor = false;
+            this.btnLimpiar.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnEditar
+            // 
+            this.btnEditar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(209)))), ((int)(((byte)(0)))));
+            this.btnEditar.FlatAppearance.BorderSize = 0;
+            this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEditar.ForeColor = System.Drawing.Color.White;
+            this.btnEditar.Location = new System.Drawing.Point(54, 338);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(180, 31);
+            this.btnEditar.TabIndex = 7;
+            this.btnEditar.Text = "Actualizar";
+            this.btnEditar.UseVisualStyleBackColor = false;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.label4.Location = new System.Drawing.Point(0, 25);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(280, 23);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "DATOS DEL CHOFER";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FrmChoferes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgvChoferes);
-            this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.txtLicencia);
-            this.Controls.Add(this.txtNombre);
-            this.Controls.Add(this.txtCedula);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmChoferes";
-            this.Text = "Form1";
+            this.Text = "FrmChoferes";
             this.Load += new System.EventHandler(this.FrmChoferes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvChoferes)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -137,6 +236,11 @@
         private System.Windows.Forms.TextBox txtLicencia;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.DataGridView dgvChoferes;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnEditar;
+        private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Label label4;
     }
 }
 

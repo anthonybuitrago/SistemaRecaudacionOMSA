@@ -27,5 +27,18 @@ namespace CapaNegocios
             // Mandamos los datos del objeto a la capa de datos
             objDatos.Insertar(nuevaRuta.NombreRuta, nuevaRuta.TarifaPasaje.ToString());
         }
+
+        // Puente para eliminar la ruta llamando a la Capa de Datos
+        public void EliminarRuta(int id)
+        {
+            objDatos.Eliminar(id);
+        }
+
+        // Método para enviar los datos editados a la Capa de Datos
+        public void EditarRuta(int id, string nombreRuta, string tarifaPasaje)
+        {
+            decimal tarifa = Convert.ToDecimal(tarifaPasaje);
+            objDatos.Editar(id, nombreRuta, tarifa);
+        }
     }
 }

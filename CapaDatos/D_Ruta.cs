@@ -51,5 +51,40 @@ namespace CapaDatos
             // Cerrar conexión
             conexion.CerrarConexion();
         }
+
+        // Método para eliminar una ruta físicamente de la tabla
+        public void Eliminar(int id)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+            comando.CommandText = "DELETE FROM Ruta WHERE ID_Ruta = @id";
+            comando.CommandType = CommandType.Text;
+
+            comando.Parameters.AddWithValue("@id", id);
+
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
+
+        // Método para actualizar una ruta existente
+        public void Editar(int id, string nombreRuta, decimal tarifaPasaje)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+
+            // El query de actualización
+            comando.CommandText = "UPDATE Ruta SET NombreRuta = @nombre, TarifaPasaje = @tarifa WHERE ID_Ruta = @id";
+            comando.CommandType = CommandType.Text;
+
+            // Pasamos los parámetros de forma segura
+            comando.Parameters.AddWithValue("@nombre", nombreRuta);
+            comando.Parameters.AddWithValue("@tarifa", tarifaPasaje);
+            comando.Parameters.AddWithValue("@id", id);
+
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace SistemaRecaudacionOMSA
     {
         // Instancia de la Capa de Negocio
         private N_Chofer objNegocio = new N_Chofer();
+        private int idChofer = 0;
 
         public FrmChoferes()
         {
@@ -124,21 +125,6 @@ namespace SistemaRecaudacionOMSA
             dgvChoferes.RowTemplate.Height = 35; // Filas más anchas y cómodas
         }
 
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            // Vaciamos las cajas de texto
-            txtCedula.Clear();
-            txtNombre.Clear();
-            txtLicencia.Clear();
-
-            // Ponemos el cursor de vuelta en la primera caja
-            txtCedula.Focus();
-        }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // Método vacío para solucionar el error del diseñador
-        }
-
         private void txtCedula_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Solo permitir números y la tecla de borrar
@@ -163,6 +149,108 @@ namespace SistemaRecaudacionOMSA
             if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true; // Ignora si escriben un número o símbolo
+            }
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            // 1. Limpiamos las cajas de texto (Asegúrate de que tus TextBox se llamen así)
+            txtCedula.Clear();
+            txtNombre.Clear();
+            txtLicencia.Clear();
+
+            // 2. Reseteamos el ID
+            idChofer = 0;
+
+            // 3. Devolvemos el cursor a la primera caja
+            txtCedula.Focus();
+
+            // 4. CONTROL VISUAL: Modo "Nuevo Chofer"
+            btnGuardar.Enabled = true;
+            btnActualizar.Enabled = false;
+        }
+
+        private void dgvChoferes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verificamos que se hizo clic en una fila válida
+            if (e.RowIndex >= 0)
+            {
+                // 1. Guardamos el ID (Asegúrate que el nombre de la columna coincida con tu BD, ej: "ID_Chofer" o "ID")
+                idChofer = Convert.ToInt32(dgvChoferes.CurrentRow.Cells["ID_Chofer"].Value);
+
+                // 2. Subimos los datos a las cajas blancas (Revisa que los nombres de las columnas coincidan con los tuyos)
+                txtCedula.Text = dgvChoferes.CurrentRow.Cells["Cedula"].Value.ToString();
+                txtNombre.Text = dgvChoferes.CurrentRow.Cells["NombreCompleto"].Value.ToString();
+                txtLicencia.Text = dgvChoferes.CurrentRow.Cells["NumeroLicencia"].Value.ToString();
+
+                // 3. CONTROL VISUAL: Modo "Edición"
+                btnGuardar.Enabled = false;
+                btnActualizar.Enabled = true;
+            }
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            // 1. Validar que seleccionaron a alguien
+            if (idChofer == 0)
+            {
+                MessageBox.Show("Por favor, seleccione un chofer de la tabla.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Validar que no dejaron la cédula, nombre o licencia en blanco
+            if (string.IsNullOrWhiteSpace(txtCedula.Text) || string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtLicencia.Text))
+            {
+                MessageBox.Show("Todos los campos son obligatorios.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // 3. Enviamos los datos a la Capa de Negocio (¡Asegúrate de tener este método creado en N_Chofer!)
+                objNegocio.EditarChofer(idChofer, txtCedula.Text, txtNombre.Text, txtLicencia.Text);
+
+                MessageBox.Show("Chofer actualizado correctamente en el sistema.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // 4. Refrescar la tabla y usar tu nuevo botón de limpiar
+                MostrarChoferesTabla(); // Ajusta el nombre si tu método se llama distinto
+                btnLimpiar.PerformClick(); // Esto simula un clic en el botón gris para resetear todo
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            // 1. Validamos que se haya seleccionado un chofer
+            if (idChofer == 0)
+            {
+                MessageBox.Show("Por favor, seleccione el chofer que desea eliminar haciendo clic en la tabla.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Pedimos confirmación por seguridad 
+            DialogResult respuesta = MessageBox.Show("¿Está seguro que desea eliminar a este chofer del sistema?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                try
+                {
+                    // 3. Llamamos a la Capa de Negocio
+                    objNegocio.EliminarChofer(idChofer);
+
+                    MessageBox.Show("Chofer eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // 4. Refrescamos la tabla y limpiamos las cajas
+                    MostrarChoferesTabla(); // Asegúrate de que así se llame tu método
+                    btnLimpiar.PerformClick(); // Simula un clic en tu botón de limpiar para resetear todo
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

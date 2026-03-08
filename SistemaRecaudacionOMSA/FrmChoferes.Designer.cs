@@ -37,10 +37,10 @@
             this.btnGuardar = new System.Windows.Forms.Button();
             this.dgvChoferes = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.btnEditar = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
+            this.btnActualizar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvChoferes)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -51,9 +51,9 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label1.Location = new System.Drawing.Point(50, 72);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 19);
+            this.label1.Size = new System.Drawing.Size(132, 19);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Cédula";
+            this.label1.Text = "Cédula de Identidad";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
@@ -64,7 +64,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(123, 19);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Nombre Completo";
+            this.label2.Text = "Nombre y Apellido";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
@@ -133,6 +133,7 @@
             this.dgvChoferes.RowHeadersVisible = false;
             this.dgvChoferes.Size = new System.Drawing.Size(520, 450);
             this.dgvChoferes.TabIndex = 7;
+            this.dgvChoferes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChoferes_CellClick);
             // 
             // panel1
             // 
@@ -140,7 +141,7 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.btnEliminar);
             this.panel1.Controls.Add(this.btnLimpiar);
-            this.panel1.Controls.Add(this.btnEditar);
+            this.panel1.Controls.Add(this.btnActualizar);
             this.panel1.Controls.Add(this.txtNombre);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.txtLicencia);
@@ -153,6 +154,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(280, 450);
             this.panel1.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.label4.Location = new System.Drawing.Point(0, 25);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(280, 23);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "DATOS DEL CHOFER";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnEliminar
             // 
@@ -167,6 +178,7 @@
             this.btnEliminar.TabIndex = 9;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // btnLimpiar
             // 
@@ -181,31 +193,22 @@
             this.btnLimpiar.TabIndex = 8;
             this.btnLimpiar.Text = "Limpiar Campos";
             this.btnLimpiar.UseVisualStyleBackColor = false;
-            this.btnLimpiar.Click += new System.EventHandler(this.button2_Click);
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
-            // btnEditar
+            // btnActualizar
             // 
-            this.btnEditar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(209)))), ((int)(((byte)(0)))));
-            this.btnEditar.FlatAppearance.BorderSize = 0;
-            this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEditar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnEditar.ForeColor = System.Drawing.Color.White;
-            this.btnEditar.Location = new System.Drawing.Point(54, 338);
-            this.btnEditar.Name = "btnEditar";
-            this.btnEditar.Size = new System.Drawing.Size(180, 31);
-            this.btnEditar.TabIndex = 7;
-            this.btnEditar.Text = "Actualizar";
-            this.btnEditar.UseVisualStyleBackColor = false;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(0, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(280, 23);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "DATOS DEL CHOFER";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnActualizar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(209)))), ((int)(((byte)(0)))));
+            this.btnActualizar.FlatAppearance.BorderSize = 0;
+            this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnActualizar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnActualizar.ForeColor = System.Drawing.Color.White;
+            this.btnActualizar.Location = new System.Drawing.Point(54, 338);
+            this.btnActualizar.Name = "btnActualizar";
+            this.btnActualizar.Size = new System.Drawing.Size(180, 31);
+            this.btnActualizar.TabIndex = 7;
+            this.btnActualizar.Text = "Actualizar";
+            this.btnActualizar.UseVisualStyleBackColor = false;
+            this.btnActualizar.Click += new System.EventHandler(this.btnActualizar_Click);
             // 
             // FrmChoferes
             // 
@@ -238,7 +241,7 @@
         private System.Windows.Forms.DataGridView dgvChoferes;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnEliminar;
-        private System.Windows.Forms.Button btnEditar;
+        private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Label label4;
     }

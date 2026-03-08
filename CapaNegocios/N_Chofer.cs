@@ -24,5 +24,17 @@ namespace CapaNegocios
             // 2. Pasamos las propiedades del objeto a la Capa de Datos
             objDatos.Insertar(nuevoChofer.Cedula, nuevoChofer.NombreCompleto, nuevoChofer.NumeroLicencia);
         }
+
+        // Puente para enviar los datos editados a la Capa de Datos
+        public void EditarChofer(int id, string cedula, string nombre, string licencia)
+        {
+            objDatos.Editar(id, cedula, nombre, licencia);
+        }
+
+        // Puente para enviar la orden de eliminar a la Capa de Datos
+        public void EliminarChofer(int id)
+        {
+            objDatos.Eliminar(id);
+        }
     }
 }

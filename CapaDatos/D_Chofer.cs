@@ -52,5 +52,43 @@ namespace CapaDatos
             // Cerrar conexión
             conexion.CerrarConexion();
         }
+
+        // Método para actualizar un chofer existente en la base de datos
+        public void Editar(int id, string cedula, string nombre, string licencia)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+
+            // El query de actualización (Asegúrate de que los nombres de las columnas coincidan con tu BD)
+            comando.CommandText = "UPDATE Chofer SET Cedula = @cedula, NombreCompleto = @nombre, NumeroLicencia = @licencia WHERE ID_Chofer = @id";
+            comando.CommandType = CommandType.Text;
+
+            // Pasamos los parámetros de forma segura
+            comando.Parameters.AddWithValue("@cedula", cedula);
+            comando.Parameters.AddWithValue("@nombre", nombre);
+            comando.Parameters.AddWithValue("@licencia", licencia);
+            comando.Parameters.AddWithValue("@id", id);
+
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
+
+        // Método para eliminar un chofer de la base de datos
+        public void Eliminar(int id)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+
+            // Verifica que "ID_Chofer" sea el nombre correcto en tu SQL Server
+            comando.CommandText = "DELETE FROM Chofer WHERE ID_Chofer = @id";
+            comando.CommandType = CommandType.Text;
+
+            comando.Parameters.AddWithValue("@id", id);
+
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
     }
 }

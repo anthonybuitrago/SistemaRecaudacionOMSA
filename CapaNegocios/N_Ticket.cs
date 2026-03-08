@@ -9,6 +9,12 @@ namespace CapaNegocios
         // Conexión con la Capa de Datos (Tickets)
         private D_Ticket objDatos = new D_Ticket();
 
+        // Método que llama a la Capa de Datos
+        public DataTable MostrarTickets()
+        {
+            return objDatos.Mostrar();
+        }
+
         // Método para procesar y guardar un ticket
         public void InsertarTicket(string idViaje, string montoPagado)
         {

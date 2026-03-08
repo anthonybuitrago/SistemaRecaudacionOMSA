@@ -9,6 +9,20 @@ namespace CapaDatos
         // Conexión a la base de datos
         private ConexionBD conexion = new ConexionBD();
 
+        // Método para mostrar los tickets vendidos en la tabla
+        public DataTable Mostrar()
+        {
+            DataTable tabla = new DataTable();
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+            comando.CommandText = "SELECT * FROM Ticket"; // Luego lo haremos más profesional
+            comando.CommandType = CommandType.Text;
+            SqlDataReader leer = comando.ExecuteReader();
+            tabla.Load(leer);
+            conexion.CerrarConexion();
+            return tabla;
+        }
+
         // Método para guardar un ticket vendido
         public void Insertar(int idViaje, DateTime horaEmision, decimal montoPagado)
         {

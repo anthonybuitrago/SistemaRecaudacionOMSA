@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
@@ -16,11 +9,15 @@ namespace SistemaRecaudacionOMSA
         {
             InitializeComponent();
         }
+
+        // --- Navegación del Sistema ---
+
         private void btnAbrirChoferes_Click(object sender, EventArgs e)
         {
             FrmChoferes pantallaChoferes = new FrmChoferes();
             pantallaChoferes.ShowDialog();
         }
+
         private void btnAbrirRutas_Click(object sender, EventArgs e)
         {
             FrmRutas pantallaRutas = new FrmRutas();
@@ -33,7 +30,7 @@ namespace SistemaRecaudacionOMSA
             pantallaVehiculos.ShowDialog();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAbrirViajes_Click(object sender, EventArgs e) // Renombrado para consistencia
         {
             FrmViajes pantallaViajes = new FrmViajes();
             pantallaViajes.ShowDialog();

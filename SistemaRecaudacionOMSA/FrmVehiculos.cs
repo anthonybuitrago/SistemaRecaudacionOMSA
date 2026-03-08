@@ -6,6 +6,7 @@ namespace SistemaRecaudacionOMSA
 {
     public partial class FrmVehiculos : Form
     {
+        // Instancia de la Capa de Negocio para manejar la lógica de vehículos
         private N_Vehiculo objNegocio = new N_Vehiculo();
 
         public FrmVehiculos()
@@ -18,34 +19,59 @@ namespace SistemaRecaudacionOMSA
             MostrarVehiculosTabla();
         }
 
+        // Carga los datos de los autobuses en el DataGridView
         private void MostrarVehiculosTabla()
         {
-            dgvVehiculos.DataSource = objNegocio.MostrarVehiculos();
+            try
+            {
+                dgvVehiculos.DataSource = objNegocio.MostrarVehiculos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la tabla: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnGuardarVehiculo_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtFicha.Text) || string.IsNullOrWhiteSpace(txtMarca.Text) || string.IsNullOrWhiteSpace(txtCapacidad.Text))
+            // 1. Validación: Verificamos que los TextBox no estén vacíos
+            // IMPORTANTE: Usamos txtPlaca, no label2
+            if (string.IsNullOrWhiteSpace(txtFicha.Text) ||
+                string.IsNullOrWhiteSpace(txtPlaca.Text) ||
+                string.IsNullOrWhiteSpace(txtCapacidad.Text))
             {
-                MessageBox.Show("Por favor, llena todos los datos del vehículo.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, llena todos los datos del autobús.",
+                                "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                objNegocio.InsertarVehiculo(txtFicha.Text, txtMarca.Text, txtCapacidad.Text);
-                MessageBox.Show("Autobús guardado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MostrarVehiculosTabla();
+                // 2. Ejecución: Enviamos los datos a la Capa de Negocio
+                objNegocio.InsertarVehiculo(txtFicha.Text, txtPlaca.Text, txtCapacidad.Text);
 
-                txtFicha.Clear();
-                txtMarca.Clear();
-                txtCapacidad.Clear();
-                txtFicha.Focus();
+                // 3. Respuesta: Informamos al usuario y refrescamos la interfaz
+                MessageBox.Show("Autobús guardado exitosamente en el sistema.", "Éxito",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MostrarVehiculosTabla();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error. Verifica que ingresaste un número en la capacidad y que las columnas de SQL coincidan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al guardar: " + ex.Message, "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Restablece los controles del formulario para una nueva entrada
+        private void LimpiarCampos()
+        {
+            txtFicha.Clear();
+            txtPlaca.Clear();
+            txtCapacidad.Clear();
+
+            txtFicha.Focus(); // Coloca el foco en el primer campo para mayor agilidad
         }
     }
 }

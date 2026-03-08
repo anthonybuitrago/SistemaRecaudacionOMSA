@@ -32,7 +32,7 @@
             this.btnAbrirChoferes = new System.Windows.Forms.Button();
             this.btnAbrirRutas = new System.Windows.Forms.Button();
             this.btnAbrirVehiculos = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAbrirViajes = new System.Windows.Forms.Button();
             this.btnAbrirTickets = new System.Windows.Forms.Button();
             this.btnAbrirReportes = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -76,15 +76,15 @@
             this.btnAbrirVehiculos.UseVisualStyleBackColor = true;
             this.btnAbrirVehiculos.Click += new System.EventHandler(this.btnAbrirVehiculos_Click);
             // 
-            // button1
+            // btnAbrirViajes
             // 
-            this.button1.Location = new System.Drawing.Point(346, 267);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(114, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Registrar Viajes";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnAbrirViajes.Location = new System.Drawing.Point(346, 267);
+            this.btnAbrirViajes.Name = "btnAbrirViajes";
+            this.btnAbrirViajes.Size = new System.Drawing.Size(114, 23);
+            this.btnAbrirViajes.TabIndex = 4;
+            this.btnAbrirViajes.Text = "Registrar Viajes";
+            this.btnAbrirViajes.UseVisualStyleBackColor = true;
+            this.btnAbrirViajes.Click += new System.EventHandler(this.btnAbrirViajes_Click);
             // 
             // btnAbrirTickets
             // 
@@ -113,7 +113,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnAbrirReportes);
             this.Controls.Add(this.btnAbrirTickets);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAbrirViajes);
             this.Controls.Add(this.btnAbrirVehiculos);
             this.Controls.Add(this.btnAbrirRutas);
             this.Controls.Add(this.btnAbrirChoferes);
@@ -131,7 +131,7 @@
         private System.Windows.Forms.Button btnAbrirChoferes;
         private System.Windows.Forms.Button btnAbrirRutas;
         private System.Windows.Forms.Button btnAbrirVehiculos;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAbrirViajes;
         private System.Windows.Forms.Button btnAbrirTickets;
         private System.Windows.Forms.Button btnAbrirReportes;
     }

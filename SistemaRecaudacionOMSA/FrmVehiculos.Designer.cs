@@ -32,7 +32,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtFicha = new System.Windows.Forms.TextBox();
-            this.txtMarca = new System.Windows.Forms.TextBox();
+            this.txtPlaca = new System.Windows.Forms.TextBox();
             this.txtCapacidad = new System.Windows.Forms.TextBox();
             this.btnGuardarVehiculo = new System.Windows.Forms.Button();
             this.dgvVehiculos = new System.Windows.Forms.DataGridView();
@@ -73,12 +73,12 @@
             this.txtFicha.Size = new System.Drawing.Size(100, 20);
             this.txtFicha.TabIndex = 3;
             // 
-            // txtMarca
+            // txtPlaca
             // 
-            this.txtMarca.Location = new System.Drawing.Point(91, 165);
-            this.txtMarca.Name = "txtMarca";
-            this.txtMarca.Size = new System.Drawing.Size(100, 20);
-            this.txtMarca.TabIndex = 4;
+            this.txtPlaca.Location = new System.Drawing.Point(91, 165);
+            this.txtPlaca.Name = "txtPlaca";
+            this.txtPlaca.Size = new System.Drawing.Size(100, 20);
+            this.txtPlaca.TabIndex = 4;
             // 
             // txtCapacidad
             // 
@@ -113,7 +113,7 @@
             this.Controls.Add(this.dgvVehiculos);
             this.Controls.Add(this.btnGuardarVehiculo);
             this.Controls.Add(this.txtCapacidad);
-            this.Controls.Add(this.txtMarca);
+            this.Controls.Add(this.txtPlaca);
             this.Controls.Add(this.txtFicha);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -133,7 +133,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtFicha;
-        private System.Windows.Forms.TextBox txtMarca;
+        private System.Windows.Forms.TextBox txtPlaca;
         private System.Windows.Forms.TextBox txtCapacidad;
         private System.Windows.Forms.Button btnGuardarVehiculo;
         private System.Windows.Forms.DataGridView dgvVehiculos;

@@ -2,54 +2,48 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace CapaDatos
+namespace CapaDatos // Ajusta según tu namespace
 {
     public class D_Vehiculo
     {
-        // Conexión a la base de datos
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para leer los vehículos
+        // Reemplaza el contenido de tu clase D_Vehiculo con esto:
         public DataTable Mostrar()
         {
+            SqlCommand comando = new SqlCommand("SELECT * FROM Vehiculo", conexion.AbrirConexion());
             DataTable tabla = new DataTable();
-            SqlCommand comando = new SqlCommand();
-            SqlDataReader leer;
-
-            // Abrir conexión y configurar el comando
-            comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "SELECT * FROM Vehiculo";
-            comando.CommandType = CommandType.Text;
-
-            // Ejecutar y cargar los datos
-            leer = comando.ExecuteReader();
-            tabla.Load(leer);
-
-            // Cerrar conexión
+            tabla.Load(comando.ExecuteReader());
             conexion.CerrarConexion();
             return tabla;
         }
 
-        // Método para guardar un vehículo nuevo
         public void Insertar(string ficha, string placa, int capacidad)
         {
-            SqlCommand comando = new SqlCommand();
-
-            // Abrir conexión y preparar el INSERT
-            comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "INSERT INTO Vehiculo (Ficha, Placa, Capacidad) VALUES (@Ficha, @Placa, @Capacidad)";
-            comando.CommandType = CommandType.Text;
-
-            // Pasar los valores a los parámetros
-            comando.Parameters.AddWithValue("@Ficha", ficha);
-            comando.Parameters.AddWithValue("@Placa", placa);
-            comando.Parameters.AddWithValue("@Capacidad", capacidad);
-
-            // Ejecutar y limpiar
+            SqlCommand comando = new SqlCommand("INSERT INTO Vehiculo (Ficha, Placa, Capacidad) VALUES (@ficha, @placa, @capacidad)", conexion.AbrirConexion());
+            comando.Parameters.AddWithValue("@ficha", ficha);
+            comando.Parameters.AddWithValue("@placa", placa);
+            comando.Parameters.AddWithValue("@capacidad", capacidad);
             comando.ExecuteNonQuery();
-            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
 
-            // Cerrar conexión
+        public void Editar(int id, string ficha, string placa, int capacidad)
+        {
+            SqlCommand comando = new SqlCommand("UPDATE Vehiculo SET Ficha=@ficha, Placa=@placa, Capacidad=@capacidad WHERE ID_Vehiculo=@id", conexion.AbrirConexion());
+            comando.Parameters.AddWithValue("@id", id);
+            comando.Parameters.AddWithValue("@ficha", ficha);
+            comando.Parameters.AddWithValue("@placa", placa);
+            comando.Parameters.AddWithValue("@capacidad", capacidad);
+            comando.ExecuteNonQuery();
+            conexion.CerrarConexion();
+        }
+
+        public void Eliminar(int id)
+        {
+            SqlCommand comando = new SqlCommand("DELETE FROM Vehiculo WHERE ID_Vehiculo=@id", conexion.AbrirConexion());
+            comando.Parameters.AddWithValue("@id", id);
+            comando.ExecuteNonQuery();
             conexion.CerrarConexion();
         }
     }

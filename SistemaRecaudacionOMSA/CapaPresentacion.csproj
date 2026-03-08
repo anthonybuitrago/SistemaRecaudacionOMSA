@@ -64,6 +64,12 @@
     <Compile Include="FrmReportes.Designer.cs">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmVehiculos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVehiculos.Designer.cs">
+      <DependentUpon>FrmVehiculos.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmRutas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,12 +81,6 @@
     </Compile>
     <Compile Include="FrmTickets.Designer.cs">
       <DependentUpon>FrmTickets.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVehiculos.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVehiculos.Designer.cs">
-      <DependentUpon>FrmVehiculos.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmViajes.cs">
       <SubType>Form</SubType>
@@ -99,14 +99,14 @@
     <EmbeddedResource Include="FrmReportes.resx">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmVehiculos.resx">
+      <DependentUpon>FrmVehiculos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmRutas.resx">
       <DependentUpon>FrmRutas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTickets.resx">
       <DependentUpon>FrmTickets.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVehiculos.resx">
-      <DependentUpon>FrmVehiculos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmViajes.resx">
       <DependentUpon>FrmViajes.cs</DependentUpon>

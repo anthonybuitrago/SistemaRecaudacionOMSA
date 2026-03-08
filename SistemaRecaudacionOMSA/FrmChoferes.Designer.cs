@@ -124,6 +124,7 @@
             // 
             // dgvChoferes
             // 
+            this.dgvChoferes.AllowUserToAddRows = false;
             this.dgvChoferes.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvChoferes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvChoferes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;

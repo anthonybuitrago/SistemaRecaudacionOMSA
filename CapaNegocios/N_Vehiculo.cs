@@ -13,16 +13,21 @@ namespace CapaNegocios
             return objDatos.Mostrar();
         }
 
-        public void InsertarVehiculo(string ficha, string placa, string capacidadTexto)
+        public void InsertarVehiculo(string ficha, string placa, string capacidad)
         {
-            // 1. Conversión de datos
-            int capacidad = Convert.ToInt32(capacidadTexto);
+            // Convertimos la capacidad a entero antes de mandarlo a la Capa D
+            objDatos.Insertar(ficha, placa, Convert.ToInt32(capacidad));
+        }
 
-            // 2. Creación del objeto de negocio (Genera la referencia)
-            Vehiculo nuevoVehiculo = new Vehiculo(0, ficha, placa, capacidad);
+        public void EditarVehiculo(int id, string ficha, string placa, string capacidad)
+        {
+            objDatos.Editar(id, ficha, placa, Convert.ToInt32(capacidad));
+        }
 
-            // 3. Envío de las propiedades del objeto a la Capa de Datos
-            objDatos.Insertar(nuevoVehiculo.Ficha, nuevoVehiculo.Placa, nuevoVehiculo.Capacidad);
+        // Asegúrate de que este sea el nombre exacto en N_Vehiculo.cs
+        public void EliminarVehiculo(int id)
+        {
+            objDatos.Eliminar(id); // Llama al método de la Capa de Datos
         }
     }
 }

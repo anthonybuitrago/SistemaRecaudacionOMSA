@@ -45,6 +45,7 @@
             // 
             // dgvRutas
             // 
+            this.dgvRutas.AllowUserToAddRows = false;
             this.dgvRutas.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvRutas.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRutas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;

@@ -93,5 +93,42 @@ namespace CapaDatos
             // Cerrar conexión
             conexion.CerrarConexion();
         }
+
+        // Método para hacer un "Borrado Lógico" (Cancelar)
+        public void Cancelar(int idViaje)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+
+            // Solo actualizamos el estado a 'Cancelado'
+            comando.CommandText = "UPDATE Viaje SET Estado = 'Cancelado' WHERE ID_Viaje = @ID_Viaje";
+            comando.CommandType = CommandType.Text;
+            comando.Parameters.AddWithValue("@ID_Viaje", idViaje);
+
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
+
+        // Método para actualizar los datos de un viaje existente
+        public void Editar(int idViaje, int idChofer, int idRuta, int idVehiculo, DateTime fecha, string estado)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+
+            comando.CommandText = "UPDATE Viaje SET ID_Chofer = @ID_Chofer, ID_Ruta = @ID_Ruta, ID_Vehiculo = @ID_Vehiculo, FechaViaje = @Fecha, Estado = @Estado WHERE ID_Viaje = @ID_Viaje";
+            comando.CommandType = CommandType.Text;
+
+            comando.Parameters.AddWithValue("@ID_Viaje", idViaje);
+            comando.Parameters.AddWithValue("@ID_Chofer", idChofer);
+            comando.Parameters.AddWithValue("@ID_Ruta", idRuta);
+            comando.Parameters.AddWithValue("@ID_Vehiculo", idVehiculo);
+            comando.Parameters.AddWithValue("@Fecha", fecha);
+            comando.Parameters.AddWithValue("@Estado", estado);
+
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
     }
 }

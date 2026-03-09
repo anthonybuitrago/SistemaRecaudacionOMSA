@@ -45,6 +45,8 @@ namespace SistemaRecaudacionOMSA
 
                 // El valor oculto sigue siendo el ID del viaje para poder guardarlo
                 cmbViaje.ValueMember = "ID_Viaje";
+                // --- Quitar la selección por defecto del viaje ---
+                cmbViaje.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -90,7 +92,15 @@ namespace SistemaRecaudacionOMSA
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            LimpiarCampos();
+            // 1. Limpiar el ComboBox (quitar selección)
+            cmbViaje.SelectedIndex = -1;
+
+            // 2. Limpiar el cuadro de texto del monto
+            // (Asegúrate de ponerle el nombre real de tu TextBox, yo asumí txtMonto)
+            txtMonto.Clear();
+
+            // 3. Volver a poner el cursor en el ComboBox para que el usuario empiece de nuevo
+            cmbViaje.Focus();
         }
 
         private void LimpiarCampos()

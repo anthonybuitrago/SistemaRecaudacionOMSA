@@ -37,5 +37,21 @@ namespace CapaNegocios
         {
             return objDatos.MostrarParaCombo();
         }
+
+        public void CancelarViaje(string idViaje)
+        {
+            // Convertimos el ID a entero y se lo pasamos a la capa de datos
+            objDatos.Cancelar(Convert.ToInt32(idViaje));
+        }
+
+        public void EditarViaje(string idViaje, string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
+        {
+            int viajeId = Convert.ToInt32(idViaje);
+            int choferId = Convert.ToInt32(idChofer);
+            int rutaId = Convert.ToInt32(idRuta);
+            int vehiculoId = Convert.ToInt32(idVehiculo);
+
+            objDatos.Editar(viajeId, choferId, rutaId, vehiculoId, fecha, estado);
+        }
     }
 }

@@ -51,6 +51,10 @@ namespace SistemaRecaudacionOMSA
                 cmbVehiculo.DataSource = objVehiculo.MostrarVehiculos();
                 cmbVehiculo.DisplayMember = "Ficha";
                 cmbVehiculo.ValueMember = "ID_Vehiculo";
+                // --- Quitar la selección por defecto ---
+                cmbChofer.SelectedIndex = -1;
+                cmbRuta.SelectedIndex = -1;
+                cmbVehiculo.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -135,6 +139,111 @@ namespace SistemaRecaudacionOMSA
             {
                 dgvViajes.Columns["ID"].Width = 40; // Hace la columna de ID más pequeña
                                                     // dgvViajes.Columns["ID"].Visible = false; // Descomenta esta línea si prefieres ocultar el ID
+            }
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            // Deseleccionamos los ComboBox
+            cmbChofer.SelectedIndex = -1;
+            cmbRuta.SelectedIndex = -1;
+            cmbVehiculo.SelectedIndex = -1;
+
+            // Reseteamos fecha y estado
+            dtpFecha.Value = DateTime.Now;
+            txtEstado.Text = "Activo";
+
+            // Habilitamos el botón guardar por si estábamos en modo edición
+            btnGuardar.Enabled = true;
+            // btnActualizar.Enabled = false; (Descomenta esto si lo vas a usar)
+        }
+
+        private void dgvViajes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                // 1. Guardar el ID
+                idViaje = Convert.ToInt32(dgvViajes.Rows[e.RowIndex].Cells["ID"].Value);
+
+                // 2. Pasar los textos de la tabla a los controles visuales
+                cmbChofer.Text = dgvViajes.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
+                cmbRuta.Text = dgvViajes.Rows[e.RowIndex].Cells["Ruta"].Value.ToString();
+                cmbVehiculo.Text = dgvViajes.Rows[e.RowIndex].Cells["Ficha del Vehículo"].Value.ToString();
+                dtpFecha.Value = Convert.ToDateTime(dgvViajes.Rows[e.RowIndex].Cells["Fecha y Hora"].Value);
+                txtEstado.Text = dgvViajes.Rows[e.RowIndex].Cells["Estado"].Value.ToString();
+
+                // 3. UX: Cambiar de modo "Nuevo" a modo "Edición"
+                btnGuardar.Enabled = false;
+                btnActualizar.Enabled = true; // Activa el amarillo
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            // 1. Validar que haya seleccionado algo
+            if (idViaje == 0)
+            {
+                MessageBox.Show("Por favor, seleccione un viaje de la tabla primero.", "Aviso OMSA");
+                return;
+            }
+
+            // 2. Pedir confirmación al usuario
+            DialogResult respuesta = MessageBox.Show("¿Está seguro de que desea cancelar este viaje? Ya no aparecerá disponible para vender tickets.", "Confirmar Cancelación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                try
+                {
+                    // 3. Enviar la orden a la Capa de Negocio
+                    objViaje.CancelarViaje(idViaje.ToString());
+
+                    MessageBox.Show("El viaje ha sido cancelado exitosamente.", "Operación Exitosa");
+
+                    // 4. Refrescar la tabla y limpiar
+                    MostrarViajesTabla();
+                    idViaje = 0; // Reseteamos el ID
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al cancelar el viaje: " + ex.Message, "Error del Sistema");
+                }
+            }
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            if (idViaje == 0)
+            {
+                MessageBox.Show("Por favor, seleccione un viaje de la tabla para actualizar.", "Aviso OMSA");
+                return;
+            }
+
+            if (cmbChofer.SelectedValue == null || cmbRuta.SelectedValue == null || cmbVehiculo.SelectedValue == null)
+            {
+                MessageBox.Show("Asegúrese de que Chofer, Ruta y Vehículo estén seleccionados.", "Aviso OMSA");
+                return;
+            }
+
+            try
+            {
+                // 1. Tomamos los IDs ocultos de los ComboBox
+                string idChof = cmbChofer.SelectedValue.ToString();
+                string idRut = cmbRuta.SelectedValue.ToString();
+                string idVeh = cmbVehiculo.SelectedValue.ToString();
+                DateTime fecha = dtpFecha.Value;
+                string estado = txtEstado.Text;
+
+                // 2. Mandamos a actualizar
+                objViaje.EditarViaje(idViaje.ToString(), idChof, idRut, idVeh, fecha, estado);
+                MessageBox.Show("¡Viaje actualizado exitosamente!", "Operación Exitosa");
+
+                // 3. Refrescar la tabla y limpiar la pantalla
+                MostrarViajesTabla();
+                btnLimpiar_Click(null, null); // Llamamos al botón limpiar para que resetee todo
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar el viaje: " + ex.Message, "Error del Sistema");
             }
         }
     }

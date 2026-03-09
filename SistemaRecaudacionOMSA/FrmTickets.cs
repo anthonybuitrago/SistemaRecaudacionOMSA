@@ -37,9 +37,13 @@ namespace SistemaRecaudacionOMSA
         {
             try
             {
-                // Llena el ComboBox con los viajes activos
-                cmbViaje.DataSource = objViaje.MostrarViajes();
-                cmbViaje.DisplayMember = "ID_Viaje";
+                // Usamos el nuevo método de la capa de negocio
+                cmbViaje.DataSource = objViaje.MostrarViajesCombo();
+
+                // Le decimos que muestre la columna virtual que creamos en SQL
+                cmbViaje.DisplayMember = "DescripcionViaje";
+
+                // El valor oculto sigue siendo el ID del viaje para poder guardarlo
                 cmbViaje.ValueMember = "ID_Viaje";
             }
             catch (Exception ex)
@@ -107,9 +111,12 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTickets.BackgroundColor = Color.White;
             dgvTickets.BorderStyle = BorderStyle.None;
-            dgvTickets.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvTickets.CellBorderStyle = DataGridViewCellBorderStyle.None;
 
+            // Dejamos solo esta línea para que se vean las divisiones horizontales
+            dgvTickets.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvTickets.GridColor = Color.Gainsboro;
+
+            // --- ESTILO DEL ENCABEZADO ---
             dgvTickets.EnableHeadersVisualStyles = false;
             dgvTickets.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
             dgvTickets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -117,8 +124,14 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.ColumnHeadersHeight = 40;
             dgvTickets.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
-            // Evitar resaltado azul
+            // Evitar resaltado azul en el encabezado
             dgvTickets.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
+
+            // --- ¡ESTO ERA LO QUE FALTABA: ESTILO DE LAS FILAS! ---
+            dgvTickets.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvTickets.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9"); // Color verde OMSA al seleccionar
+            dgvTickets.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgvTickets.RowTemplate.Height = 35;
 
             // Nombres de Columnas para Tickets
             if (dgvTickets.Columns.Count > 0)

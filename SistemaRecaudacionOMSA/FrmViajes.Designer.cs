@@ -28,162 +28,256 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmbChofer = new System.Windows.Forms.ComboBox();
-            this.cmbRuta = new System.Windows.Forms.ComboBox();
-            this.cmbVehiculo = new System.Windows.Forms.ComboBox();
+            this.dgvViajes = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtEstado = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmbVehiculo = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbRuta = new System.Windows.Forms.ComboBox();
+            this.cmbChofer = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnEditar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnGuardarViaje = new System.Windows.Forms.Button();
-            this.dgvViajes = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtEstado = new System.Windows.Forms.TextBox();
+            this.btnGuardar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvViajes)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // cmbChofer
-            // 
-            this.cmbChofer.FormattingEnabled = true;
-            this.cmbChofer.Location = new System.Drawing.Point(55, 49);
-            this.cmbChofer.Name = "cmbChofer";
-            this.cmbChofer.Size = new System.Drawing.Size(121, 21);
-            this.cmbChofer.TabIndex = 0;
-            // 
-            // cmbRuta
-            // 
-            this.cmbRuta.FormattingEnabled = true;
-            this.cmbRuta.Location = new System.Drawing.Point(55, 127);
-            this.cmbRuta.Name = "cmbRuta";
-            this.cmbRuta.Size = new System.Drawing.Size(121, 21);
-            this.cmbRuta.TabIndex = 1;
-            // 
-            // cmbVehiculo
-            // 
-            this.cmbVehiculo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbVehiculo.FormattingEnabled = true;
-            this.cmbVehiculo.Location = new System.Drawing.Point(55, 205);
-            this.cmbVehiculo.Name = "cmbVehiculo";
-            this.cmbVehiculo.Size = new System.Drawing.Size(121, 21);
-            this.cmbVehiculo.TabIndex = 2;
-            // 
-            // dtpFecha
-            // 
-            this.dtpFecha.Location = new System.Drawing.Point(55, 280);
-            this.dtpFecha.Name = "dtpFecha";
-            this.dtpFecha.Size = new System.Drawing.Size(200, 20);
-            this.dtpFecha.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(52, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Seleccione Chofer:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(52, 94);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Seleccione Ruta:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(52, 177);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(109, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Seleccione Vehículo:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(52, 253);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Fecha del Viaje:";
-            // 
-            // btnGuardarViaje
-            // 
-            this.btnGuardarViaje.Location = new System.Drawing.Point(55, 404);
-            this.btnGuardarViaje.Name = "btnGuardarViaje";
-            this.btnGuardarViaje.Size = new System.Drawing.Size(99, 23);
-            this.btnGuardarViaje.TabIndex = 10;
-            this.btnGuardarViaje.Text = "Registrar Viaje";
-            this.btnGuardarViaje.UseVisualStyleBackColor = true;
-            this.btnGuardarViaje.Click += new System.EventHandler(this.btnGuardarViaje_Click);
             // 
             // dgvViajes
             // 
+            this.dgvViajes.AllowUserToAddRows = false;
+            this.dgvViajes.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvViajes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvViajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvViajes.Location = new System.Drawing.Point(261, 24);
+            this.dgvViajes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvViajes.Location = new System.Drawing.Point(280, 0);
             this.dgvViajes.Name = "dgvViajes";
-            this.dgvViajes.Size = new System.Drawing.Size(612, 465);
-            this.dgvViajes.TabIndex = 11;
+            this.dgvViajes.RowHeadersVisible = false;
+            this.dgvViajes.Size = new System.Drawing.Size(520, 650);
+            this.dgvViajes.TabIndex = 9;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.txtEstado);
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.dtpFecha);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.cmbVehiculo);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.cmbRuta);
+            this.panel1.Controls.Add(this.cmbChofer);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.btnEliminar);
+            this.panel1.Controls.Add(this.btnLimpiar);
+            this.panel1.Controls.Add(this.btnEditar);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.btnGuardar);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(280, 650);
+            this.panel1.TabIndex = 10;
+            // 
+            // txtEstado
+            // 
+            this.txtEstado.Location = new System.Drawing.Point(54, 316);
+            this.txtEstado.Name = "txtEstado";
+            this.txtEstado.Size = new System.Drawing.Size(180, 20);
+            this.txtEstado.TabIndex = 19;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label6.Location = new System.Drawing.Point(50, 294);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(108, 19);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Estado del Viaje:";
+            // 
+            // dtpFecha
+            // 
+            this.dtpFecha.Location = new System.Drawing.Point(54, 254);
+            this.dtpFecha.Name = "dtpFecha";
+            this.dtpFecha.Size = new System.Drawing.Size(180, 20);
+            this.dtpFecha.TabIndex = 17;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(55, 330);
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label5.Location = new System.Drawing.Point(50, 232);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "Estado del Viaje:";
+            this.label5.Size = new System.Drawing.Size(102, 19);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Fecha del Viaje:";
             // 
-            // txtEstado
+            // cmbVehiculo
             // 
-            this.txtEstado.Location = new System.Drawing.Point(58, 363);
-            this.txtEstado.Name = "txtEstado";
-            this.txtEstado.Size = new System.Drawing.Size(118, 20);
-            this.txtEstado.TabIndex = 13;
+            this.cmbVehiculo.FormattingEnabled = true;
+            this.cmbVehiculo.Location = new System.Drawing.Point(54, 196);
+            this.cmbVehiculo.Name = "cmbVehiculo";
+            this.cmbVehiculo.Size = new System.Drawing.Size(180, 21);
+            this.cmbVehiculo.TabIndex = 15;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label3.Location = new System.Drawing.Point(50, 174);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(129, 19);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Seleccione Vehículo:";
+            // 
+            // cmbRuta
+            // 
+            this.cmbRuta.FormattingEnabled = true;
+            this.cmbRuta.Location = new System.Drawing.Point(54, 140);
+            this.cmbRuta.Name = "cmbRuta";
+            this.cmbRuta.Size = new System.Drawing.Size(180, 21);
+            this.cmbRuta.TabIndex = 13;
+            // 
+            // cmbChofer
+            // 
+            this.cmbChofer.FormattingEnabled = true;
+            this.cmbChofer.Location = new System.Drawing.Point(54, 83);
+            this.cmbChofer.Name = "cmbChofer";
+            this.cmbChofer.Size = new System.Drawing.Size(180, 21);
+            this.cmbChofer.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.label4.Location = new System.Drawing.Point(0, 25);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(280, 23);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "REGISTRAR VIAJE";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btnEliminar.FlatAppearance.BorderSize = 0;
+            this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEliminar.ForeColor = System.Drawing.Color.White;
+            this.btnEliminar.Location = new System.Drawing.Point(54, 482);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(180, 33);
+            this.btnEliminar.TabIndex = 9;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.UseVisualStyleBackColor = false;
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btnLimpiar.FlatAppearance.BorderSize = 0;
+            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.White;
+            this.btnLimpiar.Location = new System.Drawing.Point(54, 408);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(180, 31);
+            this.btnLimpiar.TabIndex = 8;
+            this.btnLimpiar.Text = "Limpiar Campos";
+            this.btnLimpiar.UseVisualStyleBackColor = false;
+            // 
+            // btnEditar
+            // 
+            this.btnEditar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(209)))), ((int)(((byte)(0)))));
+            this.btnEditar.FlatAppearance.BorderSize = 0;
+            this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEditar.ForeColor = System.Drawing.Color.White;
+            this.btnEditar.Location = new System.Drawing.Point(54, 445);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(180, 31);
+            this.btnEditar.TabIndex = 7;
+            this.btnEditar.Text = "Actualizar";
+            this.btnEditar.UseVisualStyleBackColor = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.Location = new System.Drawing.Point(50, 118);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(106, 19);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Seleccione Ruta:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.Location = new System.Drawing.Point(50, 61);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(119, 19);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Seleccione Chofer:";
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(132)))), ((int)(((byte)(61)))));
+            this.btnGuardar.FlatAppearance.BorderSize = 0;
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Location = new System.Drawing.Point(54, 371);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(180, 31);
+            this.btnGuardar.TabIndex = 6;
+            this.btnGuardar.Text = "Guardar Viaje";
+            this.btnGuardar.UseVisualStyleBackColor = false;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // FrmViajes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 501);
-            this.Controls.Add(this.txtEstado);
-            this.Controls.Add(this.label5);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(800, 650);
             this.Controls.Add(this.dgvViajes);
-            this.Controls.Add(this.btnGuardarViaje);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.dtpFecha);
-            this.Controls.Add(this.cmbVehiculo);
-            this.Controls.Add(this.cmbRuta);
-            this.Controls.Add(this.cmbChofer);
+            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmViajes";
-            this.Text = "FrmViajes";
+            this.Text = "FrmRutas";
             this.Load += new System.EventHandler(this.FrmViajes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvViajes)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbChofer;
-        private System.Windows.Forms.ComboBox cmbRuta;
-        private System.Windows.Forms.ComboBox cmbVehiculo;
-        private System.Windows.Forms.DateTimePicker dtpFecha;
+        private System.Windows.Forms.DataGridView dgvViajes;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Button btnEditar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.ComboBox cmbVehiculo;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnGuardarViaje;
-        private System.Windows.Forms.DataGridView dgvViajes;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cmbRuta;
+        private System.Windows.Forms.ComboBox cmbChofer;
         private System.Windows.Forms.TextBox txtEstado;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DateTimePicker dtpFecha;
+        private System.Windows.Forms.Label label5;
     }
 }

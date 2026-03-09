@@ -32,5 +32,10 @@ namespace CapaNegocios
                 nuevoViaje.Estado
             );
         }
+
+        public DataTable MostrarViajesCombo()
+        {
+            return objDatos.MostrarParaCombo();
+        }
     }
 }

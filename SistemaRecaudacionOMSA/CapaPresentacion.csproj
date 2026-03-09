@@ -64,6 +64,12 @@
     <Compile Include="FrmReportes.Designer.cs">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmViajes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmViajes.Designer.cs">
+      <DependentUpon>FrmViajes.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmTickets.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,12 +88,6 @@
     <Compile Include="FrmRutas.Designer.cs">
       <DependentUpon>FrmRutas.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmViajes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmViajes.Designer.cs">
-      <DependentUpon>FrmViajes.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmChoferes.resx">
@@ -99,6 +99,9 @@
     <EmbeddedResource Include="FrmReportes.resx">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmViajes.resx">
+      <DependentUpon>FrmViajes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmTickets.resx">
       <DependentUpon>FrmTickets.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,9 +110,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRutas.resx">
       <DependentUpon>FrmRutas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmViajes.resx">
-      <DependentUpon>FrmViajes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

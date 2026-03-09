@@ -10,23 +10,62 @@ namespace CapaDatos
         private ConexionBD conexion = new ConexionBD();
 
         // Método para leer los viajes
+        // Método para leer los viajes con los nombres reales (INNER JOIN)
         public DataTable Mostrar()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
             SqlDataReader leer;
 
-            // Abrir conexión y configurar el comando
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "SELECT * FROM Viaje";
+
+            comando.CommandText = @"
+        SELECT 
+            v.ID_Viaje AS 'ID',
+            c.NombreCompleto AS 'Chofer',
+            r.NombreRuta AS 'Ruta',
+            ve.Ficha AS 'Ficha del Vehículo',
+            v.FechaViaje AS 'Fecha y Hora',
+            v.Estado AS 'Estado'
+        FROM Viaje v
+        INNER JOIN Chofer c ON v.ID_Chofer = c.ID_Chofer
+        INNER JOIN Ruta r ON v.ID_Ruta = r.ID_Ruta
+        INNER JOIN Vehiculo ve ON v.ID_Vehiculo = ve.ID_Vehiculo";
+
             comando.CommandType = CommandType.Text;
 
-            // Leer datos y cargar la tabla
             leer = comando.ExecuteReader();
             tabla.Load(leer);
-
-            // Cerrar conexión
             conexion.CerrarConexion();
+
+            return tabla;
+        }
+
+        // Método exclusivo para llenar los ComboBox de Viajes de forma legible
+        public DataTable MostrarParaCombo()
+        {
+            DataTable tabla = new DataTable();
+            SqlCommand comando = new SqlCommand();
+            SqlDataReader leer;
+
+            comando.Connection = conexion.AbrirConexion();
+
+            comando.CommandText = @"
+        SELECT 
+            v.ID_Viaje,
+            r.NombreRuta + ' - Ficha: ' + ve.Ficha + ' (' + c.NombreCompleto + ')' AS DescripcionViaje
+        FROM Viaje v
+        INNER JOIN Ruta r ON v.ID_Ruta = r.ID_Ruta
+        INNER JOIN Vehiculo ve ON v.ID_Vehiculo = ve.ID_Vehiculo
+        INNER JOIN Chofer c ON v.ID_Chofer = c.ID_Chofer
+        WHERE v.Estado = 'Activo'";
+
+            comando.CommandType = CommandType.Text;
+
+            leer = comando.ExecuteReader();
+            tabla.Load(leer);
+            conexion.CerrarConexion();
+
             return tabla;
         }
 

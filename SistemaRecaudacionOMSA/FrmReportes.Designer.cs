@@ -36,9 +36,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(300, 69);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(245, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(171, 13);
+            this.label1.Size = new System.Drawing.Size(312, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "Reporte de Recaudación por Ruta";
             // 
@@ -46,7 +47,7 @@
             // 
             this.dgvReporte.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvReporte.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvReporte.Location = new System.Drawing.Point(102, 128);
+            this.dgvReporte.Location = new System.Drawing.Point(86, 82);
             this.dgvReporte.Name = "dgvReporte";
             this.dgvReporte.Size = new System.Drawing.Size(629, 286);
             this.dgvReporte.TabIndex = 1;
@@ -55,9 +56,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgvReporte);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmReportes";
             this.Text = "FrmReportes";
             this.Load += new System.EventHandler(this.FrmReportes_Load);

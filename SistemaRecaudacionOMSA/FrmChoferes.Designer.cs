@@ -49,9 +49,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label1.Location = new System.Drawing.Point(50, 72);
+            this.label1.Location = new System.Drawing.Point(67, 89);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 19);
+            this.label1.Size = new System.Drawing.Size(165, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Cédula de Identidad";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -60,9 +61,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label2.Location = new System.Drawing.Point(50, 129);
+            this.label2.Location = new System.Drawing.Point(67, 159);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(123, 19);
+            this.label2.Size = new System.Drawing.Size(153, 23);
             this.label2.TabIndex = 1;
             this.label2.Text = "Nombre y Apellido";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -71,39 +73,43 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label3.Location = new System.Drawing.Point(50, 191);
+            this.label3.Location = new System.Drawing.Point(67, 235);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 19);
+            this.label3.Size = new System.Drawing.Size(102, 23);
             this.label3.TabIndex = 2;
             this.label3.Text = "No. Licencia";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtCedula
             // 
-            this.txtCedula.Location = new System.Drawing.Point(54, 94);
+            this.txtCedula.Location = new System.Drawing.Point(72, 116);
+            this.txtCedula.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtCedula.MaxLength = 11;
             this.txtCedula.Name = "txtCedula";
-            this.txtCedula.Size = new System.Drawing.Size(180, 20);
+            this.txtCedula.Size = new System.Drawing.Size(239, 22);
             this.txtCedula.TabIndex = 3;
             this.txtCedula.TextChanged += new System.EventHandler(this.txtCedula_TextChanged);
             this.txtCedula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCedula_KeyPress);
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(54, 151);
+            this.txtNombre.Location = new System.Drawing.Point(72, 186);
+            this.txtNombre.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtNombre.MaxLength = 50;
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(180, 20);
+            this.txtNombre.Size = new System.Drawing.Size(239, 22);
             this.txtNombre.TabIndex = 4;
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
             // 
             // txtLicencia
             // 
-            this.txtLicencia.Location = new System.Drawing.Point(54, 213);
+            this.txtLicencia.Location = new System.Drawing.Point(72, 262);
+            this.txtLicencia.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtLicencia.MaxLength = 11;
             this.txtLicencia.Name = "txtLicencia";
-            this.txtLicencia.Size = new System.Drawing.Size(180, 20);
+            this.txtLicencia.Size = new System.Drawing.Size(239, 22);
             this.txtLicencia.TabIndex = 5;
             this.txtLicencia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLicencia_KeyPress);
             // 
@@ -114,9 +120,10 @@
             this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(54, 264);
+            this.btnGuardar.Location = new System.Drawing.Point(72, 325);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(180, 31);
+            this.btnGuardar.Size = new System.Drawing.Size(240, 38);
             this.btnGuardar.TabIndex = 6;
             this.btnGuardar.Text = "Guardar Chofer";
             this.btnGuardar.UseVisualStyleBackColor = false;
@@ -129,10 +136,13 @@
             this.dgvChoferes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvChoferes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvChoferes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvChoferes.Location = new System.Drawing.Point(280, 0);
+            this.dgvChoferes.Location = new System.Drawing.Point(373, 0);
+            this.dgvChoferes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvChoferes.Name = "dgvChoferes";
+            this.dgvChoferes.ReadOnly = true;
             this.dgvChoferes.RowHeadersVisible = false;
-            this.dgvChoferes.Size = new System.Drawing.Size(520, 450);
+            this.dgvChoferes.RowHeadersWidth = 51;
+            this.dgvChoferes.Size = new System.Drawing.Size(694, 554);
             this.dgvChoferes.TabIndex = 7;
             this.dgvChoferes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChoferes_CellClick);
             // 
@@ -152,16 +162,18 @@
             this.panel1.Controls.Add(this.btnGuardar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(280, 450);
+            this.panel1.Size = new System.Drawing.Size(373, 554);
             this.panel1.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(0, 25);
+            this.label4.Location = new System.Drawing.Point(0, 31);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(280, 23);
+            this.label4.Size = new System.Drawing.Size(373, 28);
             this.label4.TabIndex = 10;
             this.label4.Text = "DATOS DEL CHOFER";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -173,9 +185,10 @@
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(54, 375);
+            this.btnEliminar.Location = new System.Drawing.Point(72, 462);
+            this.btnEliminar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(180, 33);
+            this.btnEliminar.Size = new System.Drawing.Size(240, 41);
             this.btnEliminar.TabIndex = 9;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
@@ -188,9 +201,10 @@
             this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnLimpiar.ForeColor = System.Drawing.Color.White;
-            this.btnLimpiar.Location = new System.Drawing.Point(54, 301);
+            this.btnLimpiar.Location = new System.Drawing.Point(72, 370);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(180, 31);
+            this.btnLimpiar.Size = new System.Drawing.Size(240, 38);
             this.btnLimpiar.TabIndex = 8;
             this.btnLimpiar.Text = "Limpiar Campos";
             this.btnLimpiar.UseVisualStyleBackColor = false;
@@ -203,9 +217,10 @@
             this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActualizar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnActualizar.ForeColor = System.Drawing.Color.White;
-            this.btnActualizar.Location = new System.Drawing.Point(54, 338);
+            this.btnActualizar.Location = new System.Drawing.Point(72, 416);
+            this.btnActualizar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnActualizar.Name = "btnActualizar";
-            this.btnActualizar.Size = new System.Drawing.Size(180, 31);
+            this.btnActualizar.Size = new System.Drawing.Size(240, 38);
             this.btnActualizar.TabIndex = 7;
             this.btnActualizar.Text = "Actualizar";
             this.btnActualizar.UseVisualStyleBackColor = false;
@@ -213,13 +228,14 @@
             // 
             // FrmChoferes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.dgvChoferes);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmChoferes";
             this.Text = "FrmChoferes";
             this.Load += new System.EventHandler(this.FrmChoferes_Load);

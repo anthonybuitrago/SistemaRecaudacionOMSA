@@ -54,6 +54,7 @@
             this.dgvVehiculos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvVehiculos.Location = new System.Drawing.Point(280, 0);
             this.dgvVehiculos.Name = "dgvVehiculos";
+            this.dgvVehiculos.ReadOnly = true;
             this.dgvVehiculos.RowHeadersVisible = false;
             this.dgvVehiculos.Size = new System.Drawing.Size(520, 450);
             this.dgvVehiculos.TabIndex = 9;

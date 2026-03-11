@@ -30,13 +30,13 @@
         {
             this.dgvTickets = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cmbViaje = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.txtMonto = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnVender = new System.Windows.Forms.Button();
-            this.cmbViaje = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTickets)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -50,6 +50,7 @@
             this.dgvTickets.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTickets.Location = new System.Drawing.Point(280, 0);
             this.dgvTickets.Name = "dgvTickets";
+            this.dgvTickets.ReadOnly = true;
             this.dgvTickets.RowHeadersVisible = false;
             this.dgvTickets.Size = new System.Drawing.Size(520, 450);
             this.dgvTickets.TabIndex = 9;
@@ -70,6 +71,14 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(280, 450);
             this.panel1.TabIndex = 10;
+            // 
+            // cmbViaje
+            // 
+            this.cmbViaje.FormattingEnabled = true;
+            this.cmbViaje.Location = new System.Drawing.Point(54, 95);
+            this.cmbViaje.Name = "cmbViaje";
+            this.cmbViaje.Size = new System.Drawing.Size(180, 21);
+            this.cmbViaje.TabIndex = 13;
             // 
             // label4
             // 
@@ -138,14 +147,6 @@
             this.btnVender.Text = "Registrar Venta";
             this.btnVender.UseVisualStyleBackColor = false;
             this.btnVender.Click += new System.EventHandler(this.btnVender_Click);
-            // 
-            // cmbViaje
-            // 
-            this.cmbViaje.FormattingEnabled = true;
-            this.cmbViaje.Location = new System.Drawing.Point(54, 95);
-            this.cmbViaje.Name = "cmbViaje";
-            this.cmbViaje.Size = new System.Drawing.Size(180, 21);
-            this.cmbViaje.TabIndex = 13;
             // 
             // FrmTickets
             // 

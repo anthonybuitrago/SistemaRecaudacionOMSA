@@ -52,6 +52,7 @@
             this.dgvRutas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRutas.Location = new System.Drawing.Point(280, 0);
             this.dgvRutas.Name = "dgvRutas";
+            this.dgvRutas.ReadOnly = true;
             this.dgvRutas.RowHeadersVisible = false;
             this.dgvRutas.Size = new System.Drawing.Size(520, 450);
             this.dgvRutas.TabIndex = 9;

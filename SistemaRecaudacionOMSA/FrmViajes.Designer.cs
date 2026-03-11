@@ -58,6 +58,7 @@
             this.dgvViajes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvViajes.Location = new System.Drawing.Point(280, 0);
             this.dgvViajes.Name = "dgvViajes";
+            this.dgvViajes.ReadOnly = true;
             this.dgvViajes.RowHeadersVisible = false;
             this.dgvViajes.Size = new System.Drawing.Size(520, 650);
             this.dgvViajes.TabIndex = 9;

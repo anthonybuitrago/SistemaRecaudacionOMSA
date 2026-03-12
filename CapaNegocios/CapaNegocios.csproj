@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chofer.cs" />
     <Compile Include="N_Chofer.cs" />
     <Compile Include="N_Reporte.cs" />
     <Compile Include="N_Ruta.cs" />
@@ -50,10 +49,6 @@
     <Compile Include="N_Viaje.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ruta.cs" />
-    <Compile Include="Ticket.cs" />
-    <Compile Include="Vehiculo.cs" />
-    <Compile Include="Viaje.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaDatos\CapaDatos.csproj">

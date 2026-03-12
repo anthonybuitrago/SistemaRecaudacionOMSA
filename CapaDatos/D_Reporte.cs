@@ -21,14 +21,18 @@ namespace CapaDatos
 
             // Consulta SQL para sumar tickets y contar pasajeros
             comando.CommandText = @"
-                SELECT 
-                    R.NombreRuta AS [Nombre de la Ruta],
-                    COUNT(T.ID_Ticket) AS [Total Pasajeros],
-                    SUM(T.MontoPagado) AS [Ingresos Totales RD$]
-                FROM Ticket T
-                INNER JOIN Viaje V ON T.ID_Viaje = V.ID_Viaje
-                INNER JOIN Ruta R ON V.ID_Ruta = R.ID_Ruta
-                GROUP BY R.NombreRuta";
+    SELECT 
+        R.NombreRuta AS [Ruta],
+        C.NombreCompleto AS [Chofer],
+        Ve.Ficha AS [Vehículo],
+        COUNT(T.ID_Ticket) AS [Pasajeros],
+        SUM(T.MontoPagado) AS [Total Recaudado RD$]
+    FROM Ticket T
+    INNER JOIN Viaje V ON T.ID_Viaje = V.ID_Viaje
+    INNER JOIN Ruta R ON V.ID_Ruta = R.ID_Ruta
+    INNER JOIN Chofer C ON V.ID_Chofer = C.ID_Chofer
+    INNER JOIN Vehiculo Ve ON V.ID_Vehiculo = Ve.ID_Vehiculo
+    GROUP BY R.NombreRuta, C.NombreCompleto, Ve.Ficha";
 
             comando.CommandType = CommandType.Text;
 

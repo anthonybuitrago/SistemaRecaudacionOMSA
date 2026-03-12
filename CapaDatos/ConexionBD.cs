@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace CapaDatos
 {
     public class ConexionBD
     {
-        // Ruta de acceso a SQL Server
-        private readonly string cadenaConexion = "Server=.;Database=OMSA_Recaudacion;Integrated Security=True;";
+        // Ahora lee la ruta dinámicamente desde el App.config
+        private readonly string cadenaConexion = ConfigurationManager.ConnectionStrings["ConexionOMSA"].ConnectionString;
+
         private SqlConnection conexion;
 
         // Constructor para inicializar la conexión

@@ -171,6 +171,7 @@ namespace SistemaRecaudacionOMSA
 
             dgvRutas.EnableHeadersVisualStyles = false;
             dgvRutas.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
+            dgvRutas.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
             dgvRutas.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvRutas.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvRutas.ColumnHeadersHeight = 40;

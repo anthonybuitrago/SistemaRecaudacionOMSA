@@ -60,6 +60,7 @@
             this.dgvViajes.Name = "dgvViajes";
             this.dgvViajes.ReadOnly = true;
             this.dgvViajes.RowHeadersVisible = false;
+            this.dgvViajes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvViajes.Size = new System.Drawing.Size(520, 650);
             this.dgvViajes.TabIndex = 9;
             this.dgvViajes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvViajes_CellContentClick);

@@ -123,6 +123,7 @@ namespace SistemaRecaudacionOMSA
 
             // 3. Diseño del Encabezado (Gris oscuro OMSA)
             dgvViajes.EnableHeadersVisualStyles = false;
+            dgvViajes.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
             dgvViajes.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
             dgvViajes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvViajes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);

@@ -131,6 +131,7 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
             dgvTickets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvTickets.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvTickets.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
             dgvTickets.ColumnHeadersHeight = 40;
             dgvTickets.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 

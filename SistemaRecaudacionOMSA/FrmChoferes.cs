@@ -74,30 +74,6 @@ namespace SistemaRecaudacionOMSA
             txtCedula.Focus(); // Pone el cursor listo para el siguiente registro
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtNombre_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtCedula_TextChanged(object sender, EventArgs e)
-        {
-
-        }
         private void AplicarEstiloTabla()
         {
             // 1. Ocultar la primera columna vacía y ajustar tamaño
@@ -113,6 +89,7 @@ namespace SistemaRecaudacionOMSA
             // 3. Estilo de los encabezados (Verde OMSA)
             dgvChoferes.EnableHeadersVisualStyles = false; // ¡Súper importante para que agarre el color!
             dgvChoferes.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
+            dgvChoferes.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
             dgvChoferes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvChoferes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvChoferes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;

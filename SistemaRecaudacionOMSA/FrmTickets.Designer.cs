@@ -52,6 +52,7 @@
             this.dgvTickets.Name = "dgvTickets";
             this.dgvTickets.ReadOnly = true;
             this.dgvTickets.RowHeadersVisible = false;
+            this.dgvTickets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTickets.Size = new System.Drawing.Size(520, 450);
             this.dgvTickets.TabIndex = 9;
             this.dgvTickets.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTickets_CellClick);

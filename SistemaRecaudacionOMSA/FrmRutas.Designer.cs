@@ -54,6 +54,7 @@
             this.dgvRutas.Name = "dgvRutas";
             this.dgvRutas.ReadOnly = true;
             this.dgvRutas.RowHeadersVisible = false;
+            this.dgvRutas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRutas.Size = new System.Drawing.Size(520, 450);
             this.dgvRutas.TabIndex = 9;
             this.dgvRutas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRutas_CellClick);

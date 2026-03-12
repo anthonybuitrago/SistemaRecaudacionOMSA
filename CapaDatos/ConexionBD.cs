@@ -7,18 +7,18 @@ namespace CapaDatos
 {
     public class ConexionBD
     {
-        // Ahora lee la ruta dinámicamente desde el App.config
+        // Obtiene la cadena de conexión desde el archivo App.config
         private readonly string cadenaConexion = ConfigurationManager.ConnectionStrings["ConexionOMSA"].ConnectionString;
 
         private SqlConnection conexion;
 
-        // Constructor para inicializar la conexión
+        // Constructor para inicializar el objeto de conexión
         public ConexionBD()
         {
             conexion = new SqlConnection(cadenaConexion);
         }
 
-        // Método para abrir la conexión
+        // Abre la conexión si se encuentra cerrada
         public SqlConnection AbrirConexion()
         {
             if (conexion.State == ConnectionState.Closed)
@@ -28,7 +28,7 @@ namespace CapaDatos
             return conexion;
         }
 
-        // Método para cerrar la conexión
+        // Cierra la conexión si se encuentra abierta
         public SqlConnection CerrarConexion()
         {
             if (conexion.State == ConnectionState.Open)

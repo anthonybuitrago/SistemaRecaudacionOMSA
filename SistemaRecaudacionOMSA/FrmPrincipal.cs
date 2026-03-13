@@ -6,14 +6,14 @@ namespace SistemaRecaudacionOMSA
 {
     public partial class FrmPrincipal : Form
     {
-        // 1. Variable para recordar qué botón está presionado actualmente
+        // Variable para recordar qué botón del menú está seleccionado actualmente
         private Button botonActivo = null;
 
+        // Constructor que inicializa la ventana principal y prepara las animaciones del menú
         public FrmPrincipal()
         {
             InitializeComponent();
 
-            // Aplicamos el efecto hover a todos los botones
             AplicarEfectoHover(btnAbrirChoferes);
             AplicarEfectoHover(btnAbrirRutas);
             AplicarEfectoHover(btnAbrirVehiculos);
@@ -22,67 +22,66 @@ namespace SistemaRecaudacionOMSA
             AplicarEfectoHover(btnAbrirReportes);
         }
 
+        // Evento que abre automáticamente la sección de Choferes al iniciar el sistema
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
-            // Simula un clic en Choferes apenas abre el programa.
             btnAbrirChoferes.PerformClick();
         }
 
-        // --- Navegación del Sistema ---
-
+        // Evento para abrir la sección de Choferes y resaltar su botón
         private void btnAbrirChoferes_Click(object sender, EventArgs e)
         {
-            ActivarBoton((Button)sender); // Pinta el botón de verde
+            ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmChoferes());
         }
 
+        // Evento para abrir la sección de Rutas y resaltar su botón
         private void btnAbrirRutas_Click(object sender, EventArgs e)
         {
             ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmRutas());
         }
 
+        // Evento para abrir la sección de Vehículos y resaltar su botón
         private void btnAbrirVehiculos_Click(object sender, EventArgs e)
         {
             ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmVehiculos());
         }
 
+        // Evento para abrir la sección de Viajes y resaltar su botón
         private void btnAbrirViajes_Click(object sender, EventArgs e)
         {
             ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmViajes());
         }
 
+        // Evento para abrir la sección de Tickets y resaltar su botón
         private void btnAbrirTickets_Click(object sender, EventArgs e)
         {
             ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmTickets());
         }
 
+        // Evento para abrir la sección de Reportes y resaltar su botón
         private void btnAbrirReportes_Click(object sender, EventArgs e)
         {
             ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmReportes());
         }
 
-        // --- Lógica Visual de los Botones ---
-
+        // Método para pintar de verde el botón seleccionado y registrarlo como activo
         private void ActivarBoton(Button btn)
         {
             if (btn != null)
             {
-                // 1. Apagamos todos los botones
                 RestaurarColoresBotones();
-
-                // 2. Registramos cuál es el nuevo botón activo
                 botonActivo = btn;
-
-                // 3. Lo pintamos del verde principal de la OMSA
                 botonActivo.BackColor = ColorTranslator.FromHtml("#009A44");
             }
         }
 
+        // Método para devolver todos los botones del menú a su color gris oscuro original
         private void RestaurarColoresBotones()
         {
             Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
@@ -95,29 +94,27 @@ namespace SistemaRecaudacionOMSA
             btnAbrirReportes.BackColor = colorInactivo;
         }
 
+        // Método para cambiar el tono del botón al pasar el ratón por encima (Efecto Hover)
         private void AplicarEfectoHover(Button btn)
         {
             btn.MouseEnter += (s, e) =>
             {
-                // Solo hace el hover si el botón NO es el que está activo actualmente
                 if (btn != botonActivo)
                 {
-                    btn.BackColor = ColorTranslator.FromHtml("#00843D"); // Verde más oscuro para hover
+                    btn.BackColor = ColorTranslator.FromHtml("#00843D");
                 }
             };
 
             btn.MouseLeave += (s, e) =>
             {
-                // Solo regresa a gris si el botón NO es el que está activo
                 if (btn != botonActivo)
                 {
-                    btn.BackColor = ColorTranslator.FromHtml("#2D2D2D"); // Gris original
+                    btn.BackColor = ColorTranslator.FromHtml("#2D2D2D");
                 }
             };
         }
 
-        // --- Método Único para abrir formularios dentro del panel central ---
-
+        // Método principal para incrustar y mostrar las ventanas secundarias dentro del espacio central
         private void AbrirFormularioEnPanel(Form formularioHijo)
         {
             if (this.pnlContenedor.Controls.Count > 0)

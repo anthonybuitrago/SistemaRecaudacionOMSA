@@ -8,14 +8,15 @@ namespace SistemaRecaudacionOMSA
 {
     internal static class Program
     {
-        // Punto de entrada principal para la aplicación
+        // Punto de entrada principal para la ejecución de la aplicación
         [STAThread]
         static void Main()
         {
+            // Configura la apariencia visual moderna para los controles del sistema
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Inicia el formulario principal del sistema
+            // Inicia la ejecución del sistema cargando el formulario principal
             Application.Run(new FrmPrincipal());
         }
     }

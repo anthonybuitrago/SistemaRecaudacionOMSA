@@ -4,10 +4,9 @@ using CapaDatos;
 
 namespace CapaNegocios
 {
-
     public class Viaje
     {
-        // Propiedades que conectan con Chofer, Ruta y Vehículo
+        // Propiedades que enlazan el viaje con su chofer, ruta y vehículo
         public int ID_Viaje { get; set; }
         public int ID_Chofer { get; set; }
         public int ID_Ruta { get; set; }
@@ -29,24 +28,27 @@ namespace CapaNegocios
 
     public class N_Viaje
     {
+        // Conexión con la Capa de Datos
         private D_Viaje objDatos = new D_Viaje();
 
+        // Método para pedir la lista completa de viajes
         public DataTable MostrarViajes()
         {
             return objDatos.Mostrar();
         }
 
+        // Método para enviar un nuevo viaje a guardar
         public void InsertarViaje(string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
         {
-            // 1. Conversión de IDs a enteros
+            // Convertimos los identificadores de texto a números enteros
             int choferId = Convert.ToInt32(idChofer);
             int rutaId = Convert.ToInt32(idRuta);
             int vehiculoId = Convert.ToInt32(idVehiculo);
 
-            // 2. Creación del objeto Viaje (Genera la referencia)
+            // Instanciamos el objeto Viaje
             Viaje nuevoViaje = new Viaje(0, choferId, rutaId, vehiculoId, fecha, estado);
 
-            // 3. Envío de datos estructurados a la Capa de Datos
+            // Mandamos los datos a la Capa de Datos
             objDatos.Insertar(
                 nuevoViaje.ID_Chofer,
                 nuevoViaje.ID_Ruta,
@@ -56,19 +58,22 @@ namespace CapaNegocios
             );
         }
 
+        // Método para pedir los viajes disponibles y mostrarlos en selectores (ComboBox)
         public DataTable MostrarViajesCombo()
         {
             return objDatos.MostrarParaCombo();
         }
 
+        // Puente para enviar la orden de cancelar un viaje a la Capa de Datos
         public void CancelarViaje(string idViaje)
         {
-            // Convertimos el ID a entero y se lo pasamos a la capa de datos
             objDatos.Cancelar(Convert.ToInt32(idViaje));
         }
 
+        // Puente para enviar los datos editados a la Capa de Datos
         public void EditarViaje(string idViaje, string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
         {
+            // Convertimos los identificadores de texto a números enteros
             int viajeId = Convert.ToInt32(idViaje);
             int choferId = Convert.ToInt32(idChofer);
             int rutaId = Convert.ToInt32(idRuta);

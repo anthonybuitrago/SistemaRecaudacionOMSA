@@ -2,27 +2,27 @@
 
 namespace CapaNegocios
 {
-    // Clase abstracta (No se pueden crear objetos "Persona" directamente)
+    // Clase base abstracta para los empleados del sistema
     public abstract class Persona
     {
-        // Propiedades básicas de cualquier persona
+        // Propiedades básicas de identificación
         public string Cedula { get; set; }
         public string NombreCompleto { get; set; }
 
-        // Constructor para inicializar los datos
+        // Constructor para inicializar los datos de la persona
         public Persona(string cedula, string nombreCompleto)
         {
             Cedula = cedula;
             NombreCompleto = nombreCompleto;
         }
 
-        // Método que los hijos pueden modificar (Polimorfismo)
+        // Método base que permite ser modificado por las clases hijas
         public virtual string ObtenerDetalles()
         {
             return $"Cédula: {Cedula} - Nombre: {NombreCompleto}";
         }
 
-        // Método obligatorio para los hijos (Cada hijo debe decir qué es)
+        // Método obligatorio para que las clases hijas definan su rol
         public abstract string ObtenerTipoEmpleado();
     }
 }

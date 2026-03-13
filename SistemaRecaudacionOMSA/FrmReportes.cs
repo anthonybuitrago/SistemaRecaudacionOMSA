@@ -7,29 +7,30 @@ namespace SistemaRecaudacionOMSA
 {
     public partial class FrmReportes : Form
     {
-        // Instancia de la Capa de Negocio para Reportes
+        // Instancia para la comunicación con la Capa de Negocio
         private N_Reporte objReporte = new N_Reporte();
 
+        // Constructor que inicializa los componentes de la ventana
         public FrmReportes()
         {
             InitializeComponent();
         }
 
-        // Se ejecuta al abrir la ventana de reportes
+        // Evento que carga los datos del reporte al abrir la ventana
         private void FrmReportes_Load(object sender, EventArgs e)
         {
             CargarReporteRecaudacion();
         }
 
-        // Método para llenar la tabla con la recaudación
+        // Método para solicitar y mostrar los totales de recaudación
         private void CargarReporteRecaudacion()
         {
             try
             {
-                // Vincula los datos calculados en SQL al DataGridView
+                // Volcamos los resultados calculados por el servidor en la tabla visual
                 dgvReporte.DataSource = objReporte.MostrarRecaudacionRuta();
 
-                // ¡AGREGAR ESTA LÍNEA AQUÍ!
+                // Aplicamos el diseño corporativo a la tabla
                 AplicarEstiloTabla();
             }
             catch (Exception ex)
@@ -38,20 +39,19 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Método para personalizar la apariencia visual de la tabla de datos
         private void AplicarEstiloTabla()
         {
-            // 1. Configuraciones básicas y fondo
+            // Configuración de estructura y bordes
             dgvReporte.AllowUserToAddRows = false;
             dgvReporte.RowHeadersVisible = false;
             dgvReporte.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvReporte.BackgroundColor = Color.White;
             dgvReporte.BorderStyle = BorderStyle.None;
-
-            // 2. Líneas sutiles
             dgvReporte.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvReporte.GridColor = Color.Gainsboro;
 
-            // 3. Estilo del Encabezado (Gris oscuro OMSA)
+            // Configuración de colores corporativos para los encabezados
             dgvReporte.EnableHeadersVisualStyles = false;
             dgvReporte.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
             dgvReporte.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -60,9 +60,9 @@ namespace SistemaRecaudacionOMSA
             dgvReporte.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvReporte.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
 
-            // 4. Estilo de las Filas 
+            // Configuración visual de las filas y colores de selección
             dgvReporte.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvReporte.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9"); // Verde OMSA
+            dgvReporte.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
             dgvReporte.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvReporte.RowTemplate.Height = 35;
         }

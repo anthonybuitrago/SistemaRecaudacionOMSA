@@ -6,7 +6,7 @@ namespace CapaNegocios
 {
     public class Ticket
     {
-        // Propiedades del boleto
+        // Propiedades del boleto vendido
         public int ID_Ticket { get; set; }
         public int ID_Viaje { get; set; }
         public DateTime HoraEmision { get; set; }
@@ -24,27 +24,27 @@ namespace CapaNegocios
 
     public class N_Ticket
     {
-        // Conexión con la Capa de Datos (Tickets)
+        // Conexión con la Capa de Datos
         private D_Ticket objDatos = new D_Ticket();
 
-        // Método que llama a la Capa de Datos
+        // Método para pedir la lista de tickets vendidos
         public DataTable MostrarTickets()
         {
             return objDatos.Mostrar();
         }
 
-        // Método para procesar y guardar un ticket
+        // Método para procesar y guardar un nuevo ticket
         public void InsertarTicket(string idViaje, string montoPagado)
         {
-            // 1. Preparar datos
+            // Convertimos los textos recibidos a sus tipos de datos correctos
             int viajeId = Convert.ToInt32(idViaje);
             decimal monto = Convert.ToDecimal(montoPagado);
             DateTime fechaActual = DateTime.Now;
 
-            // 2. Crear el objeto Ticket (Referencia +1)
+            // Instanciamos el objeto Ticket usando la fecha y hora actuales
             Ticket nuevoTicket = new Ticket(0, viajeId, fechaActual, monto);
 
-            // 3. Usar el objeto para enviar a la base de datos
+            // Mandamos los datos a la Capa de Datos
             objDatos.Insertar(nuevoTicket.ID_Viaje, nuevoTicket.HoraEmision, nuevoTicket.MontoPagado);
         }
     }

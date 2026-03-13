@@ -6,57 +6,58 @@ namespace CapaDatos
 {
     public class D_Ruta
     {
-        // Conexión a la base de datos
+        // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para leer las rutas
+        // Método para extraer y listar todas las rutas registradas en la tabla
         public DataTable Mostrar()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
             SqlDataReader leer;
 
-            // Abrir conexión y configurar comando
+            // Abrimos el canal y preparamos la orden de consulta
             comando.Connection = conexion.AbrirConexion();
             comando.CommandText = "SELECT * FROM Ruta";
             comando.CommandType = CommandType.Text;
 
-            // Leer datos y cargar la tabla
+            // Ejecutamos la consulta y volcamos los resultados en la tabla
             leer = comando.ExecuteReader();
             tabla.Load(leer);
 
-            // Cerrar conexión
+            // Cerramos la comunicación de forma segura
             conexion.CerrarConexion();
             return tabla;
         }
 
-        // Método para guardar una ruta nueva
+        // Método para registrar una nueva ruta en la base de datos
         public void Insertar(string nombreRuta, string tarifaPasaje)
         {
             SqlCommand comando = new SqlCommand();
 
-            // Abrir conexión y preparar el INSERT
+            // Abrimos el canal y preparamos la orden de inserción
             comando.Connection = conexion.AbrirConexion();
             comando.CommandText = "INSERT INTO Ruta (NombreRuta, TarifaPasaje) VALUES (@NombreRuta, @TarifaPasaje)";
             comando.CommandType = CommandType.Text;
 
-            // Asignar los valores a los parámetros
+            // Empaquetamos los datos de forma segura para evitar hackeos (Inyección SQL)
             comando.Parameters.AddWithValue("@NombreRuta", nombreRuta);
             comando.Parameters.AddWithValue("@TarifaPasaje", tarifaPasaje);
 
-            // Ejecutar en SQL y limpiar
+            // Ejecutamos la acción en el servidor y limpiamos el empaque
             comando.ExecuteNonQuery();
             comando.Parameters.Clear();
 
-            // Cerrar conexión
             conexion.CerrarConexion();
         }
 
-        // Método para eliminar una ruta físicamente de la tabla
+        // Método para borrar permanentemente el registro de una ruta
         public void Eliminar(int id)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
+
+            // Preparamos la orden SQL de eliminación
             comando.CommandText = "DELETE FROM Ruta WHERE ID_Ruta = @id";
             comando.CommandType = CommandType.Text;
 
@@ -67,17 +68,17 @@ namespace CapaDatos
             conexion.CerrarConexion();
         }
 
-        // Método para actualizar una ruta existente
+        // Método para modificar los datos de una ruta ya existente usando su ID
         public void Editar(int id, string nombreRuta, decimal tarifaPasaje)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
 
-            // El query de actualización
+            // Preparamos la orden SQL de actualización
             comando.CommandText = "UPDATE Ruta SET NombreRuta = @nombre, TarifaPasaje = @tarifa WHERE ID_Ruta = @id";
             comando.CommandType = CommandType.Text;
 
-            // Pasamos los parámetros de forma segura
+            // Asignamos los nuevos valores de forma segura
             comando.Parameters.AddWithValue("@nombre", nombreRuta);
             comando.Parameters.AddWithValue("@tarifa", tarifaPasaje);
             comando.Parameters.AddWithValue("@id", id);

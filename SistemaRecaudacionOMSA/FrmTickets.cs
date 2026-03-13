@@ -8,44 +8,43 @@ namespace SistemaRecaudacionOMSA
 {
     public partial class FrmTickets : Form
     {
-        // 1. Instancias de Negocio
+        // Instancias de las clases de negocio necesarias
         private N_Ticket objTicket = new N_Ticket();
         private N_Viaje objViaje = new N_Viaje();
         private int idTicket = 0;
 
+        // Constructor que inicializa los componentes de la ventana
         public FrmTickets()
         {
             InitializeComponent();
         }
 
+        // Evento que carga los datos iniciales al abrir la ventana
         private void FrmTickets_Load(object sender, EventArgs e)
         {
-            // Cargamos los datos iniciales
             CargarViajes();
             MostrarTicketsTabla();
             LimpiarCampos();
         }
 
+        // Método para solicitar y listar los tickets vendidos en la tabla
         private void MostrarTicketsTabla()
         {
-            // Llama al método que creamos en la Capa de Negocio
             dgvTickets.DataSource = objTicket.MostrarTickets();
             AplicarEstiloTabla();
         }
 
+        // Método para llenar el selector (ComboBox) con los viajes activos legibles
         private void CargarViajes()
         {
             try
             {
-                // Usamos el nuevo método de la capa de negocio
+                // Vinculación de datos con el selector de viajes
                 cmbViaje.DataSource = objViaje.MostrarViajesCombo();
-
-                // Le decimos que muestre la columna virtual que creamos en SQL
                 cmbViaje.DisplayMember = "DescripcionViaje";
-
-                // El valor oculto sigue siendo el ID del viaje para poder guardarlo
                 cmbViaje.ValueMember = "ID_Viaje";
-                // --- Quitar la selección por defecto del viaje ---
+
+                // Reiniciar selección por defecto
                 cmbViaje.SelectedIndex = -1;
             }
             catch (Exception ex)
@@ -54,18 +53,16 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // --- Lógica de Botones ---
-
+        // Evento para procesar y registrar la emisión de un nuevo ticket
         private void btnVender_Click(object sender, EventArgs e)
         {
-            // 1. Validar que el monto no esté vacío
+            // Validación de entrada de datos y selección
             if (string.IsNullOrWhiteSpace(txtMonto.Text))
             {
                 MessageBox.Show("Por favor, ingrese el monto del ticket.", "Aviso OMSA");
                 return;
             }
 
-            // 2. VALIDACIÓN CRUCIAL: Verificar si hay un viaje seleccionado
             if (cmbViaje.SelectedValue == null)
             {
                 MessageBox.Show("No hay un viaje seleccionado. Asegúrese de que existan viajes registrados.", "Error de Selección");
@@ -74,7 +71,7 @@ namespace SistemaRecaudacionOMSA
 
             try
             {
-                // 3. Ahora que sabemos que no es null, capturamos los datos
+                // Envío de datos a la Capa de Negocio para su inserción
                 string idViaje = cmbViaje.SelectedValue.ToString();
                 string monto = txtMonto.Text;
 
@@ -90,43 +87,36 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Evento para reiniciar manualmente los campos del formulario
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            // 1. Limpiar el ComboBox (quitar selección)
             cmbViaje.SelectedIndex = -1;
-
-            // 2. Limpiar el cuadro de texto del monto
-            // (Asegúrate de ponerle el nombre real de tu TextBox, yo asumí txtMonto)
             txtMonto.Clear();
-
-            // 3. Volver a poner el cursor en el ComboBox para que el usuario empiece de nuevo
             cmbViaje.Focus();
         }
 
+        // Método interno para vaciar cajas de texto y resetear el selector
         private void LimpiarCampos()
         {
-            // Ajustado a los nombres de Tickets
             if (cmbViaje.Items.Count > 0) cmbViaje.SelectedIndex = 0;
             txtMonto.Clear();
             idTicket = 0;
             txtMonto.Focus();
         }
 
-        // --- Estética OMSA ---
-
+        // Método para personalizar la apariencia visual y corporativa de la tabla
         private void AplicarEstiloTabla()
         {
+            // Configuración de estructura y bordes
             dgvTickets.AllowUserToAddRows = false;
             dgvTickets.RowHeadersVisible = false;
             dgvTickets.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTickets.BackgroundColor = Color.White;
             dgvTickets.BorderStyle = BorderStyle.None;
-
-            // Dejamos solo esta línea para que se vean las divisiones horizontales
             dgvTickets.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvTickets.GridColor = Color.Gainsboro;
 
-            // --- ESTILO DEL ENCABEZADO ---
+            // Configuración de colores corporativos para los encabezados
             dgvTickets.EnableHeadersVisualStyles = false;
             dgvTickets.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
             dgvTickets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -135,16 +125,13 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.ColumnHeadersHeight = 40;
             dgvTickets.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
-            // Evitar resaltado azul en el encabezado
-            dgvTickets.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
-
-            // --- ¡ESTO ERA LO QUE FALTABA: ESTILO DE LAS FILAS! ---
+            // Configuración visual de las filas y colores de selección
             dgvTickets.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvTickets.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9"); // Color verde OMSA al seleccionar
+            dgvTickets.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
             dgvTickets.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvTickets.RowTemplate.Height = 35;
 
-            // Nombres de Columnas para Tickets
+            // Renombramiento de las cabeceras para el usuario final
             if (dgvTickets.Columns.Count > 0)
             {
                 if (dgvTickets.Columns.Contains("ID_Ticket")) dgvTickets.Columns["ID_Ticket"].HeaderText = "No. Ticket";
@@ -154,9 +141,10 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Evento para capturar la selección de celdas (sin implementar)
         private void dgvTickets_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            // Espacio para lógica futura de selección de tickets
         }
-    } // Aquí cierra la clase correctamente
-} // Aquí cierra el namespace
+    }
+}

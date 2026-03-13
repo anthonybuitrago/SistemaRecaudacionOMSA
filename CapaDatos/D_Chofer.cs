@@ -6,64 +6,63 @@ namespace CapaDatos
 {
     public class D_Chofer
     {
-        // Conexión a la base de datos
+        // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para listar choferes
+        // Método para extraer y listar todos los choferes registrados en la tabla
         public DataTable Mostrar()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
             SqlDataReader leer;
 
-            // Abrir conexión y preparar comando
+            // Abrimos el canal y preparamos la orden de consulta
             comando.Connection = conexion.AbrirConexion();
             comando.CommandText = "SELECT * FROM Chofer";
             comando.CommandType = CommandType.Text;
 
-            // Ejecutar y cargar datos
+            // Ejecutamos la consulta y volcamos los resultados en la tabla
             leer = comando.ExecuteReader();
             tabla.Load(leer);
 
-            // Cerrar conexión
+            // Cerramos la comunicación de forma segura
             conexion.CerrarConexion();
             return tabla;
         }
 
-        // Método para guardar un chofer
+        // Método para registrar un nuevo chofer en la base de datos
         public void Insertar(string cedula, string nombreCompleto, string numeroLicencia)
         {
             SqlCommand comando = new SqlCommand();
 
-            // Abrir conexión y preparar SQL
+            // Abrimos el canal y preparamos la orden de inserción
             comando.Connection = conexion.AbrirConexion();
             comando.CommandText = "INSERT INTO Chofer (Cedula, NombreCompleto, NumeroLicencia) VALUES (@Cedula, @Nombre, @Licencia)";
             comando.CommandType = CommandType.Text;
 
-            // Cargar los parámetros
+            // Empaquetamos los datos de forma segura para evitar hackeos (Inyección SQL)
             comando.Parameters.AddWithValue("@Cedula", cedula);
             comando.Parameters.AddWithValue("@Nombre", nombreCompleto);
             comando.Parameters.AddWithValue("@Licencia", numeroLicencia);
 
-            // Ejecutar en el servidor
+            // Ejecutamos la acción en el servidor y limpiamos el empaque
             comando.ExecuteNonQuery();
             comando.Parameters.Clear();
 
-            // Cerrar conexión
             conexion.CerrarConexion();
         }
 
-        // Método para actualizar un chofer existente en la base de datos
+        // Método para modificar los datos de un chofer ya existente usando su ID
         public void Editar(int id, string cedula, string nombre, string licencia)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
 
-            // El query de actualización (Asegúrate de que los nombres de las columnas coincidan con tu BD)
+            // Preparamos la orden SQL de actualización
             comando.CommandText = "UPDATE Chofer SET Cedula = @cedula, NombreCompleto = @nombre, NumeroLicencia = @licencia WHERE ID_Chofer = @id";
             comando.CommandType = CommandType.Text;
 
-            // Pasamos los parámetros de forma segura
+            // Asignamos los nuevos valores de forma segura
             comando.Parameters.AddWithValue("@cedula", cedula);
             comando.Parameters.AddWithValue("@nombre", nombre);
             comando.Parameters.AddWithValue("@licencia", licencia);
@@ -74,13 +73,13 @@ namespace CapaDatos
             conexion.CerrarConexion();
         }
 
-        // Método para eliminar un chofer de la base de datos
+        // Método para borrar permanentemente el registro de un chofer
         public void Eliminar(int id)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
 
-            // Verifica que "ID_Chofer" sea el nombre correcto en tu SQL Server
+            // Preparamos la orden SQL de eliminación
             comando.CommandText = "DELETE FROM Chofer WHERE ID_Chofer = @id";
             comando.CommandType = CommandType.Text;
 

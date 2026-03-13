@@ -6,20 +6,20 @@ namespace CapaDatos
 {
     public class D_Reporte
     {
-        // Conexión a la base de datos
+        // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para obtener el dinero ganado por ruta
+        // Método para generar el reporte de ingresos cruzando múltiples tablas
         public DataTable RecaudacionPorRuta()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
             SqlDataReader leer;
 
-            // Abrir la conexión
+            // Abrimos el canal de comunicación con la base de datos
             comando.Connection = conexion.AbrirConexion();
 
-            // Consulta SQL para sumar tickets y contar pasajeros
+            // Consulta relacional: Cruza las ventas con rutas, choferes y vehículos para agrupar totales y mostrar nombres reales en lugar de números (IDs)
             comando.CommandText = @"
     SELECT 
         R.NombreRuta AS [Ruta],
@@ -36,11 +36,11 @@ namespace CapaDatos
 
             comando.CommandType = CommandType.Text;
 
-            // Ejecutar la consulta y cargar los datos
+            // Ejecutamos la consulta en el servidor y volcamos los resultados estructurados en la tabla
             leer = comando.ExecuteReader();
             tabla.Load(leer);
 
-            // Cerrar conexión y devolver resultados
+            // Cerramos la comunicación de forma segura
             conexion.CerrarConexion();
             return tabla;
         }

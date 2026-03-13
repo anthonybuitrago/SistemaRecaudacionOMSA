@@ -7,18 +7,19 @@ namespace CapaDatos
 {
     public class ConexionBD
     {
-        // Obtiene la cadena de conexión desde el archivo App.config
+        // Ruta de acceso extraída de las configuraciones del sistema (App.config)
         private readonly string cadenaConexion = ConfigurationManager.ConnectionStrings["ConexionOMSA"].ConnectionString;
 
+        // Objeto que maneja la comunicación con SQL Server
         private SqlConnection conexion;
 
-        // Constructor para inicializar el objeto de conexión
+        // Constructor que prepara la conexión con el servidor
         public ConexionBD()
         {
             conexion = new SqlConnection(cadenaConexion);
         }
 
-        // Abre la conexión si se encuentra cerrada
+        // Método para abrir el canal de comunicación con la base de datos
         public SqlConnection AbrirConexion()
         {
             if (conexion.State == ConnectionState.Closed)
@@ -28,7 +29,7 @@ namespace CapaDatos
             return conexion;
         }
 
-        // Cierra la conexión si se encuentra abierta
+        // Método para cerrar de forma segura la conexión con la base de datos
         public SqlConnection CerrarConexion()
         {
             if (conexion.State == ConnectionState.Open)

@@ -4,15 +4,14 @@ using CapaDatos;
 
 namespace CapaNegocios
 {
-
     public class Ruta
     {
-        // Propiedades del objeto
+        // Propiedades de la ruta
         public int ID_Ruta { get; set; }
         public string NombreRuta { get; set; }
         public decimal TarifaPasaje { get; set; }
 
-        // Constructor para crear la ruta con datos
+        // Constructor
         public Ruta(int id, string nombre, decimal tarifa)
         {
             ID_Ruta = id;
@@ -23,10 +22,10 @@ namespace CapaNegocios
 
     public class N_Ruta
     {
-        // Conexión con la Capa de Datos (Rutas)
+        // Conexión con la Capa de Datos
         private D_Ruta objDatos = new D_Ruta();
 
-        // Método para solicitar la lista de rutas
+        // Método para pedir la lista de rutas
         public DataTable MostrarRutas()
         {
             return objDatos.Mostrar();
@@ -35,23 +34,23 @@ namespace CapaNegocios
         // Método para enviar una nueva ruta a guardar
         public void InsertarRuta(string nombreRuta, string tarifaPasaje)
         {
-            // Convertimos la tarifa a decimal antes de crear el objeto
+            // Convertimos el texto a decimal para la tarifa
             decimal tarifa = Convert.ToDecimal(tarifaPasaje);
 
-            // Creamos el objeto Ruta
+            // Instanciamos el objeto Ruta
             Ruta nuevaRuta = new Ruta(0, nombreRuta, tarifa);
 
-            // Mandamos los datos del objeto a la capa de datos
+            // Mandamos los datos del objeto a la Capa de Datos
             objDatos.Insertar(nuevaRuta.NombreRuta, nuevaRuta.TarifaPasaje.ToString());
         }
 
-        // Puente para eliminar la ruta llamando a la Capa de Datos
+        // Puente para enviar la orden de eliminar a la Capa de Datos
         public void EliminarRuta(int id)
         {
             objDatos.Eliminar(id);
         }
 
-        // Método para enviar los datos editados a la Capa de Datos
+        // Puente para enviar los datos editados a la Capa de Datos
         public void EditarRuta(int id, string nombreRuta, string tarifaPasaje)
         {
             decimal tarifa = Convert.ToDecimal(tarifaPasaje);

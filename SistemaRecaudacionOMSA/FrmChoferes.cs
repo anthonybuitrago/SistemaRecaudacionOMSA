@@ -224,5 +224,15 @@ namespace SistemaRecaudacionOMSA
                 }
             }
         }
+
+        private void dgvChoferes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtLicencia_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

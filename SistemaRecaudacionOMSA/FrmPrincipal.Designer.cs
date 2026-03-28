@@ -202,6 +202,7 @@
             this.pnlContenedor.Name = "pnlContenedor";
             this.pnlContenedor.Size = new System.Drawing.Size(934, 611);
             this.pnlContenedor.TabIndex = 9;
+            this.pnlContenedor.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlContenedor_Paint);
             // 
             // FrmPrincipal
             // 

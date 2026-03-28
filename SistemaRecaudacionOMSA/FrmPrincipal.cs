@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaPresentacion;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -25,9 +26,22 @@ namespace SistemaRecaudacionOMSA
         // Evento que abre automáticamente la sección de Choferes al iniciar el sistema
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
+            // Oculta el principal mientras el login no sea exitoso
+            this.Hide();
+
+            FrmLogin login = new FrmLogin();
+
+            if (login.ShowDialog() != DialogResult.OK)
+            {
+                // Si cierra sin loguearse apaga toda la aplicación
+                Application.Exit();
+                return;
+            }
+
+            // Login exitoso, muestra el principal y abre choferes
+            this.Show();
             btnAbrirChoferes.PerformClick();
         }
-
         // Evento para abrir la sección de Choferes y resaltar su botón
         private void btnAbrirChoferes_Click(object sender, EventArgs e)
         {
@@ -128,5 +142,13 @@ namespace SistemaRecaudacionOMSA
             this.pnlContenedor.Tag = formularioHijo;
             formularioHijo.Show();
         }
+
+        private void pnlContenedor_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        // Condición 16 y 17: el principal abre primero y lanza el login
+       
     }
+
 }

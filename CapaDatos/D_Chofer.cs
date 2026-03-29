@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks; // Obligatorio para el asincronismo
 
 namespace CapaDatos
 {
-    public class D_Chofer
+    // TODO: Requisito - Implementación de Interfaz ICrud
+    public class D_Chofer : ICrud
     {
         // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para extraer y listar todos los choferes registrados en la tabla
-        public DataTable Mostrar()
+        // TODO: Requisito - Llamada Asíncrona (Async/Await)
+        // Método para extraer y listar todos los choferes registrados de forma asíncrona
+        public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
@@ -21,8 +24,8 @@ namespace CapaDatos
             comando.CommandText = "SELECT * FROM Chofer";
             comando.CommandType = CommandType.Text;
 
-            // Ejecutamos la consulta y volcamos los resultados en la tabla
-            leer = comando.ExecuteReader();
+            // Ejecutamos la consulta asíncrona y volcamos los resultados en la tabla
+            leer = await comando.ExecuteReaderAsync();
             tabla.Load(leer);
 
             // Cerramos la comunicación de forma segura
@@ -30,9 +33,15 @@ namespace CapaDatos
             return tabla;
         }
 
+        // TODO: Requisito - Llamada Asíncrona usando el arreglo de parámetros de la Interfaz
         // Método para registrar un nuevo chofer en la base de datos
-        public void Insertar(string cedula, string nombreCompleto, string numeroLicencia)
+        public async Task InsertarAsync(params object[] parametros)
         {
+            // Extraemos los datos del empaque basándonos en tu código original
+            string cedula = parametros[0].ToString();
+            string nombreCompleto = parametros[1].ToString();
+            string numeroLicencia = parametros[2].ToString();
+
             SqlCommand comando = new SqlCommand();
 
             // Abrimos el canal y preparamos la orden de inserción
@@ -45,16 +54,22 @@ namespace CapaDatos
             comando.Parameters.AddWithValue("@Nombre", nombreCompleto);
             comando.Parameters.AddWithValue("@Licencia", numeroLicencia);
 
-            // Ejecutamos la acción en el servidor y limpiamos el empaque
-            comando.ExecuteNonQuery();
+            // Ejecutamos la acción en el servidor de forma asíncrona y limpiamos el empaque
+            await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
 
             conexion.CerrarConexion();
         }
 
-        // Método para modificar los datos de un chofer ya existente usando su ID
-        public void Editar(int id, string cedula, string nombre, string licencia)
+        // Método para modificar los datos de un chofer ya existente de forma asíncrona
+        public async Task EditarAsync(params object[] parametros)
         {
+            // Extraemos los datos del empaque basándonos en tu código original
+            int id = Convert.ToInt32(parametros[0]);
+            string cedula = parametros[1].ToString();
+            string nombre = parametros[2].ToString();
+            string licencia = parametros[3].ToString();
+
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
 
@@ -68,13 +83,14 @@ namespace CapaDatos
             comando.Parameters.AddWithValue("@licencia", licencia);
             comando.Parameters.AddWithValue("@id", id);
 
-            comando.ExecuteNonQuery();
+            // Ejecutamos asíncronamente
+            await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
 
-        // Método para borrar permanentemente el registro de un chofer
-        public void Eliminar(int id)
+        // Método para borrar permanentemente el registro de un chofer de forma asíncrona
+        public async Task EliminarAsync(int id)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
@@ -85,7 +101,8 @@ namespace CapaDatos
 
             comando.Parameters.AddWithValue("@id", id);
 
-            comando.ExecuteNonQuery();
+            // Ejecutamos asíncronamente
+            await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }

@@ -1,6 +1,7 @@
 ﻿using CapaNegocios;
 using System;
 using System.Drawing;
+using System.Threading.Tasks; // Obligatorio para el asincronismo
 using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
@@ -16,19 +17,19 @@ namespace SistemaRecaudacionOMSA
             InitializeComponent();
         }
 
-        // Evento que carga los datos del reporte al abrir la ventana
-        private void FrmReportes_Load(object sender, EventArgs e)
+        // Evento ASÍNCRONO que carga los datos del reporte al abrir la ventana
+        private async void FrmReportes_Load(object sender, EventArgs e)
         {
-            CargarReporteRecaudacion();
+            await CargarReporteRecaudacionAsync();
         }
 
-        // Método para solicitar y mostrar los totales de recaudación
-        private void CargarReporteRecaudacion()
+        // Método ASÍNCRONO para solicitar y mostrar los totales de recaudación
+        private async Task CargarReporteRecaudacionAsync()
         {
             try
             {
-                // Volcamos los resultados calculados por el servidor en la tabla visual
-                dgvReporte.DataSource = objReporte.MostrarRecaudacionRuta();
+                // Volcamos los resultados calculados de forma asíncrona por el servidor en la tabla visual
+                dgvReporte.DataSource = await objReporte.MostrarRecaudacionRutaAsync();
 
                 // Aplicamos el diseño corporativo a la tabla
                 AplicarEstiloTabla();

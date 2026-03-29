@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks; // Obligatorio para Task
 using System.Windows.Forms;
 using CapaNegocios;
 
@@ -22,34 +23,34 @@ namespace SistemaRecaudacionOMSA
             InitializeComponent();
         }
 
-        // Evento inicial que configura el estado por defecto y carga los datos
-        private void FrmViajes_Load(object sender, EventArgs e)
+        // Evento ASÍNCRONO inicial
+        private async void FrmViajes_Load(object sender, EventArgs e)
         {
             txtEstado.Text = "Activo";
             txtEstado.ReadOnly = true;
 
-            // Carga de información en los selectores y la tabla
-            CargarListasDesplegables();
-            MostrarViajesTabla();
+            // Carga de información asíncrona
+            await CargarListasDesplegablesAsync();
+            await MostrarViajesTablaAsync();
+
+            BloquearCampos(); // Los campos arrancan desactivados
         }
 
-        // Método para llenar los ComboBox con datos reales de la base de datos
-        private void CargarListasDesplegables()
+        // Método ASÍNCRONO para llenar los ComboBox
+        private async Task CargarListasDesplegablesAsync()
         {
             try
             {
-                // Configuración del selector de Choferes
-                cmbChofer.DataSource = objChofer.MostrarChoferes();
+                // Cargamos cada lista esperando la respuesta de la Capa de Negocio
+                cmbChofer.DataSource = await objChofer.MostrarChoferesAsync();
                 cmbChofer.DisplayMember = "NombreCompleto";
                 cmbChofer.ValueMember = "ID_Chofer";
 
-                // Configuración del selector de Rutas
-                cmbRuta.DataSource = objRuta.MostrarRutas();
+                cmbRuta.DataSource = await objRuta.MostrarRutasAsync();
                 cmbRuta.DisplayMember = "NombreRuta";
                 cmbRuta.ValueMember = "ID_Ruta";
 
-                // Configuración del selector de Vehículos
-                cmbVehiculo.DataSource = objVehiculo.MostrarVehiculos();
+                cmbVehiculo.DataSource = await objVehiculo.MostrarVehiculosAsync();
                 cmbVehiculo.DisplayMember = "Ficha";
                 cmbVehiculo.ValueMember = "ID_Vehiculo";
 
@@ -60,91 +61,74 @@ namespace SistemaRecaudacionOMSA
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar las listas: " + ex.Message, "Error");
+                MessageBox.Show("Error al cargar las listas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Evento para registrar un nuevo viaje cruzando los IDs seleccionados
-        private void btnGuardar_Click(object sender, EventArgs e)
+        // Evento ASÍNCRONO para registrar un nuevo viaje
+        private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            // Validación de selección completa en los ComboBox
             if (cmbChofer.SelectedValue == null || cmbRuta.SelectedValue == null || cmbVehiculo.SelectedValue == null)
             {
-                MessageBox.Show("Por favor, asegúrese de seleccionar Chofer, Ruta y Vehículo.", "Aviso OMSA");
+                MessageBox.Show("Por favor, asegúrese de seleccionar Chofer, Ruta y Vehículo.", "Aviso OMSA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                // Captura de datos para enviar a la Capa de Negocio
-                string idChofer = cmbChofer.SelectedValue.ToString();
-                string idRuta = cmbRuta.SelectedValue.ToString();
-                string idVehiculo = cmbVehiculo.SelectedValue.ToString();
+                string idChof = cmbChofer.SelectedValue.ToString();
+                string idRut = cmbRuta.SelectedValue.ToString();
+                string idVeh = cmbVehiculo.SelectedValue.ToString();
                 DateTime fechaViaje = dtpFecha.Value;
                 string estado = txtEstado.Text;
 
-                objViaje.InsertarViaje(idChofer, idRuta, idVehiculo, fechaViaje, estado);
+                await objViaje.InsertarViajeAsync(idChof, idRut, idVeh, fechaViaje, estado);
 
-                MessageBox.Show("¡Viaje registrado exitosamente!", "Éxito");
-                MostrarViajesTabla();
+                MessageBox.Show("¡Viaje registrado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await MostrarViajesTablaAsync();
+                btnLimpiar.PerformClick();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar: " + ex.Message, "Error");
+                MessageBox.Show("Error al guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Método para refrescar los datos de la tabla visualmente
-        private void MostrarViajesTabla()
+        // Método ASÍNCRONO para refrescar los datos de la tabla
+        private async Task MostrarViajesTablaAsync()
         {
             try
             {
-                dgvViajes.DataSource = objViaje.MostrarViajes();
+                dgvViajes.DataSource = await objViaje.MostrarViajesAsync();
                 AplicarEstiloTabla();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar la tabla: " + ex.Message);
+                MessageBox.Show("Error al cargar la tabla: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Método para personalizar el diseño corporativo de la tabla
-        private void AplicarEstiloTabla()
+        // --- LÓGICA DE INTERFAZ: BLOQUEO Y HABILITACIÓN ---
+
+        private void BloquearCampos()
         {
-            // Configuración de visualización y fondo
-            dgvViajes.AllowUserToAddRows = false;
-            dgvViajes.RowHeadersVisible = false;
-            dgvViajes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvViajes.BackgroundColor = Color.White;
-            dgvViajes.BorderStyle = BorderStyle.None;
-
-            // Estilo de bordes y líneas divisorias
-            dgvViajes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvViajes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvViajes.GridColor = Color.Gainsboro;
-
-            // Diseño de los encabezados (Gris OMSA)
-            dgvViajes.EnableHeadersVisualStyles = false;
-            dgvViajes.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
-            dgvViajes.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
-            dgvViajes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvViajes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            dgvViajes.ColumnHeadersHeight = 40;
-
-            // Diseño de filas y colores de selección
-            dgvViajes.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvViajes.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
-            dgvViajes.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dgvViajes.RowTemplate.Height = 35;
-
-            // Ajuste manual de ancho de columnas
-            if (dgvViajes.Columns.Count > 0)
-            {
-                dgvViajes.Columns["ID"].Width = 40;
-            }
+            cmbChofer.Enabled = false;
+            cmbRuta.Enabled = false;
+            cmbVehiculo.Enabled = false;
+            dtpFecha.Enabled = false;
+            btnGuardar.Enabled = false;
+            btnActualizar.Enabled = false;
+            btnCancelar.Enabled = false;
         }
 
-        // Evento para resetear el formulario al estado original
+        private void HabilitarCampos()
+        {
+            cmbChofer.Enabled = true;
+            cmbRuta.Enabled = true;
+            cmbVehiculo.Enabled = true;
+            dtpFecha.Enabled = true;
+        }
+
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             cmbChofer.SelectedIndex = -1;
@@ -152,15 +136,18 @@ namespace SistemaRecaudacionOMSA
             cmbVehiculo.SelectedIndex = -1;
             dtpFecha.Value = DateTime.Now;
             txtEstado.Text = "Activo";
+            idViaje = 0;
+
+            HabilitarCampos();
             btnGuardar.Enabled = true;
+            btnActualizar.Enabled = false;
+            btnCancelar.Enabled = false;
         }
 
-        // Evento para capturar los datos de la fila seleccionada y editarlos
         private void dgvViajes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                // Mapeo de datos desde la tabla hacia los controles visuales
                 idViaje = Convert.ToInt32(dgvViajes.Rows[e.RowIndex].Cells["ID"].Value);
                 cmbChofer.Text = dgvViajes.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
                 cmbRuta.Text = dgvViajes.Rows[e.RowIndex].Cells["Ruta"].Value.ToString();
@@ -168,20 +155,17 @@ namespace SistemaRecaudacionOMSA
                 dtpFecha.Value = Convert.ToDateTime(dgvViajes.Rows[e.RowIndex].Cells["Fecha y Hora"].Value);
                 txtEstado.Text = dgvViajes.Rows[e.RowIndex].Cells["Estado"].Value.ToString();
 
-                // Cambio a modo edición
+                HabilitarCampos();
                 btnGuardar.Enabled = false;
                 btnActualizar.Enabled = true;
+                btnCancelar.Enabled = true;
             }
         }
 
-        // Evento para realizar el borrado lógico del viaje (Cancelación)
-        private void btnCancelar_Click(object sender, EventArgs e)
+        // Evento ASÍNCRONO para realizar el borrado lógico (Cancelación)
+        private async void btnCancelar_Click(object sender, EventArgs e)
         {
-            if (idViaje == 0)
-            {
-                MessageBox.Show("Por favor, seleccione un viaje de la tabla primero.", "Aviso OMSA");
-                return;
-            }
+            if (idViaje == 0) return;
 
             DialogResult respuesta = MessageBox.Show("¿Está seguro de que desea cancelar este viaje?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -189,51 +173,67 @@ namespace SistemaRecaudacionOMSA
             {
                 try
                 {
-                    objViaje.CancelarViaje(idViaje.ToString());
-                    MessageBox.Show("El viaje ha sido cancelado exitosamente.");
-                    MostrarViajesTabla();
-                    idViaje = 0;
+                    await objViaje.CancelarViajeAsync(idViaje.ToString());
+                    MessageBox.Show("El viaje ha sido cancelado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await MostrarViajesTablaAsync();
+                    btnLimpiar.PerformClick();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al cancelar: " + ex.Message);
+                    MessageBox.Show("Error al cancelar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        // Evento para actualizar los datos de un viaje existente
-        private void btnActualizar_Click(object sender, EventArgs e)
+        // Evento ASÍNCRONO para actualizar
+        private async void btnActualizar_Click(object sender, EventArgs e)
         {
-            if (idViaje == 0)
-            {
-                MessageBox.Show("Por favor, seleccione un viaje para actualizar.", "Aviso OMSA");
-                return;
-            }
-
-            if (cmbChofer.SelectedValue == null || cmbRuta.SelectedValue == null || cmbVehiculo.SelectedValue == null)
-            {
-                MessageBox.Show("Asegúrese de que todos los campos estén seleccionados.", "Aviso OMSA");
-                return;
-            }
+            if (idViaje == 0) return;
 
             try
             {
-                // Envío de la actualización a la Capa de Negocio
                 string idChof = cmbChofer.SelectedValue.ToString();
                 string idRut = cmbRuta.SelectedValue.ToString();
                 string idVeh = cmbVehiculo.SelectedValue.ToString();
                 DateTime fecha = dtpFecha.Value;
                 string estado = txtEstado.Text;
 
-                objViaje.EditarViaje(idViaje.ToString(), idChof, idRut, idVeh, fecha, estado);
-                MessageBox.Show("¡Viaje actualizado exitosamente!");
+                await objViaje.EditarViajeAsync(idViaje.ToString(), idChof, idRut, idVeh, fecha, estado);
+                MessageBox.Show("¡Viaje actualizado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                MostrarViajesTabla();
-                btnLimpiar_Click(null, null);
+                await MostrarViajesTablaAsync();
+                btnLimpiar.PerformClick();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al actualizar: " + ex.Message);
+                MessageBox.Show("Error al actualizar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AplicarEstiloTabla()
+        {
+            dgvViajes.AllowUserToAddRows = false;
+            dgvViajes.RowHeadersVisible = false;
+            dgvViajes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvViajes.BackgroundColor = Color.White;
+            dgvViajes.BorderStyle = BorderStyle.None;
+            dgvViajes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvViajes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvViajes.GridColor = Color.Gainsboro;
+            dgvViajes.EnableHeadersVisualStyles = false;
+            dgvViajes.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
+            dgvViajes.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
+            dgvViajes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvViajes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvViajes.ColumnHeadersHeight = 40;
+            dgvViajes.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvViajes.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
+            dgvViajes.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgvViajes.RowTemplate.Height = 35;
+
+            if (dgvViajes.Columns.Count > 0)
+            {
+                dgvViajes.Columns["ID"].Width = 40;
             }
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.Threading.Tasks; // Obligatorio para Task
 using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
@@ -19,28 +20,35 @@ namespace SistemaRecaudacionOMSA
             InitializeComponent();
         }
 
-        // Evento que carga los datos iniciales al abrir la ventana
-        private void FrmTickets_Load(object sender, EventArgs e)
+        // Evento ASÍNCRONO que carga los datos iniciales al abrir la ventana
+        private async void FrmTickets_Load(object sender, EventArgs e)
         {
-            CargarViajes();
-            MostrarTicketsTabla();
-            LimpiarCampos();
+            await CargarViajesAsync();
+            await MostrarTicketsTablaAsync();
+            BloquearCampos(); // Los campos arrancan desactivados
         }
 
-        // Método para solicitar y listar los tickets vendidos en la tabla
-        private void MostrarTicketsTabla()
-        {
-            dgvTickets.DataSource = objTicket.MostrarTickets();
-            AplicarEstiloTabla();
-        }
-
-        // Método para llenar el selector (ComboBox) con los viajes activos legibles
-        private void CargarViajes()
+        // Método ASÍNCRONO para solicitar y listar los tickets vendidos
+        private async Task MostrarTicketsTablaAsync()
         {
             try
             {
-                // Vinculación de datos con el selector de viajes
-                cmbViaje.DataSource = objViaje.MostrarViajesCombo();
+                dgvTickets.DataSource = await objTicket.MostrarTicketsAsync();
+                AplicarEstiloTabla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar tickets: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Método ASÍNCRONO para llenar el selector (ComboBox) con los viajes activos
+        private async Task CargarViajesAsync()
+        {
+            try
+            {
+                // Vinculación asíncrona de datos con el selector de viajes
+                cmbViaje.DataSource = await objViaje.MostrarViajesComboAsync();
                 cmbViaje.DisplayMember = "DescripcionViaje";
                 cmbViaje.ValueMember = "ID_Viaje";
 
@@ -49,65 +57,74 @@ namespace SistemaRecaudacionOMSA
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar viajes: " + ex.Message);
+                MessageBox.Show("Error al cargar viajes: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Evento para procesar y registrar la emisión de un nuevo ticket
-        private void btnVender_Click(object sender, EventArgs e)
+        // Evento ASÍNCRONO para procesar y registrar la emisión de un nuevo ticket
+        private async void btnVender_Click(object sender, EventArgs e)
         {
             // Validación de entrada de datos y selección
             if (string.IsNullOrWhiteSpace(txtMonto.Text))
             {
-                MessageBox.Show("Por favor, ingrese el monto del ticket.", "Aviso OMSA");
+                MessageBox.Show("Por favor, ingrese el monto del ticket.", "Aviso OMSA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (cmbViaje.SelectedValue == null)
             {
-                MessageBox.Show("No hay un viaje seleccionado. Asegúrese de que existan viajes registrados.", "Error de Selección");
+                MessageBox.Show("No hay un viaje seleccionado.", "Error de Selección", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             try
             {
-                // Envío de datos a la Capa de Negocio para su inserción
+                // Envío asíncrono de datos a la Capa de Negocio
                 string idViaje = cmbViaje.SelectedValue.ToString();
                 string monto = txtMonto.Text;
 
-                objTicket.InsertarTicket(idViaje, monto);
-                MessageBox.Show("¡Ticket emitido correctamente!", "Éxito");
+                await objTicket.InsertarTicketAsync(idViaje, monto);
+                MessageBox.Show("¡Ticket emitido correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                MostrarTicketsTabla();
-                LimpiarCampos();
+                await MostrarTicketsTablaAsync();
+                btnLimpiar.PerformClick(); // Limpia y vuelve a bloquear
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al vender: " + ex.Message);
+                MessageBox.Show("Error al vender: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Evento para reiniciar manualmente los campos del formulario
+        // --- LÓGICA DE INTERFAZ: BLOQUEO Y HABILITACIÓN ---
+
+        private void BloquearCampos()
+        {
+            cmbViaje.Enabled = false;
+            txtMonto.Enabled = false;
+            btnVender.Enabled = false;
+        }
+
+        private void HabilitarCampos()
+        {
+            cmbViaje.Enabled = true;
+            txtMonto.Enabled = true;
+            btnVender.Enabled = true;
+        }
+
+        // Evento para reiniciar manualmente el formulario (Botón "Nuevo Ticket")
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             cmbViaje.SelectedIndex = -1;
             txtMonto.Clear();
+            idTicket = 0;
+
+            HabilitarCampos();
             cmbViaje.Focus();
         }
 
-        // Método interno para vaciar cajas de texto y resetear el selector
-        private void LimpiarCampos()
-        {
-            if (cmbViaje.Items.Count > 0) cmbViaje.SelectedIndex = 0;
-            txtMonto.Clear();
-            idTicket = 0;
-            txtMonto.Focus();
-        }
-
-        // Método para personalizar la apariencia visual y corporativa de la tabla
+        // Método para personalizar la apariencia visual de la tabla
         private void AplicarEstiloTabla()
         {
-            // Configuración de estructura y bordes
             dgvTickets.AllowUserToAddRows = false;
             dgvTickets.RowHeadersVisible = false;
             dgvTickets.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -116,7 +133,6 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvTickets.GridColor = Color.Gainsboro;
 
-            // Configuración de colores corporativos para los encabezados
             dgvTickets.EnableHeadersVisualStyles = false;
             dgvTickets.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
             dgvTickets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -125,13 +141,11 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.ColumnHeadersHeight = 40;
             dgvTickets.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
-            // Configuración visual de las filas y colores de selección
             dgvTickets.DefaultCellStyle.Font = new Font("Segoe UI", 10);
             dgvTickets.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
             dgvTickets.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvTickets.RowTemplate.Height = 35;
 
-            // Renombramiento de las cabeceras para el usuario final
             if (dgvTickets.Columns.Count > 0)
             {
                 if (dgvTickets.Columns.Contains("ID_Ticket")) dgvTickets.Columns["ID_Ticket"].HeaderText = "No. Ticket";
@@ -141,10 +155,9 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Evento para capturar la selección de celdas (sin implementar)
         private void dgvTickets_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Espacio para lógica futura de selección de tickets
+            // En tickets usualmente no permitimos edición por seguridad de caja.
         }
     }
 }

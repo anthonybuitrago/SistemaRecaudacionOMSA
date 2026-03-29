@@ -36,11 +36,11 @@
             this.btnAbrirTickets = new System.Windows.Forms.Button();
             this.btnAbrirReportes = new System.Windows.Forms.Button();
             this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.btnAcercaDe = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlContenedor = new System.Windows.Forms.Panel();
-            this.btnAcercaDe = new System.Windows.Forms.Button();
             this.pnlSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -165,6 +165,23 @@
             this.pnlSidebar.Size = new System.Drawing.Size(250, 711);
             this.pnlSidebar.TabIndex = 7;
             // 
+            // btnAcercaDe
+            // 
+            this.btnAcercaDe.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnAcercaDe.FlatAppearance.BorderSize = 0;
+            this.btnAcercaDe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAcercaDe.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnAcercaDe.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnAcercaDe.Location = new System.Drawing.Point(0, 460);
+            this.btnAcercaDe.Name = "btnAcercaDe";
+            this.btnAcercaDe.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnAcercaDe.Size = new System.Drawing.Size(250, 60);
+            this.btnAcercaDe.TabIndex = 8;
+            this.btnAcercaDe.Text = "Acerca del Sistema";
+            this.btnAcercaDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAcercaDe.UseVisualStyleBackColor = true;
+            this.btnAcercaDe.Click += new System.EventHandler(this.btnAcercaDe_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -199,28 +216,13 @@
             // 
             // pnlContenedor
             // 
+            this.pnlContenedor.BackgroundImage = global::SistemaRecaudacionOMSA.Properties.Resources.omsa_logo;
+            this.pnlContenedor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pnlContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContenedor.Location = new System.Drawing.Point(250, 100);
             this.pnlContenedor.Name = "pnlContenedor";
             this.pnlContenedor.Size = new System.Drawing.Size(934, 611);
             this.pnlContenedor.TabIndex = 9;
-            // 
-            // btnAcercaDe
-            // 
-            this.btnAcercaDe.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAcercaDe.FlatAppearance.BorderSize = 0;
-            this.btnAcercaDe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAcercaDe.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAcercaDe.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAcercaDe.Location = new System.Drawing.Point(0, 460);
-            this.btnAcercaDe.Name = "btnAcercaDe";
-            this.btnAcercaDe.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAcercaDe.Size = new System.Drawing.Size(250, 60);
-            this.btnAcercaDe.TabIndex = 8;
-            this.btnAcercaDe.Text = "Acerca del Sistema";
-            this.btnAcercaDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAcercaDe.UseVisualStyleBackColor = true;
-            this.btnAcercaDe.Click += new System.EventHandler(this.btnAcercaDe_Click);
             // 
             // FrmPrincipal
             // 

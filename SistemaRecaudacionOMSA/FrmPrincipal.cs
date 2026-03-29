@@ -22,12 +22,21 @@ namespace SistemaRecaudacionOMSA
             AplicarEfectoHover(btnAbrirTickets);
             AplicarEfectoHover(btnAbrirReportes);
             AplicarEfectoHover(btnAcercaDe);
+
+            this.pnlContenedor.Controls.Clear();
+
+            // 2. Cargamos el logo (Asegúrate de que el nombre sea el correcto)
+            this.pnlContenedor.BackgroundImage = Properties.Resources.omsa_logo1;
+
+            // 3. CRÍTICO: Cambiamos a 'Zoom' en lugar de 'Center'. 
+            // Esto obliga a la imagen a encogerse para caber completa en el panel, sin recortarse.
+            this.pnlContenedor.BackgroundImageLayout = ImageLayout.Zoom;
         }
 
         // Evento que abre automáticamente la sección de Choferes al iniciar el sistema
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
-            btnAbrirChoferes.PerformClick();
+
         }
 
         // Evento para abrir la sección de Choferes y resaltar su botón

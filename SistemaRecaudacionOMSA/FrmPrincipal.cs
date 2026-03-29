@@ -8,6 +8,7 @@ namespace SistemaRecaudacionOMSA
     {
         // Variable para recordar qué botón del menú está seleccionado actualmente
         private Button botonActivo = null;
+        private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
 
         // Constructor que inicializa la ventana principal y prepara las animaciones del menú
         public FrmPrincipal()
@@ -20,6 +21,7 @@ namespace SistemaRecaudacionOMSA
             AplicarEfectoHover(btnAbrirViajes);
             AplicarEfectoHover(btnAbrirTickets);
             AplicarEfectoHover(btnAbrirReportes);
+            AplicarEfectoHover(btnAcercaDe);
         }
 
         // Evento que abre automáticamente la sección de Choferes al iniciar el sistema
@@ -78,6 +80,8 @@ namespace SistemaRecaudacionOMSA
                 RestaurarColoresBotones();
                 botonActivo = btn;
                 botonActivo.BackColor = ColorTranslator.FromHtml("#009A44");
+                btnAcercaDe.BackColor = colorInactivo;
+                btnAcercaDe.BackColor = colorInactivo;
             }
         }
 
@@ -127,6 +131,32 @@ namespace SistemaRecaudacionOMSA
             this.pnlContenedor.Controls.Add(formularioHijo);
             this.pnlContenedor.Tag = formularioHijo;
             formularioHijo.Show();
+        }
+
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Limpiamos el panel contenedor si ya tiene otro formulario alojado
+            if (this.pnlContenedor.Controls.Count > 0)
+                this.pnlContenedor.Controls.RemoveAt(0);
+
+            // Instanciamos el FrmAcercaDe
+            FrmAcercaDe frm = new FrmAcercaDe();
+
+            // CONFIGURACIÓN DE ARQUITECTURA: ALOJAR EN PANEL CONTENEDOR
+            frm.TopLevel = false;  // Decimos que no es una ventana independiente
+            frm.Dock = DockStyle.Fill; // Llenamos todo el espacio del contenedor
+            this.pnlContenedor.Controls.Add(frm); // Agregamos el formulario al panel
+            this.pnlContenedor.Tag = frm; // Lo marcamos como el control activo
+
+            frm.Show(); // Finalmente lo mostramos
+        }
+
+        // 1. Este es para el botón que tienes en la barra lateral (la gris oscuro)
+        private void btnAcercaDe_Click(object sender, EventArgs e)
+        {
+            // Usamos tus propios métodos para que todo sea simétrico
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmAcercaDe());
         }
     }
 }

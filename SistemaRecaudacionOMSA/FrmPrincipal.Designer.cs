@@ -40,6 +40,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlContenedor = new System.Windows.Forms.Panel();
+            this.btnAcercaDe = new System.Windows.Forms.Button();
             this.pnlSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -150,6 +151,7 @@
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.pnlSidebar.Controls.Add(this.btnAcercaDe);
             this.pnlSidebar.Controls.Add(this.btnAbrirReportes);
             this.pnlSidebar.Controls.Add(this.btnAbrirViajes);
             this.pnlSidebar.Controls.Add(this.btnAbrirTickets);
@@ -203,6 +205,23 @@
             this.pnlContenedor.Size = new System.Drawing.Size(934, 611);
             this.pnlContenedor.TabIndex = 9;
             // 
+            // btnAcercaDe
+            // 
+            this.btnAcercaDe.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnAcercaDe.FlatAppearance.BorderSize = 0;
+            this.btnAcercaDe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAcercaDe.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnAcercaDe.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnAcercaDe.Location = new System.Drawing.Point(0, 460);
+            this.btnAcercaDe.Name = "btnAcercaDe";
+            this.btnAcercaDe.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnAcercaDe.Size = new System.Drawing.Size(250, 60);
+            this.btnAcercaDe.TabIndex = 8;
+            this.btnAcercaDe.Text = "Acerca del Sistema";
+            this.btnAcercaDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAcercaDe.UseVisualStyleBackColor = true;
+            this.btnAcercaDe.Click += new System.EventHandler(this.btnAcercaDe_Click);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,5 +255,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlContenedor;
+        private System.Windows.Forms.Button btnAcercaDe;
     }
 }

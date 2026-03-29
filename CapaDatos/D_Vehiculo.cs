@@ -1,32 +1,42 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks; // Obligatorio para el asincronismo
 
 namespace CapaDatos
 {
-    public class D_Vehiculo
+    // TODO: Requisito - Implementación de Interfaz ICrud
+    public class D_Vehiculo : ICrud
     {
         // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para extraer y listar todos los vehículos registrados en la tabla
-        public DataTable Mostrar()
+        // TODO: Requisito - Llamada Asíncrona (Async/Await)
+        // Método para extraer y listar todos los vehículos registrados de forma asíncrona
+        public async Task<DataTable> MostrarAsync()
         {
             // Abrimos el canal y preparamos la orden de consulta
             SqlCommand comando = new SqlCommand("SELECT * FROM Vehiculo", conexion.AbrirConexion());
             DataTable tabla = new DataTable();
 
-            // Ejecutamos la consulta y volcamos los resultados en la tabla
-            tabla.Load(comando.ExecuteReader());
+            // Ejecutamos la consulta de forma asíncrona y volcamos los resultados en la tabla
+            SqlDataReader leer = await comando.ExecuteReaderAsync();
+            tabla.Load(leer);
 
             // Cerramos la comunicación de forma segura
             conexion.CerrarConexion();
             return tabla;
         }
 
+        // TODO: Requisito - Llamada Asíncrona usando el arreglo de parámetros de la Interfaz
         // Método para registrar un nuevo vehículo en la base de datos
-        public void Insertar(string ficha, string placa, int capacidad)
+        public async Task InsertarAsync(params object[] parametros)
         {
+            // Extraemos los datos del empaque: Ficha, Placa y Capacidad
+            string ficha = parametros[0].ToString();
+            string placa = parametros[1].ToString();
+            int capacidad = Convert.ToInt32(parametros[2]);
+
             // Abrimos el canal y preparamos la orden de inserción
             SqlCommand comando = new SqlCommand("INSERT INTO Vehiculo (Ficha, Placa, Capacidad) VALUES (@ficha, @placa, @capacidad)", conexion.AbrirConexion());
 
@@ -35,14 +45,21 @@ namespace CapaDatos
             comando.Parameters.AddWithValue("@placa", placa);
             comando.Parameters.AddWithValue("@capacidad", capacidad);
 
-            // Ejecutamos la acción en el servidor y cerramos la comunicación
-            comando.ExecuteNonQuery();
+            // Ejecutamos la acción asíncrona en el servidor y cerramos la comunicación
+            await comando.ExecuteNonQueryAsync();
+            comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
 
         // Método para modificar los datos de un vehículo ya existente usando su ID
-        public void Editar(int id, string ficha, string placa, int capacidad)
+        public async Task EditarAsync(params object[] parametros)
         {
+            // Extraemos los datos del empaque: ID, Ficha, Placa y Capacidad
+            int id = Convert.ToInt32(parametros[0]);
+            string ficha = parametros[1].ToString();
+            string placa = parametros[2].ToString();
+            int capacidad = Convert.ToInt32(parametros[3]);
+
             // Abrimos el canal y preparamos la orden SQL de actualización
             SqlCommand comando = new SqlCommand("UPDATE Vehiculo SET Ficha=@ficha, Placa=@placa, Capacidad=@capacidad WHERE ID_Vehiculo=@id", conexion.AbrirConexion());
 
@@ -52,13 +69,14 @@ namespace CapaDatos
             comando.Parameters.AddWithValue("@placa", placa);
             comando.Parameters.AddWithValue("@capacidad", capacidad);
 
-            // Ejecutamos la acción en el servidor y cerramos la comunicación
-            comando.ExecuteNonQuery();
+            // Ejecutamos la acción asíncrona en el servidor y cerramos la comunicación
+            await comando.ExecuteNonQueryAsync();
+            comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
 
         // Método para borrar permanentemente el registro de un vehículo
-        public void Eliminar(int id)
+        public async Task EliminarAsync(int id)
         {
             // Abrimos el canal y preparamos la orden SQL de eliminación
             SqlCommand comando = new SqlCommand("DELETE FROM Vehiculo WHERE ID_Vehiculo=@id", conexion.AbrirConexion());
@@ -66,8 +84,9 @@ namespace CapaDatos
             // Empaquetamos el ID de forma segura
             comando.Parameters.AddWithValue("@id", id);
 
-            // Ejecutamos la acción en el servidor y cerramos la comunicación
-            comando.ExecuteNonQuery();
+            // Ejecutamos la acción asíncrona en el servidor y cerramos la comunicación
+            await comando.ExecuteNonQueryAsync();
+            comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
     }

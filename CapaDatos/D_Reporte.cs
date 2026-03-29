@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks; // Obligatorio para el asincronismo
 
 namespace CapaDatos
 {
@@ -9,8 +10,9 @@ namespace CapaDatos
         // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // Método para generar el reporte de ingresos cruzando múltiples tablas
-        public DataTable RecaudacionPorRuta()
+        // TODO: Requisito - Llamada Asíncrona (Async/Await) en consulta relacional compleja
+        // Método para generar el reporte de ingresos cruzando múltiples tablas de forma asíncrona
+        public async Task<DataTable> RecaudacionPorRutaAsync()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
@@ -19,7 +21,7 @@ namespace CapaDatos
             // Abrimos el canal de comunicación con la base de datos
             comando.Connection = conexion.AbrirConexion();
 
-            // Consulta relacional: Cruza las ventas con rutas, choferes y vehículos para agrupar totales y mostrar nombres reales en lugar de números (IDs)
+            // Consulta relacional: Cruza las ventas con rutas, choferes y vehículos para agrupar totales y mostrar nombres reales
             comando.CommandText = @"
     SELECT 
         R.NombreRuta AS [Ruta],
@@ -36,8 +38,8 @@ namespace CapaDatos
 
             comando.CommandType = CommandType.Text;
 
-            // Ejecutamos la consulta en el servidor y volcamos los resultados estructurados en la tabla
-            leer = comando.ExecuteReader();
+            // Ejecutamos la consulta asíncrona en el servidor y volcamos los resultados estructurados en la tabla
+            leer = await comando.ExecuteReaderAsync();
             tabla.Load(leer);
 
             // Cerramos la comunicación de forma segura

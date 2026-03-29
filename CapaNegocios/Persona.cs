@@ -2,10 +2,10 @@
 
 namespace CapaNegocios
 {
-    // Clase base abstracta para los empleados del sistema
+    // TODO: Requisito - Abstracción (Uso de clase base abstracta)
     public abstract class Persona
     {
-        // Propiedades básicas de identificación
+        // TODO: Requisito - Encapsulamiento (Uso de propiedades con get y set)
         public string Cedula { get; set; }
         public string NombreCompleto { get; set; }
 
@@ -16,13 +16,13 @@ namespace CapaNegocios
             NombreCompleto = nombreCompleto;
         }
 
-        // Método base que permite ser modificado por las clases hijas
+        // TODO: Requisito - Polimorfismo (Método virtual base listo para ser modificado)
         public virtual string ObtenerDetalles()
         {
             return $"Cédula: {Cedula} - Nombre: {NombreCompleto}";
         }
 
-        // Método obligatorio para que las clases hijas definan su rol
+        // TODO: Requisito - Polimorfismo (Método abstracto obligatorio para las clases hijas)
         public abstract string ObtenerTipoEmpleado();
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks; // Obligatorio para el asincronismo
 using CapaDatos;
 
 namespace CapaNegocios
 {
+    // TODO: Requisito - Creación de Entidad/Clase
     public class Ruta
     {
         // Propiedades de la ruta
@@ -25,14 +27,17 @@ namespace CapaNegocios
         // Conexión con la Capa de Datos
         private D_Ruta objDatos = new D_Ruta();
 
+        // --- MÉTODOS BÁSICOS ASÍNCRONOS (Solo para que compile el proyecto) ---
+        // Nota: Faltan las validaciones y try/catch que hará tu compañero.
+
         // Método para pedir la lista de rutas
-        public DataTable MostrarRutas()
+        public async Task<DataTable> MostrarRutasAsync()
         {
-            return objDatos.Mostrar();
+            return await objDatos.MostrarAsync();
         }
 
         // Método para enviar una nueva ruta a guardar
-        public void InsertarRuta(string nombreRuta, string tarifaPasaje)
+        public async Task InsertarRutaAsync(string nombreRuta, string tarifaPasaje)
         {
             // Convertimos el texto a decimal para la tarifa
             decimal tarifa = Convert.ToDecimal(tarifaPasaje);
@@ -40,21 +45,21 @@ namespace CapaNegocios
             // Instanciamos el objeto Ruta
             Ruta nuevaRuta = new Ruta(0, nombreRuta, tarifa);
 
-            // Mandamos los datos del objeto a la Capa de Datos
-            objDatos.Insertar(nuevaRuta.NombreRuta, nuevaRuta.TarifaPasaje.ToString());
+            // Mandamos los datos del objeto a la Capa de Datos asíncronamente
+            await objDatos.InsertarAsync(nuevaRuta.NombreRuta, nuevaRuta.TarifaPasaje.ToString());
         }
 
         // Puente para enviar la orden de eliminar a la Capa de Datos
-        public void EliminarRuta(int id)
+        public async Task EliminarRutaAsync(int id)
         {
-            objDatos.Eliminar(id);
+            await objDatos.EliminarAsync(id);
         }
 
         // Puente para enviar los datos editados a la Capa de Datos
-        public void EditarRuta(int id, string nombreRuta, string tarifaPasaje)
+        public async Task EditarRutaAsync(int id, string nombreRuta, string tarifaPasaje)
         {
             decimal tarifa = Convert.ToDecimal(tarifaPasaje);
-            objDatos.Editar(id, nombreRuta, tarifa);
+            await objDatos.EditarAsync(id, nombreRuta, tarifa);
         }
     }
 }

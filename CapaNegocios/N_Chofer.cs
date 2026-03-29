@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks; // Obligatorio para el asincronismo
 using CapaDatos;
 
 namespace CapaNegocios
 {
-    // Clase que hereda de Persona
+    // TODO: Requisito - Herencia (Chofer hereda de la clase abstracta Persona)
     public class Chofer : Persona
     {
         // Propiedades específicas del chofer
@@ -19,6 +20,7 @@ namespace CapaNegocios
             NumeroLicencia = numeroLicencia;
         }
 
+        // TODO: Requisito - Polimorfismo (Sobreescritura de método virtual)
         // Sobreescritura para mostrar detalles personalizados
         public override string ObtenerDetalles()
         {
@@ -37,32 +39,31 @@ namespace CapaNegocios
         // Conexión con la Capa de Datos
         private D_Chofer objDatos = new D_Chofer();
 
-        // Método para pedir la lista de choferes
-        public DataTable MostrarChoferes()
+        // --- MÉTODOS BÁSICOS ASÍNCRONOS (Solo para que compile el proyecto) ---
+        // Nota: Faltan las validaciones y try/catch que hará Luis Eduardo.
+
+        public async Task<DataTable> MostrarChoferesAsync()
         {
-            return objDatos.Mostrar();
+            return await objDatos.MostrarAsync();
         }
 
-        // Método para enviar un nuevo chofer a guardar
-        public void InsertarChofer(string cedula, string nombreCompleto, string numeroLicencia)
+        public async Task InsertarChoferAsync(string cedula, string nombreCompleto, string numeroLicencia)
         {
             // Instanciamos el objeto Chofer
             Chofer nuevoChofer = new Chofer(0, cedula, nombreCompleto, numeroLicencia);
 
-            // Mandamos los datos a la Capa de Datos
-            objDatos.Insertar(nuevoChofer.Cedula, nuevoChofer.NombreCompleto, nuevoChofer.NumeroLicencia);
+            // Mandamos los datos a la Capa de Datos de forma asíncrona
+            await objDatos.InsertarAsync(nuevoChofer.Cedula, nuevoChofer.NombreCompleto, nuevoChofer.NumeroLicencia);
         }
 
-        // Puente para enviar los datos editados a la Capa de Datos
-        public void EditarChofer(int id, string cedula, string nombre, string licencia)
+        public async Task EditarChoferAsync(int id, string cedula, string nombre, string licencia)
         {
-            objDatos.Editar(id, cedula, nombre, licencia);
+            await objDatos.EditarAsync(id, cedula, nombre, licencia);
         }
 
-        // Puente para enviar la orden de eliminar a la Capa de Datos
-        public void EliminarChofer(int id)
+        public async Task EliminarChoferAsync(int id)
         {
-            objDatos.Eliminar(id);
+            await objDatos.EliminarAsync(id);
         }
     }
 }

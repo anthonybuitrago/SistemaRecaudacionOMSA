@@ -13,11 +13,31 @@ namespace SistemaRecaudacionOMSA
         private N_Ticket objTicket = new N_Ticket();
         private N_Viaje objViaje = new N_Viaje();
         private int idTicket = 0;
+        private string modoFormulario;
 
         // Constructor que inicializa los componentes de la ventana
-        public FrmTickets()
+        public FrmTickets(string modo)
         {
             InitializeComponent();
+            AplicarEstiloTabla();
+            this.modoFormulario = modo;
+            ConfigurarVistaSegunModo();
+        }
+
+        private void ConfigurarVistaSegunModo()
+        {
+            if (modoFormulario == "Consulta")
+            {
+                // Si tuvieras consulta de tickets, aquí ocultas los TextBox
+                // (Asumiendo que el panel se llame pnlContenedorControles)
+                panel1.Visible = false;
+                dgvTickets.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                dgvTickets.Visible = false;
+                BloquearCampos();
+            }
         }
 
         // Evento ASÍNCRONO que carga los datos iniciales al abrir la ventana
@@ -25,7 +45,7 @@ namespace SistemaRecaudacionOMSA
         {
             await CargarViajesAsync();
             await MostrarTicketsTablaAsync();
-            BloquearCampos(); // Los campos arrancan desactivados
+            
         }
 
         // Método ASÍNCRONO para solicitar y listar los tickets vendidos

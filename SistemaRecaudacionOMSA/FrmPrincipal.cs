@@ -15,21 +15,17 @@ namespace SistemaRecaudacionOMSA
         {
             InitializeComponent();
 
-            AplicarEfectoHover(btnAbrirChoferes);
-            AplicarEfectoHover(btnAbrirRutas);
-            AplicarEfectoHover(btnAbrirVehiculos);
-            AplicarEfectoHover(btnAbrirViajes);
-            AplicarEfectoHover(btnAbrirTickets);
-            AplicarEfectoHover(btnAbrirReportes);
-            AplicarEfectoHover(btnAcercaDe);
+            // 1. Aplicamos el efecto Hover a TODOS los botones automáticamente
+            foreach (Control btn in pnlSubMenuEntrada.Controls) if (btn is Button) AplicarEfectoHover((Button)btn);
+            foreach (Control btn in pnlSubMenuConsulta.Controls) if (btn is Button) AplicarEfectoHover((Button)btn);
+            foreach (Control btn in pnlSubMenuSistema.Controls) if (btn is Button) AplicarEfectoHover((Button)btn);
+
+            PersonalizarDiseno();
 
             this.pnlContenedor.Controls.Clear();
 
-            // 2. Cargamos el logo (Asegúrate de que el nombre sea el correcto)
+            // 2. Cargamos el logo
             this.pnlContenedor.BackgroundImage = Properties.Resources.omsa_logo1;
-
-            // 3. CRÍTICO: Cambiamos a 'Zoom' en lugar de 'Center'. 
-            // Esto obliga a la imagen a encogerse para caber completa en el panel, sin recortarse.
             this.pnlContenedor.BackgroundImageLayout = ImageLayout.Zoom;
         }
 
@@ -37,41 +33,6 @@ namespace SistemaRecaudacionOMSA
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
 
-        }
-
-        // Evento para abrir la sección de Choferes y resaltar su botón
-        private void btnAbrirChoferes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmChoferes());
-        }
-
-        // Evento para abrir la sección de Rutas y resaltar su botón
-        private void btnAbrirRutas_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmRutas());
-        }
-
-        // Evento para abrir la sección de Vehículos y resaltar su botón
-        private void btnAbrirVehiculos_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmVehiculos());
-        }
-
-        // Evento para abrir la sección de Viajes y resaltar su botón
-        private void btnAbrirViajes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmViajes());
-        }
-
-        // Evento para abrir la sección de Tickets y resaltar su botón
-        private void btnAbrirTickets_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmTickets());
         }
 
         // Evento para abrir la sección de Reportes y resaltar su botón
@@ -99,12 +60,53 @@ namespace SistemaRecaudacionOMSA
         {
             Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
 
-            btnAbrirChoferes.BackColor = colorInactivo;
-            btnAbrirRutas.BackColor = colorInactivo;
-            btnAbrirVehiculos.BackColor = colorInactivo;
-            btnAbrirTickets.BackColor = colorInactivo;
-            btnAbrirViajes.BackColor = colorInactivo;
-            btnAbrirReportes.BackColor = colorInactivo;
+            // Limpiamos la gaveta de ENTRADA
+            foreach (Control boton in pnlSubMenuEntrada.Controls)
+            {
+                if (boton is Button) boton.BackColor = colorInactivo;
+            }
+
+            // Limpiamos la gaveta de CONSULTA
+            foreach (Control boton in pnlSubMenuConsulta.Controls)
+            {
+                if (boton is Button) boton.BackColor = colorInactivo;
+            }
+
+            // Limpiamos la gaveta de SISTEMA
+            foreach (Control boton in pnlSubMenuSistema.Controls)
+            {
+                if (boton is Button) boton.BackColor = colorInactivo;
+            }
+        }
+
+        // 1. Oculta todos los submenús al iniciar el programa
+        private void PersonalizarDiseno()
+        {
+            pnlSubMenuEntrada.Visible = false;
+            pnlSubMenuConsulta.Visible = false;
+            pnlSubMenuSistema.Visible = false;
+        }
+
+        // 2. Oculta los submenús si ya están abiertos (para que solo haya uno abierto a la vez)
+        private void OcultarSubMenu()
+        {
+            if (pnlSubMenuEntrada.Visible == true) pnlSubMenuEntrada.Visible = false;
+            if (pnlSubMenuConsulta.Visible == true) pnlSubMenuConsulta.Visible = false;
+            if (pnlSubMenuSistema.Visible == true) pnlSubMenuSistema.Visible = false;
+        }
+
+        // 3. Abre el submenú que clickeamos (y cierra los demás)
+        private void MostrarSubMenu(Panel subMenu)
+        {
+            if (subMenu.Visible == false)
+            {
+                OcultarSubMenu();
+                subMenu.Visible = true;
+            }
+            else
+            {
+                subMenu.Visible = false; // Si ya estaba abierto, lo cierra
+            }
         }
 
         // Método para cambiar el tono del botón al pasar el ratón por encima (Efecto Hover)
@@ -166,6 +168,88 @@ namespace SistemaRecaudacionOMSA
             // Usamos tus propios métodos para que todo sea simétrico
             ActivarBoton((Button)sender);
             AbrirFormularioEnPanel(new FrmAcercaDe());
+        }
+
+        private void btnMenuEntrada_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(pnlSubMenuEntrada);
+        }
+
+        private void btnMenuConsulta_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(pnlSubMenuConsulta);
+        }
+
+        private void btnMenuSistema_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(pnlSubMenuSistema);
+        }
+
+        private void btnEntradaChoferes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmChoferes("Entrada"));
+        }
+
+        private void btnEntradaRutas_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmRutas("Entrada"));
+        }
+
+        private void btnEntradaVehiculos_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmVehiculos("Entrada"));
+        }
+
+        private void btnEntradaTickets_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmTickets("Entrada"));
+        }
+
+        private void btnConsultaChoferes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmChoferes("Consulta"));
+        }
+
+        private void btnConsultaRutas_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmRutas("Consulta"));
+        }
+
+        private void btnConsultaVehiculos_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmVehiculos("Consulta"));
+        }
+
+        private void btnConsultaViajes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmViajes("Consulta"));
+        }
+
+        // ⚠️ ATENCIÓN AQUÍ: Reportes y AcercaDe NO necesitan modo, porque solo tienen una función
+        private void btnConsultaReportes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmReportes());
+        }
+
+        private void btnAcercaDe_Click_1(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmAcercaDe());
+        }
+
+        private void btnEntradaViajes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmViajes("Entrada"));
         }
     }
 }

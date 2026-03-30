@@ -13,11 +13,29 @@ namespace SistemaRecaudacionOMSA
 
         // Variable para almacenar temporalmente el ID de la ruta seleccionada
         private int idRuta = 0;
+        private string modoFormulario;
 
         // Constructor que inicializa los componentes de la ventana
-        public FrmRutas()
+        public FrmRutas(string modo)
         {
             InitializeComponent();
+            AplicarEstiloTabla();
+            this.modoFormulario = modo;
+            ConfigurarVistaSegunModo();
+        }
+
+        private void ConfigurarVistaSegunModo()
+        {
+            if (modoFormulario == "Consulta")
+            {
+                panel1.Visible = false;
+                dgvRutas.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                dgvRutas.Visible = false;
+                BloquearCampos();
+            }
         }
 
         // Evento ASÍNCRONO que carga los datos y prepara la interfaz al abrir la ventana
@@ -139,6 +157,11 @@ namespace SistemaRecaudacionOMSA
             btnGuardar.Enabled = true;
             btnEditar.Enabled = false;
             btnEliminar.Enabled = false;
+
+            if (modoFormulario.Equals("Consulta", StringComparison.OrdinalIgnoreCase))
+            {
+                panel1.Visible = false; // Se esconde al terminar
+            }
         }
 
         // Evento para seleccionar un registro y habilitar edición
@@ -149,6 +172,8 @@ namespace SistemaRecaudacionOMSA
                 idRuta = Convert.ToInt32(dgvRutas.CurrentRow.Cells["ID_Ruta"].Value);
                 txtNombreRuta.Text = dgvRutas.CurrentRow.Cells["NombreRuta"].Value.ToString();
                 txtTarifa.Text = dgvRutas.CurrentRow.Cells["TarifaPasaje"].Value.ToString();
+
+                panel1.Visible = true; // Aparece el cajón para editar
 
                 HabilitarCampos();
                 btnGuardar.Enabled = false;

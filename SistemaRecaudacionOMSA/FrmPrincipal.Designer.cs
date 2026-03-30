@@ -29,141 +29,60 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPrincipal));
-            this.btnAbrirChoferes = new System.Windows.Forms.Button();
-            this.btnAbrirRutas = new System.Windows.Forms.Button();
-            this.btnAbrirVehiculos = new System.Windows.Forms.Button();
-            this.btnAbrirViajes = new System.Windows.Forms.Button();
-            this.btnAbrirTickets = new System.Windows.Forms.Button();
-            this.btnAbrirReportes = new System.Windows.Forms.Button();
             this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.pnlSubMenuSistema = new System.Windows.Forms.Panel();
             this.btnAcercaDe = new System.Windows.Forms.Button();
+            this.btnMenuSistema = new System.Windows.Forms.Button();
+            this.pnlSubMenuConsulta = new System.Windows.Forms.Panel();
+            this.btnConsultaReportes = new System.Windows.Forms.Button();
+            this.btnConsultaViajes = new System.Windows.Forms.Button();
+            this.btnConsultaVehiculos = new System.Windows.Forms.Button();
+            this.btnConsultaRutas = new System.Windows.Forms.Button();
+            this.btnConsultaChoferes = new System.Windows.Forms.Button();
+            this.btnMenuConsulta = new System.Windows.Forms.Button();
+            this.pnlSubMenuEntrada = new System.Windows.Forms.Panel();
+            this.btnEntradaViajes = new System.Windows.Forms.Button();
+            this.btnEntradaTickets = new System.Windows.Forms.Button();
+            this.btnEntradaVehiculos = new System.Windows.Forms.Button();
+            this.btnEntradaRutas = new System.Windows.Forms.Button();
+            this.btnEntradaChoferes = new System.Windows.Forms.Button();
+            this.btnMenuEntrada = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlContenedor = new System.Windows.Forms.Panel();
             this.pnlSidebar.SuspendLayout();
+            this.pnlSubMenuSistema.SuspendLayout();
+            this.pnlSubMenuConsulta.SuspendLayout();
+            this.pnlSubMenuEntrada.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnAbrirChoferes
-            // 
-            this.btnAbrirChoferes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAbrirChoferes.FlatAppearance.BorderSize = 0;
-            this.btnAbrirChoferes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbrirChoferes.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAbrirChoferes.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAbrirChoferes.Location = new System.Drawing.Point(0, 100);
-            this.btnAbrirChoferes.Name = "btnAbrirChoferes";
-            this.btnAbrirChoferes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAbrirChoferes.Size = new System.Drawing.Size(250, 60);
-            this.btnAbrirChoferes.TabIndex = 1;
-            this.btnAbrirChoferes.Text = "Gestión de Choferes";
-            this.btnAbrirChoferes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbrirChoferes.UseVisualStyleBackColor = true;
-            this.btnAbrirChoferes.Click += new System.EventHandler(this.btnAbrirChoferes_Click);
-            // 
-            // btnAbrirRutas
-            // 
-            this.btnAbrirRutas.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAbrirRutas.FlatAppearance.BorderSize = 0;
-            this.btnAbrirRutas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbrirRutas.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAbrirRutas.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAbrirRutas.Location = new System.Drawing.Point(0, 160);
-            this.btnAbrirRutas.Name = "btnAbrirRutas";
-            this.btnAbrirRutas.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAbrirRutas.Size = new System.Drawing.Size(250, 60);
-            this.btnAbrirRutas.TabIndex = 2;
-            this.btnAbrirRutas.Text = "Gestión de Rutas";
-            this.btnAbrirRutas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbrirRutas.UseVisualStyleBackColor = true;
-            this.btnAbrirRutas.Click += new System.EventHandler(this.btnAbrirRutas_Click);
-            // 
-            // btnAbrirVehiculos
-            // 
-            this.btnAbrirVehiculos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAbrirVehiculos.FlatAppearance.BorderSize = 0;
-            this.btnAbrirVehiculos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbrirVehiculos.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAbrirVehiculos.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAbrirVehiculos.Location = new System.Drawing.Point(0, 220);
-            this.btnAbrirVehiculos.Name = "btnAbrirVehiculos";
-            this.btnAbrirVehiculos.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAbrirVehiculos.Size = new System.Drawing.Size(250, 60);
-            this.btnAbrirVehiculos.TabIndex = 3;
-            this.btnAbrirVehiculos.Text = "Gestión de Vehículos";
-            this.btnAbrirVehiculos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbrirVehiculos.UseVisualStyleBackColor = true;
-            this.btnAbrirVehiculos.Click += new System.EventHandler(this.btnAbrirVehiculos_Click);
-            // 
-            // btnAbrirViajes
-            // 
-            this.btnAbrirViajes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAbrirViajes.FlatAppearance.BorderSize = 0;
-            this.btnAbrirViajes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbrirViajes.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAbrirViajes.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAbrirViajes.Location = new System.Drawing.Point(0, 340);
-            this.btnAbrirViajes.Name = "btnAbrirViajes";
-            this.btnAbrirViajes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAbrirViajes.Size = new System.Drawing.Size(250, 60);
-            this.btnAbrirViajes.TabIndex = 4;
-            this.btnAbrirViajes.Text = "Registrar Viajes";
-            this.btnAbrirViajes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbrirViajes.UseVisualStyleBackColor = true;
-            this.btnAbrirViajes.Click += new System.EventHandler(this.btnAbrirViajes_Click);
-            // 
-            // btnAbrirTickets
-            // 
-            this.btnAbrirTickets.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAbrirTickets.FlatAppearance.BorderSize = 0;
-            this.btnAbrirTickets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbrirTickets.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAbrirTickets.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAbrirTickets.Location = new System.Drawing.Point(0, 280);
-            this.btnAbrirTickets.Name = "btnAbrirTickets";
-            this.btnAbrirTickets.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAbrirTickets.Size = new System.Drawing.Size(250, 60);
-            this.btnAbrirTickets.TabIndex = 5;
-            this.btnAbrirTickets.Text = "Vender Tickets";
-            this.btnAbrirTickets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbrirTickets.UseVisualStyleBackColor = true;
-            this.btnAbrirTickets.Click += new System.EventHandler(this.btnAbrirTickets_Click);
-            // 
-            // btnAbrirReportes
-            // 
-            this.btnAbrirReportes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAbrirReportes.FlatAppearance.BorderSize = 0;
-            this.btnAbrirReportes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbrirReportes.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAbrirReportes.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAbrirReportes.Location = new System.Drawing.Point(0, 400);
-            this.btnAbrirReportes.Name = "btnAbrirReportes";
-            this.btnAbrirReportes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAbrirReportes.Size = new System.Drawing.Size(250, 60);
-            this.btnAbrirReportes.TabIndex = 6;
-            this.btnAbrirReportes.Text = "Ver Reportes / Cierre";
-            this.btnAbrirReportes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbrirReportes.UseVisualStyleBackColor = true;
-            this.btnAbrirReportes.Click += new System.EventHandler(this.btnAbrirReportes_Click);
-            // 
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.pnlSidebar.Controls.Add(this.btnAcercaDe);
-            this.pnlSidebar.Controls.Add(this.btnAbrirReportes);
-            this.pnlSidebar.Controls.Add(this.btnAbrirViajes);
-            this.pnlSidebar.Controls.Add(this.btnAbrirTickets);
-            this.pnlSidebar.Controls.Add(this.btnAbrirVehiculos);
-            this.pnlSidebar.Controls.Add(this.btnAbrirRutas);
-            this.pnlSidebar.Controls.Add(this.btnAbrirChoferes);
+            this.pnlSidebar.Controls.Add(this.pnlSubMenuSistema);
+            this.pnlSidebar.Controls.Add(this.btnMenuSistema);
+            this.pnlSidebar.Controls.Add(this.pnlSubMenuConsulta);
+            this.pnlSidebar.Controls.Add(this.btnMenuConsulta);
+            this.pnlSidebar.Controls.Add(this.pnlSubMenuEntrada);
+            this.pnlSidebar.Controls.Add(this.btnMenuEntrada);
             this.pnlSidebar.Controls.Add(this.pictureBox1);
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
             this.pnlSidebar.Name = "pnlSidebar";
-            this.pnlSidebar.Size = new System.Drawing.Size(250, 711);
+            this.pnlSidebar.Size = new System.Drawing.Size(250, 741);
             this.pnlSidebar.TabIndex = 7;
+            // 
+            // pnlSubMenuSistema
+            // 
+            this.pnlSubMenuSistema.Controls.Add(this.btnAcercaDe);
+            this.pnlSubMenuSistema.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlSubMenuSistema.Location = new System.Drawing.Point(0, 882);
+            this.pnlSubMenuSistema.Name = "pnlSubMenuSistema";
+            this.pnlSubMenuSistema.Size = new System.Drawing.Size(250, 59);
+            this.pnlSubMenuSistema.TabIndex = 14;
             // 
             // btnAcercaDe
             // 
@@ -172,15 +91,262 @@
             this.btnAcercaDe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAcercaDe.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.btnAcercaDe.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnAcercaDe.Location = new System.Drawing.Point(0, 460);
+            this.btnAcercaDe.Location = new System.Drawing.Point(0, 0);
             this.btnAcercaDe.Name = "btnAcercaDe";
             this.btnAcercaDe.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.btnAcercaDe.Size = new System.Drawing.Size(250, 60);
-            this.btnAcercaDe.TabIndex = 8;
+            this.btnAcercaDe.Size = new System.Drawing.Size(250, 49);
+            this.btnAcercaDe.TabIndex = 9;
             this.btnAcercaDe.Text = "Acerca del Sistema";
             this.btnAcercaDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAcercaDe.UseVisualStyleBackColor = true;
-            this.btnAcercaDe.Click += new System.EventHandler(this.btnAcercaDe_Click);
+            this.btnAcercaDe.Click += new System.EventHandler(this.btnAcercaDe_Click_1);
+            // 
+            // btnMenuSistema
+            // 
+            this.btnMenuSistema.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnMenuSistema.FlatAppearance.BorderSize = 0;
+            this.btnMenuSistema.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMenuSistema.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnMenuSistema.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnMenuSistema.Location = new System.Drawing.Point(0, 822);
+            this.btnMenuSistema.Name = "btnMenuSistema";
+            this.btnMenuSistema.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnMenuSistema.Size = new System.Drawing.Size(250, 60);
+            this.btnMenuSistema.TabIndex = 11;
+            this.btnMenuSistema.Text = "SISTEMA";
+            this.btnMenuSistema.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMenuSistema.UseVisualStyleBackColor = true;
+            this.btnMenuSistema.Click += new System.EventHandler(this.btnMenuSistema_Click);
+            // 
+            // pnlSubMenuConsulta
+            // 
+            this.pnlSubMenuConsulta.Controls.Add(this.btnConsultaReportes);
+            this.pnlSubMenuConsulta.Controls.Add(this.btnConsultaViajes);
+            this.pnlSubMenuConsulta.Controls.Add(this.btnConsultaVehiculos);
+            this.pnlSubMenuConsulta.Controls.Add(this.btnConsultaRutas);
+            this.pnlSubMenuConsulta.Controls.Add(this.btnConsultaChoferes);
+            this.pnlSubMenuConsulta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlSubMenuConsulta.Location = new System.Drawing.Point(0, 528);
+            this.pnlSubMenuConsulta.Name = "pnlSubMenuConsulta";
+            this.pnlSubMenuConsulta.Size = new System.Drawing.Size(250, 294);
+            this.pnlSubMenuConsulta.TabIndex = 13;
+            // 
+            // btnConsultaReportes
+            // 
+            this.btnConsultaReportes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnConsultaReportes.FlatAppearance.BorderSize = 0;
+            this.btnConsultaReportes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultaReportes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnConsultaReportes.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnConsultaReportes.Location = new System.Drawing.Point(0, 240);
+            this.btnConsultaReportes.Name = "btnConsultaReportes";
+            this.btnConsultaReportes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnConsultaReportes.Size = new System.Drawing.Size(250, 60);
+            this.btnConsultaReportes.TabIndex = 7;
+            this.btnConsultaReportes.Text = "Ver Reportes";
+            this.btnConsultaReportes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConsultaReportes.UseVisualStyleBackColor = true;
+            this.btnConsultaReportes.Click += new System.EventHandler(this.btnConsultaReportes_Click);
+            // 
+            // btnConsultaViajes
+            // 
+            this.btnConsultaViajes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnConsultaViajes.FlatAppearance.BorderSize = 0;
+            this.btnConsultaViajes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultaViajes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnConsultaViajes.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnConsultaViajes.Location = new System.Drawing.Point(0, 180);
+            this.btnConsultaViajes.Name = "btnConsultaViajes";
+            this.btnConsultaViajes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnConsultaViajes.Size = new System.Drawing.Size(250, 60);
+            this.btnConsultaViajes.TabIndex = 11;
+            this.btnConsultaViajes.Text = "Consultar Viajes";
+            this.btnConsultaViajes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConsultaViajes.UseVisualStyleBackColor = true;
+            this.btnConsultaViajes.Click += new System.EventHandler(this.btnConsultaViajes_Click);
+            // 
+            // btnConsultaVehiculos
+            // 
+            this.btnConsultaVehiculos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnConsultaVehiculos.FlatAppearance.BorderSize = 0;
+            this.btnConsultaVehiculos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultaVehiculos.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnConsultaVehiculos.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnConsultaVehiculos.Location = new System.Drawing.Point(0, 120);
+            this.btnConsultaVehiculos.Name = "btnConsultaVehiculos";
+            this.btnConsultaVehiculos.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnConsultaVehiculos.Size = new System.Drawing.Size(250, 60);
+            this.btnConsultaVehiculos.TabIndex = 10;
+            this.btnConsultaVehiculos.Text = "Consultar Vehículos";
+            this.btnConsultaVehiculos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConsultaVehiculos.UseVisualStyleBackColor = true;
+            this.btnConsultaVehiculos.Click += new System.EventHandler(this.btnConsultaVehiculos_Click);
+            // 
+            // btnConsultaRutas
+            // 
+            this.btnConsultaRutas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnConsultaRutas.FlatAppearance.BorderSize = 0;
+            this.btnConsultaRutas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultaRutas.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnConsultaRutas.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnConsultaRutas.Location = new System.Drawing.Point(0, 60);
+            this.btnConsultaRutas.Name = "btnConsultaRutas";
+            this.btnConsultaRutas.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnConsultaRutas.Size = new System.Drawing.Size(250, 60);
+            this.btnConsultaRutas.TabIndex = 9;
+            this.btnConsultaRutas.Text = "Consultar Rutas";
+            this.btnConsultaRutas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConsultaRutas.UseVisualStyleBackColor = true;
+            this.btnConsultaRutas.Click += new System.EventHandler(this.btnConsultaRutas_Click);
+            // 
+            // btnConsultaChoferes
+            // 
+            this.btnConsultaChoferes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnConsultaChoferes.FlatAppearance.BorderSize = 0;
+            this.btnConsultaChoferes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultaChoferes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnConsultaChoferes.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnConsultaChoferes.Location = new System.Drawing.Point(0, 0);
+            this.btnConsultaChoferes.Name = "btnConsultaChoferes";
+            this.btnConsultaChoferes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnConsultaChoferes.Size = new System.Drawing.Size(250, 60);
+            this.btnConsultaChoferes.TabIndex = 8;
+            this.btnConsultaChoferes.Text = "Consultar Choferes";
+            this.btnConsultaChoferes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConsultaChoferes.UseVisualStyleBackColor = true;
+            this.btnConsultaChoferes.Click += new System.EventHandler(this.btnConsultaChoferes_Click);
+            // 
+            // btnMenuConsulta
+            // 
+            this.btnMenuConsulta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnMenuConsulta.FlatAppearance.BorderSize = 0;
+            this.btnMenuConsulta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMenuConsulta.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnMenuConsulta.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnMenuConsulta.Location = new System.Drawing.Point(0, 468);
+            this.btnMenuConsulta.Name = "btnMenuConsulta";
+            this.btnMenuConsulta.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnMenuConsulta.Size = new System.Drawing.Size(250, 60);
+            this.btnMenuConsulta.TabIndex = 10;
+            this.btnMenuConsulta.Text = "CONSULTA";
+            this.btnMenuConsulta.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMenuConsulta.UseVisualStyleBackColor = true;
+            this.btnMenuConsulta.Click += new System.EventHandler(this.btnMenuConsulta_Click);
+            // 
+            // pnlSubMenuEntrada
+            // 
+            this.pnlSubMenuEntrada.Controls.Add(this.btnEntradaViajes);
+            this.pnlSubMenuEntrada.Controls.Add(this.btnEntradaTickets);
+            this.pnlSubMenuEntrada.Controls.Add(this.btnEntradaVehiculos);
+            this.pnlSubMenuEntrada.Controls.Add(this.btnEntradaRutas);
+            this.pnlSubMenuEntrada.Controls.Add(this.btnEntradaChoferes);
+            this.pnlSubMenuEntrada.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlSubMenuEntrada.Location = new System.Drawing.Point(0, 160);
+            this.pnlSubMenuEntrada.Name = "pnlSubMenuEntrada";
+            this.pnlSubMenuEntrada.Size = new System.Drawing.Size(250, 308);
+            this.pnlSubMenuEntrada.TabIndex = 12;
+            // 
+            // btnEntradaViajes
+            // 
+            this.btnEntradaViajes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEntradaViajes.FlatAppearance.BorderSize = 0;
+            this.btnEntradaViajes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEntradaViajes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnEntradaViajes.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnEntradaViajes.Location = new System.Drawing.Point(0, 240);
+            this.btnEntradaViajes.Name = "btnEntradaViajes";
+            this.btnEntradaViajes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnEntradaViajes.Size = new System.Drawing.Size(250, 60);
+            this.btnEntradaViajes.TabIndex = 7;
+            this.btnEntradaViajes.Text = "Registrar Viajes";
+            this.btnEntradaViajes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntradaViajes.UseVisualStyleBackColor = true;
+            this.btnEntradaViajes.Click += new System.EventHandler(this.btnEntradaViajes_Click);
+            // 
+            // btnEntradaTickets
+            // 
+            this.btnEntradaTickets.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEntradaTickets.FlatAppearance.BorderSize = 0;
+            this.btnEntradaTickets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEntradaTickets.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnEntradaTickets.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnEntradaTickets.Location = new System.Drawing.Point(0, 180);
+            this.btnEntradaTickets.Name = "btnEntradaTickets";
+            this.btnEntradaTickets.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnEntradaTickets.Size = new System.Drawing.Size(250, 60);
+            this.btnEntradaTickets.TabIndex = 6;
+            this.btnEntradaTickets.Text = "Vender Tickets";
+            this.btnEntradaTickets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntradaTickets.UseVisualStyleBackColor = true;
+            this.btnEntradaTickets.Click += new System.EventHandler(this.btnEntradaTickets_Click);
+            // 
+            // btnEntradaVehiculos
+            // 
+            this.btnEntradaVehiculos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEntradaVehiculos.FlatAppearance.BorderSize = 0;
+            this.btnEntradaVehiculos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEntradaVehiculos.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnEntradaVehiculos.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnEntradaVehiculos.Location = new System.Drawing.Point(0, 120);
+            this.btnEntradaVehiculos.Name = "btnEntradaVehiculos";
+            this.btnEntradaVehiculos.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnEntradaVehiculos.Size = new System.Drawing.Size(250, 60);
+            this.btnEntradaVehiculos.TabIndex = 4;
+            this.btnEntradaVehiculos.Text = "Registrar Vehículos";
+            this.btnEntradaVehiculos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntradaVehiculos.UseVisualStyleBackColor = true;
+            this.btnEntradaVehiculos.Click += new System.EventHandler(this.btnEntradaVehiculos_Click);
+            // 
+            // btnEntradaRutas
+            // 
+            this.btnEntradaRutas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEntradaRutas.FlatAppearance.BorderSize = 0;
+            this.btnEntradaRutas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEntradaRutas.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnEntradaRutas.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnEntradaRutas.Location = new System.Drawing.Point(0, 60);
+            this.btnEntradaRutas.Name = "btnEntradaRutas";
+            this.btnEntradaRutas.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnEntradaRutas.Size = new System.Drawing.Size(250, 60);
+            this.btnEntradaRutas.TabIndex = 3;
+            this.btnEntradaRutas.Text = "Registrar Rutas";
+            this.btnEntradaRutas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntradaRutas.UseVisualStyleBackColor = true;
+            this.btnEntradaRutas.Click += new System.EventHandler(this.btnEntradaRutas_Click);
+            // 
+            // btnEntradaChoferes
+            // 
+            this.btnEntradaChoferes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEntradaChoferes.FlatAppearance.BorderSize = 0;
+            this.btnEntradaChoferes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEntradaChoferes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnEntradaChoferes.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnEntradaChoferes.Location = new System.Drawing.Point(0, 0);
+            this.btnEntradaChoferes.Name = "btnEntradaChoferes";
+            this.btnEntradaChoferes.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnEntradaChoferes.Size = new System.Drawing.Size(250, 60);
+            this.btnEntradaChoferes.TabIndex = 2;
+            this.btnEntradaChoferes.Text = "Registrar Choferes";
+            this.btnEntradaChoferes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntradaChoferes.UseVisualStyleBackColor = true;
+            this.btnEntradaChoferes.Click += new System.EventHandler(this.btnEntradaChoferes_Click);
+            // 
+            // btnMenuEntrada
+            // 
+            this.btnMenuEntrada.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnMenuEntrada.FlatAppearance.BorderSize = 0;
+            this.btnMenuEntrada.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMenuEntrada.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnMenuEntrada.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnMenuEntrada.Location = new System.Drawing.Point(0, 100);
+            this.btnMenuEntrada.Name = "btnMenuEntrada";
+            this.btnMenuEntrada.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnMenuEntrada.Size = new System.Drawing.Size(250, 60);
+            this.btnMenuEntrada.TabIndex = 9;
+            this.btnMenuEntrada.Text = "ENTRADA";
+            this.btnMenuEntrada.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMenuEntrada.UseVisualStyleBackColor = true;
+            this.btnMenuEntrada.Click += new System.EventHandler(this.btnMenuEntrada_Click);
             // 
             // pictureBox1
             // 
@@ -221,14 +387,14 @@
             this.pnlContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContenedor.Location = new System.Drawing.Point(250, 100);
             this.pnlContenedor.Name = "pnlContenedor";
-            this.pnlContenedor.Size = new System.Drawing.Size(934, 611);
+            this.pnlContenedor.Size = new System.Drawing.Size(934, 641);
             this.pnlContenedor.TabIndex = 9;
             // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 711);
+            this.ClientSize = new System.Drawing.Size(1184, 741);
             this.Controls.Add(this.pnlContenedor);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlSidebar);
@@ -238,6 +404,9 @@
             this.Text = "Sistema de Gestión OMSA - Menú Principal";
             this.Load += new System.EventHandler(this.FrmPrincipal_Load);
             this.pnlSidebar.ResumeLayout(false);
+            this.pnlSubMenuSistema.ResumeLayout(false);
+            this.pnlSubMenuConsulta.ResumeLayout(false);
+            this.pnlSubMenuEntrada.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -246,17 +415,27 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btnAbrirChoferes;
-        private System.Windows.Forms.Button btnAbrirRutas;
-        private System.Windows.Forms.Button btnAbrirVehiculos;
-        private System.Windows.Forms.Button btnAbrirViajes;
-        private System.Windows.Forms.Button btnAbrirTickets;
-        private System.Windows.Forms.Button btnAbrirReportes;
         private System.Windows.Forms.Panel pnlSidebar;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlContenedor;
+        private System.Windows.Forms.Panel pnlSubMenuSistema;
+        private System.Windows.Forms.Panel pnlSubMenuConsulta;
+        private System.Windows.Forms.Panel pnlSubMenuEntrada;
+        private System.Windows.Forms.Button btnMenuSistema;
+        private System.Windows.Forms.Button btnMenuConsulta;
+        private System.Windows.Forms.Button btnMenuEntrada;
+        private System.Windows.Forms.Button btnEntradaViajes;
+        private System.Windows.Forms.Button btnEntradaTickets;
+        private System.Windows.Forms.Button btnEntradaVehiculos;
+        private System.Windows.Forms.Button btnEntradaChoferes;
         private System.Windows.Forms.Button btnAcercaDe;
+        private System.Windows.Forms.Button btnConsultaReportes;
+        private System.Windows.Forms.Button btnConsultaChoferes;
+        private System.Windows.Forms.Button btnConsultaViajes;
+        private System.Windows.Forms.Button btnConsultaVehiculos;
+        private System.Windows.Forms.Button btnConsultaRutas;
+        private System.Windows.Forms.Button btnEntradaRutas;
     }
 }

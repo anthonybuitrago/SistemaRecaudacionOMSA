@@ -16,11 +16,29 @@ namespace SistemaRecaudacionOMSA
 
         // Variable para identificar el viaje seleccionado en la tabla
         private int idViaje = 0;
+        private string modoFormulario;
 
         // Constructor del formulario
-        public FrmViajes()
+        public FrmViajes(string modo)
         {
             InitializeComponent();
+            AplicarEstiloTabla();
+            this.modoFormulario = modo;
+            ConfigurarVistaSegunModo();
+        }
+
+        private void ConfigurarVistaSegunModo()
+        {
+            if (modoFormulario == "Consulta")
+            {
+                panel1.Visible = false;
+                dgvViajes.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                dgvViajes.Visible = false;
+                BloquearCampos();
+            }
         }
 
         // Evento ASÍNCRONO inicial
@@ -142,6 +160,11 @@ namespace SistemaRecaudacionOMSA
             btnGuardar.Enabled = true;
             btnActualizar.Enabled = false;
             btnCancelar.Enabled = false;
+
+            if (modoFormulario.Equals("Consulta", StringComparison.OrdinalIgnoreCase))
+            {
+                panel1.Visible = false; // Se esconde al terminar
+            }
         }
 
         private void dgvViajes_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -154,6 +177,8 @@ namespace SistemaRecaudacionOMSA
                 cmbVehiculo.Text = dgvViajes.Rows[e.RowIndex].Cells["Ficha del Vehículo"].Value.ToString();
                 dtpFecha.Value = Convert.ToDateTime(dgvViajes.Rows[e.RowIndex].Cells["Fecha y Hora"].Value);
                 txtEstado.Text = dgvViajes.Rows[e.RowIndex].Cells["Estado"].Value.ToString();
+
+                panel1.Visible = true; // Aparece el cajón para editar
 
                 HabilitarCampos();
                 btnGuardar.Enabled = false;

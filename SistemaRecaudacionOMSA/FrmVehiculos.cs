@@ -14,18 +14,39 @@ namespace SistemaRecaudacionOMSA
 
         // Variable para almacenar el ID del vehículo seleccionado
         private int idVehiculo = 0;
+        private string modoFormulario;
 
         // Constructor que inicializa los componentes de la ventana
-        public FrmVehiculos()
+        public FrmVehiculos(string modo)
         {
             InitializeComponent();
+            AplicarEstiloTabla();
+            this.modoFormulario = modo;
+            ConfigurarVistaSegunModo();
+        }
+
+        private void ConfigurarVistaSegunModo()
+        {
+            if (modoFormulario == "Consulta")
+            {
+                // Oculta las cajas de texto
+                panel1.Visible = false;
+                // Hace la tabla gigante
+                dgvVehiculos.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                // Oculta la tabla para dejar solo el registro
+                dgvVehiculos.Visible = false;
+                // Bloquea los campos al iniciar
+                BloquearCampos();
+            }
         }
 
         // Evento ASÍNCRONO que carga los datos al abrir la ventana
         private async void FrmVehiculos_Load(object sender, EventArgs e)
         {
             await MostrarVehiculosTablaAsync();
-            BloquearCampos(); // Los campos arrancan desactivados por defecto
         }
 
         // Método ASÍNCRONO para solicitar y mostrar la lista de vehículos registrados
@@ -161,6 +182,11 @@ namespace SistemaRecaudacionOMSA
             btnGuardar.Enabled = true;
             btnActualizar.Enabled = false;
             btnEliminar.Enabled = false;
+
+            if (modoFormulario.Equals("Consulta", StringComparison.OrdinalIgnoreCase))
+            {
+                panel1.Visible = false; // Se esconde al terminar
+            }
         }
 
         // Evento para seleccionar un registro y cargar edición
@@ -172,6 +198,8 @@ namespace SistemaRecaudacionOMSA
                 txtFicha.Text = dgvVehiculos.CurrentRow.Cells["Ficha"].Value.ToString();
                 txtPlaca.Text = dgvVehiculos.CurrentRow.Cells["Placa"].Value.ToString();
                 txtCapacidad.Text = dgvVehiculos.CurrentRow.Cells["Capacidad"].Value.ToString();
+
+                panel1.Visible = true; // Aparece el cajón para editar
 
                 HabilitarCampos();
                 btnGuardar.Enabled = false;

@@ -15,6 +15,12 @@ namespace SistemaRecaudacionOMSA
         public FrmReportes()
         {
             InitializeComponent();
+
+            // Si tienes un método de estilo, déjalo. Por ejemplo:
+            // AplicarEstiloTabla();
+
+            // 🔥 LA LÍNEA MÁGICA PARA QUE SE VEA COMO LOS DEMÁS
+            dgvReporte.Dock = DockStyle.Fill;
         }
 
         // Evento ASÍNCRONO que carga los datos del reporte al abrir la ventana

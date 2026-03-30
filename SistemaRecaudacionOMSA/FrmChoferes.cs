@@ -13,19 +13,41 @@ namespace SistemaRecaudacionOMSA
 
         // Variable para almacenar temporalmente el ID del chofer seleccionado
         private int idChofer = 0;
+        private string modoFormulario;
 
         // Constructor que inicializa los componentes y aplica el diseño visual
-        public FrmChoferes()
+        public FrmChoferes(string modo)
         {
             InitializeComponent();
             AplicarEstiloTabla();
+            this.modoFormulario = modo;
+            ConfigurarVistaSegunModo();
+        }
+
+        private void ConfigurarVistaSegunModo()
+        {
+            if (modoFormulario == "Consulta")
+            {
+                // Oculta las cajas de texto y los botones de guardar
+                panel1.Visible = false;
+
+                // Hace que la tabla ocupe toda la pantalla
+                dgvChoferes.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                // Oculta la tabla para dejar solo la pantalla de registro
+                dgvChoferes.Visible = false;
+
+                // Bloquea los campos al iniciar (Requisito de la rúbrica)
+                BloquearCampos();
+            }
         }
 
         // Evento asíncrono que carga los datos en la tabla al abrir la ventana
         private async void FrmChoferes_Load(object sender, EventArgs e)
         {
             await MostrarChoferesTablaAsync();
-            BloquearCampos(); // Bloqueamos los campos al iniciar por regla de negocio visual
         }
 
         // Método asíncrono para solicitar y mostrar la lista actualizada de choferes
@@ -110,6 +132,12 @@ namespace SistemaRecaudacionOMSA
             btnGuardar.Enabled = true;
             btnActualizar.Enabled = false;
             btnEliminar.Enabled = false; // Solo se puede eliminar si seleccionas de la tabla
+
+            // 🔥 VOLVER A OCULTAR SI ESTAMOS EN MODO CONSULTA
+            if (modoFormulario == "Consulta")
+            {
+                panel1.Visible = false;
+            }
         }
 
         // Evento para seleccionar un registro de la tabla y prepararlo para edición
@@ -122,6 +150,8 @@ namespace SistemaRecaudacionOMSA
                 txtCedula.Text = dgvChoferes.CurrentRow.Cells["Cedula"].Value.ToString();
                 txtNombre.Text = dgvChoferes.CurrentRow.Cells["NombreCompleto"].Value.ToString();
                 txtLicencia.Text = dgvChoferes.CurrentRow.Cells["NumeroLicencia"].Value.ToString();
+
+                panel1.Visible = true;
 
                 HabilitarCampos(); // Permitimos que el usuario escriba para editar
 

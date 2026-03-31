@@ -5,6 +5,7 @@ using System.Configuration;
 
 namespace CapaDatos
 {
+    // Probando la conexión a la base de datos SQL Server utilizando ADO.NET
     public class ConexionBD
     {
         // Ruta de acceso extraída de las configuraciones del sistema (App.config)

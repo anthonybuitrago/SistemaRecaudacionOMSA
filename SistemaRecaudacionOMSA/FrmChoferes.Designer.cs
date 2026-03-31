@@ -100,7 +100,6 @@
             this.txtLicencia.Name = "txtLicencia";
             this.txtLicencia.Size = new System.Drawing.Size(180, 20);
             this.txtLicencia.TabIndex = 5;
-            this.txtLicencia.TextChanged += new System.EventHandler(this.txtLicencia_TextChanged);
             this.txtLicencia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLicencia_KeyPress);
             // 
             // btnGuardar
@@ -134,7 +133,6 @@
             this.dgvChoferes.Size = new System.Drawing.Size(520, 450);
             this.dgvChoferes.TabIndex = 7;
             this.dgvChoferes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChoferes_CellClick);
-            this.dgvChoferes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChoferes_CellContentClick);
             // 
             // panel1
             // 

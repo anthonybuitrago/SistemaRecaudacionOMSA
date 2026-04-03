@@ -6,250 +6,240 @@ namespace SistemaRecaudacionOMSA
 {
     public partial class FrmPrincipal : Form
     {
-        // Variable para recordar qué botón del menú está seleccionado actualmente
+        // Variables para recordar qué botón está seleccionado y qué formulario está abierto
         private Button botonActivo = null;
-        private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
+        private Form formularioActivo = null;
 
-        // Constructor que inicializa la ventana principal y prepara las animaciones del menú
+        // Colores de la OMSA para tu diseño
+        private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D"); // Gris oscuro
+        private Color colorActivo = ColorTranslator.FromHtml("#1C1C1C");   // Verde
+
+        // Variable para saber si el menú está expandido o encogido
+        bool menuExpandido = true;
+
         public FrmPrincipal()
         {
             InitializeComponent();
-
-            // 1. Aplicamos el efecto Hover a TODOS los botones automáticamente
-            foreach (Control btn in pnlSubMenuEntrada.Controls) if (btn is Button) AplicarEfectoHover((Button)btn);
-            foreach (Control btn in pnlSubMenuConsulta.Controls) if (btn is Button) AplicarEfectoHover((Button)btn);
-            foreach (Control btn in pnlSubMenuSistema.Controls) if (btn is Button) AplicarEfectoHover((Button)btn);
-
-            PersonalizarDiseno();
-
-            this.pnlContenedor.Controls.Clear();
-
-            // 2. Cargamos el logo
-            this.pnlContenedor.BackgroundImage = Properties.Resources.omsa_logo1;
-            this.pnlContenedor.BackgroundImageLayout = ImageLayout.Zoom;
         }
 
-        // Evento que abre automáticamente la sección de Choferes al iniciar el sistema
+        // =====================================================================
+        // 1. MOTOR PRINCIPAL: ABRIR FORMULARIOS EN EL PANEL CENTRAL
+        // =====================================================================
+        private void AbrirFormularioEnPanel(Form formularioHijo)
+        {
+            // Si ya hay un formulario abierto, lo cerramos para hacer espacio
+            if (formularioActivo != null)
+            {
+                formularioActivo.Close();
+            }
+
+            // Configuramos el nuevo formulario para que se comporte como un panel
+            formularioActivo = formularioHijo;
+            formularioHijo.TopLevel = false;
+            formularioHijo.FormBorderStyle = FormBorderStyle.None;
+            formularioHijo.Dock = DockStyle.Fill;
+
+            // Lo agregamos al contenedor blanco y lo mostramos
+            this.pnlContenedor.Controls.Add(formularioHijo);
+            this.pnlContenedor.Tag = formularioHijo;
+            formularioHijo.BringToFront();
+            formularioHijo.Show();
+        }
+
+        // =====================================================================
+        // 2. EFECTOS VISUALES: ACTIVAR Y RESTAURAR BOTONES
+        // =====================================================================
+        private void ActivarBoton(Button btn)
+        {
+            if (btn != null)
+            {
+                RestaurarColoresBotones(); // Apaga todos los botones
+                botonActivo = btn;
+                botonActivo.BackColor = colorActivo; // Enciende de verde el que clickeamos
+            }
+        }
+
+        private void RestaurarColoresBotones()
+        {
+            // Busca todos los controles dentro de tu panel lateral principal
+            foreach (Control control in pnlLateral.Controls)
+            {
+                // Si el control es un botón, lo vuelve a pintar de gris oscuro
+                if (control is Button)
+                {
+                    control.BackColor = colorInactivo;
+                }
+            }
+        }
+
+        // =====================================================================
+        // 3. EVENTOS DE LOS BOTONES DEL MENÚ (CLICK)
+        // =====================================================================
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            // Si creas un FrmDashboard más adelante, descomenta la siguiente línea:
+            // AbrirFormularioEnPanel(new FrmDashboard());
+        }
+
+        private void btnDespachoViajes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmViajes());
+        }
+
+        private void btnVentaTickets_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmTickets());
+        }
+
+        private void btnChoferes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmChoferes());
+        }
+
+        private void btnVehiculos_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmVehiculos());
+        }
+
+        private void btnRutas_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmRutas());
+        }
+
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmReportes());
+        }
+
+        private void btnAcercaDe_Click(object sender, EventArgs e)
+        {
+            ActivarBoton((Button)sender);
+            AbrirFormularioEnPanel(new FrmAcercaDe());
+        }
+
+        // =====================================================================
+        // 4. ANIMACIÓN DEL MENÚ HAMBURGUESA (YOUTUBE STYLE)
+        // =====================================================================
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            if (menuExpandido)
+            {
+                // --- COLAPSAR ---
+                pnlLateral.Width = 65;
+
+                lblOperacion.Visible = false;
+                lblAdministracion.Visible = false;
+                lblSistema.Visible = false;
+
+                foreach (Control control in pnlLateral.Controls)
+                {
+                    if (control is Button btn)
+                    {
+                        // Si la mochila está vacía, guardamos el texto antes de borrarlo
+                        if (btn.Tag == null || string.IsNullOrEmpty(btn.Tag.ToString()))
+                        {
+                            btn.Tag = btn.Text;
+                        }
+                        btn.Text = "";
+                    }
+                }
+                menuExpandido = false;
+            }
+            else
+            {
+                // --- EXPANDIR ---
+                pnlLateral.Width = 250; // Ajusta a tu ancho real
+
+                lblOperacion.Visible = true;
+                lblAdministracion.Visible = true;
+                lblSistema.Visible = true;
+
+                foreach (Control control in pnlLateral.Controls)
+                {
+                    if (control is Button btn)
+                    {
+                        // Si por alguna razón la mochila está vacía, le ponemos un nombre manual
+                        // para que no se quede en blanco (esto es un salvavidas)
+                        if (btn.Tag != null)
+                        {
+                            btn.Text = btn.Tag.ToString();
+                        }
+                        else
+                        {
+                            // Esto solo pasará si algo salió muy mal, 
+                            // te ayudará a ver qué botones están fallando.
+                            btn.Text = "Revisar";
+                        }
+                    }
+                }
+                menuExpandido = true;
+            }
+        }
+
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
 
         }
 
-        // Evento para abrir la sección de Reportes y resaltar su botón
-        private void btnAbrirReportes_Click(object sender, EventArgs e)
+        /*private void tmrMenu_Tick(object sender, EventArgs e)
         {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmReportes());
-        }
-
-        // Método para pintar de verde el botón seleccionado y registrarlo como activo
-        private void ActivarBoton(Button btn)
-        {
-            if (btn != null)
+            if (menuExpandido == true)
             {
-                RestaurarColoresBotones();
-                botonActivo = btn;
-                botonActivo.BackColor = ColorTranslator.FromHtml("#009A44");
-                btnAcercaDe.BackColor = colorInactivo;
-                btnAcercaDe.BackColor = colorInactivo;
-            }
-        }
+                // 1. MAGIA: Borramos el texto de todos los botones INMEDIATAMENTE
+                foreach (Control control in pnlLateral.Controls)
+                {
+                    if (control is Button) control.Text = "";
+                }
 
-        // Método para devolver todos los botones del menú a su color gris oscuro original
-        private void RestaurarColoresBotones()
-        {
-            Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
+                // 2. Ocultamos los Labels de los títulos
+                lblOperacion.Visible = false;
+                lblAdministracion.Visible = false; // Asegúrate de que el nombre sea correcto
+                lblSistema.Visible = false;
 
-            // Limpiamos la gaveta de ENTRADA
-            foreach (Control boton in pnlSubMenuEntrada.Controls)
-            {
-                if (boton is Button) boton.BackColor = colorInactivo;
-            }
+                // 3. Encogemos el panel
+                pnlLateral.Width -= 10;
 
-            // Limpiamos la gaveta de CONSULTA
-            foreach (Control boton in pnlSubMenuConsulta.Controls)
-            {
-                if (boton is Button) boton.BackColor = colorInactivo;
-            }
-
-            // Limpiamos la gaveta de SISTEMA
-            foreach (Control boton in pnlSubMenuSistema.Controls)
-            {
-                if (boton is Button) boton.BackColor = colorInactivo;
-            }
-        }
-
-        // 1. Oculta todos los submenús al iniciar el programa
-        private void PersonalizarDiseno()
-        {
-            pnlSubMenuEntrada.Visible = false;
-            pnlSubMenuConsulta.Visible = false;
-            pnlSubMenuSistema.Visible = false;
-        }
-
-        // 2. Oculta los submenús si ya están abiertos (para que solo haya uno abierto a la vez)
-        private void OcultarSubMenu()
-        {
-            if (pnlSubMenuEntrada.Visible == true) pnlSubMenuEntrada.Visible = false;
-            if (pnlSubMenuConsulta.Visible == true) pnlSubMenuConsulta.Visible = false;
-            if (pnlSubMenuSistema.Visible == true) pnlSubMenuSistema.Visible = false;
-        }
-
-        // 3. Abre el submenú que clickeamos (y cierra los demás)
-        private void MostrarSubMenu(Panel subMenu)
-        {
-            if (subMenu.Visible == false)
-            {
-                OcultarSubMenu();
-                subMenu.Visible = true;
+                if (pnlLateral.Width <= 65)
+                {
+                    pnlLateral.Width = 65;
+                    menuExpandido = false;
+                    tmrMenu.Stop();
+                }
             }
             else
             {
-                subMenu.Visible = false; // Si ya estaba abierto, lo cierra
+                // 1. Expandimos el panel
+                pnlLateral.Width += 10;
+
+                if (pnlLateral.Width >= 250) // Reemplaza 250 por tu ancho original exacto
+                {
+                    pnlLateral.Width = 250;
+                    menuExpandido = true;
+                    tmrMenu.Stop();
+
+                    // 2. Mostramos los Labels de los títulos de nuevo
+                    lblOperacion.Visible = true;
+                    lblAdministracion.Visible = true;
+                    lblSistema.Visible = true;
+
+                    // 3. MAGIA: Recuperamos el texto de la mochila de los botones
+                    foreach (Control control in pnlLateral.Controls)
+                    {
+                        if (control is Button && control.Tag != null)
+                        {
+                            control.Text = control.Tag.ToString();
+                        }
+                    }
+                }
             }
-        }
-
-        // Método para cambiar el tono del botón al pasar el ratón por encima (Efecto Hover)
-        private void AplicarEfectoHover(Button btn)
-        {
-            btn.MouseEnter += (s, e) =>
-            {
-                if (btn != botonActivo)
-                {
-                    btn.BackColor = ColorTranslator.FromHtml("#00843D");
-                }
-            };
-
-            btn.MouseLeave += (s, e) =>
-            {
-                if (btn != botonActivo)
-                {
-                    btn.BackColor = ColorTranslator.FromHtml("#2D2D2D");
-                }
-            };
-        }
-
-        // Método principal para incrustar y mostrar las ventanas secundarias dentro del espacio central
-        private void AbrirFormularioEnPanel(Form formularioHijo)
-        {
-            if (this.pnlContenedor.Controls.Count > 0)
-                this.pnlContenedor.Controls.RemoveAt(0);
-
-            formularioHijo.TopLevel = false;
-            formularioHijo.FormBorderStyle = FormBorderStyle.None;
-            formularioHijo.Dock = DockStyle.Fill;
-
-            this.pnlContenedor.Controls.Add(formularioHijo);
-            this.pnlContenedor.Tag = formularioHijo;
-            formularioHijo.Show();
-        }
-
-        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Limpiamos el panel contenedor si ya tiene otro formulario alojado
-            if (this.pnlContenedor.Controls.Count > 0)
-                this.pnlContenedor.Controls.RemoveAt(0);
-
-            // Instanciamos el FrmAcercaDe
-            FrmAcercaDe frm = new FrmAcercaDe();
-
-            // CONFIGURACIÓN DE ARQUITECTURA: ALOJAR EN PANEL CONTENEDOR
-            frm.TopLevel = false;  // Decimos que no es una ventana independiente
-            frm.Dock = DockStyle.Fill; // Llenamos todo el espacio del contenedor
-            this.pnlContenedor.Controls.Add(frm); // Agregamos el formulario al panel
-            this.pnlContenedor.Tag = frm; // Lo marcamos como el control activo
-
-            frm.Show(); // Finalmente lo mostramos
-        }
-
-        // 1. Este es para el botón que tienes en la barra lateral (la gris oscuro)
-        private void btnAcercaDe_Click(object sender, EventArgs e)
-        {
-            // Usamos tus propios métodos para que todo sea simétrico
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmAcercaDe());
-        }
-
-        private void btnMenuEntrada_Click(object sender, EventArgs e)
-        {
-            MostrarSubMenu(pnlSubMenuEntrada);
-        }
-
-        private void btnMenuConsulta_Click(object sender, EventArgs e)
-        {
-            MostrarSubMenu(pnlSubMenuConsulta);
-        }
-
-        private void btnMenuSistema_Click(object sender, EventArgs e)
-        {
-            MostrarSubMenu(pnlSubMenuSistema);
-        }
-
-        private void btnEntradaChoferes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmChoferes("Entrada"));
-        }
-
-        private void btnEntradaRutas_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmRutas("Entrada"));
-        }
-
-        private void btnEntradaVehiculos_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmVehiculos("Entrada"));
-        }
-
-        private void btnEntradaTickets_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmTickets("Entrada"));
-        }
-
-        private void btnConsultaChoferes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmChoferes("Consulta"));
-        }
-
-        private void btnConsultaRutas_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmRutas("Consulta"));
-        }
-
-        private void btnConsultaVehiculos_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmVehiculos("Consulta"));
-        }
-
-        private void btnConsultaViajes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmViajes("Consulta"));
-        }
-
-        // ⚠️ ATENCIÓN AQUÍ: Reportes y AcercaDe NO necesitan modo, porque solo tienen una función
-        private void btnConsultaReportes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmReportes());
-        }
-
-        private void btnAcercaDe_Click_1(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmAcercaDe());
-        }
-
-        private void btnEntradaViajes_Click(object sender, EventArgs e)
-        {
-            ActivarBoton((Button)sender);
-            AbrirFormularioEnPanel(new FrmViajes("Entrada"));
-        }
+        }*/
     }
 }

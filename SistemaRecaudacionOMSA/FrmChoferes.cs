@@ -16,11 +16,10 @@ namespace SistemaRecaudacionOMSA
         private string modoFormulario;
 
         // Constructor que inicializa los componentes y aplica el diseño visual
-        public FrmChoferes(string modo)
+        public FrmChoferes()
         {
             InitializeComponent();
             AplicarEstiloTabla();
-            this.modoFormulario = modo;
             ConfigurarVistaSegunModo();
         }
 

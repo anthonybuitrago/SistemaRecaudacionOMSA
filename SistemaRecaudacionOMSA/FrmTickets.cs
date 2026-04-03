@@ -16,11 +16,10 @@ namespace SistemaRecaudacionOMSA
         private string modoFormulario;
 
         // Constructor que inicializa los componentes de la ventana
-        public FrmTickets(string modo)
+        public FrmTickets()
         {
             InitializeComponent();
             AplicarEstiloTabla();
-            this.modoFormulario = modo;
             ConfigurarVistaSegunModo();
         }
 

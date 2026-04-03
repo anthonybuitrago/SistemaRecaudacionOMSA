@@ -155,5 +155,11 @@
   <ItemGroup>
     <None Include="Resources\omsa_logo2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dashboard_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ticket.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

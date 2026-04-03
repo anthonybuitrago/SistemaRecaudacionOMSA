@@ -19,11 +19,10 @@ namespace SistemaRecaudacionOMSA
         private string modoFormulario;
 
         // Constructor del formulario
-        public FrmViajes(string modo)
+        public FrmViajes()
         {
             InitializeComponent();
             AplicarEstiloTabla();
-            this.modoFormulario = modo;
             ConfigurarVistaSegunModo();
         }
 

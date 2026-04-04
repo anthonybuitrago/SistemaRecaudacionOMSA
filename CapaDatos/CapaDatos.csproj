@@ -47,6 +47,7 @@
     <Compile Include="D_Reporte.cs" />
     <Compile Include="D_Ruta.cs" />
     <Compile Include="D_Ticket.cs" />
+    <Compile Include="D_Usuario.cs" />
     <Compile Include="D_Vehiculo.cs" />
     <Compile Include="D_Viaje.cs" />
     <Compile Include="ICrud.cs" />

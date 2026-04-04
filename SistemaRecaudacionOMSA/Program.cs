@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaPresentacion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,12 +13,24 @@ namespace SistemaRecaudacionOMSA
         [STAThread]
         static void Main()
         {
-            // Configura la apariencia visual moderna para los controles del sistema
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Inicia la ejecución del sistema cargando el formulario principal
-            Application.Run(new FrmPrincipal());
+            // 1. Instanciamos el formulario de Login de Elvis
+            FrmLogin login = new FrmLogin();
+
+            // 2. Le decimos que se muestre como un cuadro de diálogo (obligatorio responderle)
+            // Y verificamos si el resultado fue un éxito (DialogResult.OK)
+            if (login.ShowDialog() == DialogResult.OK)
+            {
+                // 3. Solo si el login fue exitoso, arrancamos el Menú Principal
+                Application.Run(new FrmPrincipal());
+            }
+            else
+            {
+                // Si el usuario cerró el login con la "X", cerramos la app por completo
+                Application.Exit();
+            }
         }
     }
 }

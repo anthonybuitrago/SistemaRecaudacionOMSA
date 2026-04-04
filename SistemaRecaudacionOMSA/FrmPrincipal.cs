@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaPresentacion;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -242,4 +243,5 @@ namespace SistemaRecaudacionOMSA
             }
         }*/
     }
+
 }

@@ -34,11 +34,30 @@ namespace SistemaRecaudacionOMSA
         {
             try
             {
-                // Volcamos los resultados calculados de forma asíncrona por el servidor en la tabla visual
                 dgvReporte.DataSource = await objReporte.MostrarRecaudacionRutaAsync();
 
-                // Aplicamos el diseño corporativo a la tabla
+                // 1. Ponemos la tabla bonita y oscura
                 AplicarEstiloTabla();
+
+                // 2. Formateamos las columnas numéricas (SOLO si existen)
+                if (dgvReporte.Columns["Pasajeros"] != null)
+                {
+                    // Centramos la cantidad de pasajeros
+                    dgvReporte.Columns["Pasajeros"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+
+                if (dgvReporte.Columns["Total Recaudado RD$"] != null)
+                {
+                    // Alinear a la derecha (como en contabilidad)
+                    dgvReporte.Columns["Total Recaudado RD$"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                    // Poner el símbolo de moneda local (dependiendo de la PC, pondrá RD$ o $)
+                    dgvReporte.Columns["Total Recaudado RD$"].DefaultCellStyle.Format = "C2";
+
+                    // Pintar el dinero de verde para que destaque
+                    dgvReporte.Columns["Total Recaudado RD$"].DefaultCellStyle.ForeColor = Color.LightGreen;
+                    dgvReporte.Columns["Total Recaudado RD$"].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                }
             }
             catch (Exception ex)
             {
@@ -49,29 +68,38 @@ namespace SistemaRecaudacionOMSA
         // Método para personalizar la apariencia visual de la tabla de datos
         private void AplicarEstiloTabla()
         {
-            // Configuración de estructura y bordes
+            // Configuración de estructura
             dgvReporte.AllowUserToAddRows = false;
+            dgvReporte.AllowUserToResizeRows = false;
             dgvReporte.RowHeadersVisible = false;
             dgvReporte.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvReporte.BackgroundColor = Color.White;
             dgvReporte.BorderStyle = BorderStyle.None;
-            dgvReporte.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvReporte.GridColor = Color.Gainsboro;
+            dgvReporte.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvReporte.ReadOnly = true; // Para que no escriban encima del reporte
 
-            // Configuración de colores corporativos para los encabezados
+            // 🌙 COLORES DARK MODE
+            dgvReporte.BackgroundColor = Color.FromArgb(32, 32, 32); // Fondo oscuro
+            dgvReporte.GridColor = Color.FromArgb(64, 64, 64);
+            dgvReporte.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            // Encabezados
             dgvReporte.EnableHeadersVisualStyles = false;
-            dgvReporte.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
+            dgvReporte.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 20, 20); // Casi negro
             dgvReporte.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvReporte.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvReporte.ColumnHeadersHeight = 40;
             dgvReporte.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvReporte.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
+            dgvReporte.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(20, 20, 20);
 
-            // Configuración visual de las filas y colores de selección
+            // Filas normales
+            dgvReporte.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40); // Gris oscuro
+            dgvReporte.DefaultCellStyle.ForeColor = Color.White;
             dgvReporte.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvReporte.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
-            dgvReporte.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvReporte.RowTemplate.Height = 35;
+
+            // Color de Selección (Azul Windows)
+            dgvReporte.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+            dgvReporte.DefaultCellStyle.SelectionForeColor = Color.White;
         }
     }
 }

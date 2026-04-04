@@ -53,7 +53,7 @@
             this.dgvTickets.ReadOnly = true;
             this.dgvTickets.RowHeadersVisible = false;
             this.dgvTickets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTickets.Size = new System.Drawing.Size(520, 450);
+            this.dgvTickets.Size = new System.Drawing.Size(654, 712);
             this.dgvTickets.TabIndex = 9;
             this.dgvTickets.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTickets_CellClick);
             // 
@@ -70,7 +70,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(280, 450);
+            this.panel1.Size = new System.Drawing.Size(280, 712);
             this.panel1.TabIndex = 10;
             // 
             // cmbViaje
@@ -154,7 +154,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(934, 712);
             this.Controls.Add(this.dgvTickets);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

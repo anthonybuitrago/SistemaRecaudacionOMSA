@@ -40,13 +40,13 @@
             this.lblAdministracion = new System.Windows.Forms.Label();
             this.btnVentaTickets = new System.Windows.Forms.Button();
             this.btnDespachoViajes = new System.Windows.Forms.Button();
-            this.btnDashboard = new System.Windows.Forms.Button();
             this.lblOperacion = new System.Windows.Forms.Label();
+            this.btnDashboard = new System.Windows.Forms.Button();
             this.imgOmsa = new System.Windows.Forms.PictureBox();
             this.pnlSuperior = new System.Windows.Forms.Panel();
+            this.btnMenu = new System.Windows.Forms.Button();
             this.pnlContenedor = new System.Windows.Forms.Panel();
             this.tmrMenu = new System.Windows.Forms.Timer(this.components);
-            this.btnMenu = new System.Windows.Forms.Button();
             this.pnlLateral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgOmsa)).BeginInit();
             this.pnlSuperior.SuspendLayout();
@@ -64,8 +64,8 @@
             this.pnlLateral.Controls.Add(this.lblAdministracion);
             this.pnlLateral.Controls.Add(this.btnVentaTickets);
             this.pnlLateral.Controls.Add(this.btnDespachoViajes);
-            this.pnlLateral.Controls.Add(this.btnDashboard);
             this.pnlLateral.Controls.Add(this.lblOperacion);
+            this.pnlLateral.Controls.Add(this.btnDashboard);
             this.pnlLateral.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLateral.Location = new System.Drawing.Point(0, 60);
             this.pnlLateral.Name = "pnlLateral";
@@ -205,7 +205,7 @@
             this.btnVentaTickets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVentaTickets.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.btnVentaTickets.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btnVentaTickets.Image = global::SistemaRecaudacionOMSA.Properties.Resources.ticket;
+            this.btnVentaTickets.Image = ((System.Drawing.Image)(resources.GetObject("btnVentaTickets.Image")));
             this.btnVentaTickets.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnVentaTickets.Location = new System.Drawing.Point(0, 180);
             this.btnVentaTickets.Name = "btnVentaTickets";
@@ -238,6 +238,19 @@
             this.btnDespachoViajes.UseVisualStyleBackColor = true;
             this.btnDespachoViajes.Click += new System.EventHandler(this.btnDespachoViajes_Click);
             // 
+            // lblOperacion
+            // 
+            this.lblOperacion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblOperacion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOperacion.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblOperacion.Location = new System.Drawing.Point(0, 60);
+            this.lblOperacion.Name = "lblOperacion";
+            this.lblOperacion.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblOperacion.Size = new System.Drawing.Size(250, 60);
+            this.lblOperacion.TabIndex = 8;
+            this.lblOperacion.Text = "OPERACIÓN DIARIA";
+            this.lblOperacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // btnDashboard
             // 
             this.btnDashboard.Dock = System.Windows.Forms.DockStyle.Top;
@@ -247,7 +260,7 @@
             this.btnDashboard.ForeColor = System.Drawing.Color.Gainsboro;
             this.btnDashboard.Image = ((System.Drawing.Image)(resources.GetObject("btnDashboard.Image")));
             this.btnDashboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDashboard.Location = new System.Drawing.Point(0, 60);
+            this.btnDashboard.Location = new System.Drawing.Point(0, 0);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnDashboard.Size = new System.Drawing.Size(250, 60);
@@ -256,19 +269,6 @@
             this.btnDashboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDashboard.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnDashboard.UseVisualStyleBackColor = true;
-            // 
-            // lblOperacion
-            // 
-            this.lblOperacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblOperacion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOperacion.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblOperacion.Location = new System.Drawing.Point(0, 0);
-            this.lblOperacion.Name = "lblOperacion";
-            this.lblOperacion.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.lblOperacion.Size = new System.Drawing.Size(250, 60);
-            this.lblOperacion.TabIndex = 8;
-            this.lblOperacion.Text = "OPERACIÓN DIARIA";
-            this.lblOperacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // imgOmsa
             // 
@@ -293,21 +293,6 @@
             this.pnlSuperior.Size = new System.Drawing.Size(1184, 60);
             this.pnlSuperior.TabIndex = 8;
             // 
-            // pnlContenedor
-            // 
-            this.pnlContenedor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.pnlContenedor.BackgroundImage = global::SistemaRecaudacionOMSA.Properties.Resources.omsa_logo;
-            this.pnlContenedor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pnlContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContenedor.Location = new System.Drawing.Point(250, 60);
-            this.pnlContenedor.Name = "pnlContenedor";
-            this.pnlContenedor.Size = new System.Drawing.Size(934, 712);
-            this.pnlContenedor.TabIndex = 9;
-            // 
-            // tmrMenu
-            // 
-            this.tmrMenu.Interval = 10;
-            // 
             // btnMenu
             // 
             this.btnMenu.Dock = System.Windows.Forms.DockStyle.Left;
@@ -322,6 +307,21 @@
             this.btnMenu.TabIndex = 12;
             this.btnMenu.UseVisualStyleBackColor = true;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
+            // 
+            // pnlContenedor
+            // 
+            this.pnlContenedor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.pnlContenedor.BackgroundImage = global::SistemaRecaudacionOMSA.Properties.Resources.omsa_logo;
+            this.pnlContenedor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pnlContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContenedor.Location = new System.Drawing.Point(250, 60);
+            this.pnlContenedor.Name = "pnlContenedor";
+            this.pnlContenedor.Size = new System.Drawing.Size(934, 712);
+            this.pnlContenedor.TabIndex = 9;
+            // 
+            // tmrMenu
+            // 
+            this.tmrMenu.Interval = 10;
             // 
             // FrmPrincipal
             // 

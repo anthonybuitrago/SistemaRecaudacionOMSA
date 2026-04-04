@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# SQL Server Management Studio Version 22
-VisualStudioVersion = 18.3.11505.172 d18.3
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37027.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaPresentacion", "SistemaRecaudacionOMSA\CapaPresentacion.csproj", "{1E221AB8-1D05-43A5-B991-C0C16BA61F99}"
 EndProject
@@ -31,9 +31,6 @@ Global
 		{4524F73F-4BD2-481A-8C1A-7D8449D8D41E}.Default|Any CPU.ActiveCfg = Release|Any CPU
 		{4524F73F-4BD2-481A-8C1A-7D8449D8D41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4524F73F-4BD2-481A-8C1A-7D8449D8D41E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30EEB134-A8FA-4E81-B051-50543695FEE9}.Debug|Any CPU.ActiveCfg = Default
-		{30EEB134-A8FA-4E81-B051-50543695FEE9}.Default|Any CPU.ActiveCfg = Default
-		{30EEB134-A8FA-4E81-B051-50543695FEE9}.Release|Any CPU.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

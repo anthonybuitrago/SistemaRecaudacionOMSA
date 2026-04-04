@@ -63,9 +63,9 @@ namespace SistemaRecaudacionOMSA.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dashboard_icon {
+        internal static System.Drawing.Bitmap closed_lock {
             get {
-                object obj = ResourceManager.GetObject("dashboard_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("closed_lock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,19 +83,9 @@ namespace SistemaRecaudacionOMSA.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap omsa_logo1 {
+        internal static System.Drawing.Bitmap open_lock {
             get {
-                object obj = ResourceManager.GetObject("omsa_logo1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ticket {
-            get {
-                object obj = ResourceManager.GetObject("ticket", resourceCulture);
+                object obj = ResourceManager.GetObject("open_lock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

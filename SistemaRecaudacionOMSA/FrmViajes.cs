@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading.Tasks; // Obligatorio para Task
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using CapaNegocios;
 
@@ -8,57 +8,52 @@ namespace SistemaRecaudacionOMSA
 {
     public partial class FrmViajes : Form
     {
-        // Instancias para acceder a la lógica de todas las entidades relacionadas
         private N_Viaje objViaje = new N_Viaje();
         private N_Chofer objChofer = new N_Chofer();
         private N_Ruta objRuta = new N_Ruta();
         private N_Vehiculo objVehiculo = new N_Vehiculo();
 
-        // Variable para identificar el viaje seleccionado en la tabla
         private int idViaje = 0;
         private string modoFormulario;
+        private string choferOriginal = "";
+        private string rutaOriginal = "";
+        private string vehiculoOriginal = "";
+        private DateTime fechaOriginal;
 
-        // Constructor del formulario
         public FrmViajes()
         {
             InitializeComponent();
+
+            // Estética inicial
+            dgvViajes.BackgroundColor = Color.FromArgb(28, 28, 28);
+            dgvViajes.BorderStyle = BorderStyle.None;
+            dgvViajes.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dgvViajes.DefaultCellStyle.ForeColor = Color.White;
+
             AplicarEstiloTabla();
-            ConfigurarVistaSegunModo();
         }
 
-        private void ConfigurarVistaSegunModo()
-        {
-            if (modoFormulario == "Consulta")
-            {
-                panel1.Visible = false;
-                dgvViajes.Dock = DockStyle.Fill;
-            }
-            else
-            {
-                dgvViajes.Visible = false;
-                BloquearCampos();
-            }
-        }
-
-        // Evento ASÍNCRONO inicial
         private async void FrmViajes_Load(object sender, EventArgs e)
         {
-            txtEstado.Text = "Activo";
-            txtEstado.ReadOnly = true;
+            dtpFecha.MinDate = DateTime.Today;
+            dgvViajes.Visible = false;
 
-            // Carga de información asíncrona
             await CargarListasDesplegablesAsync();
             await MostrarViajesTablaAsync();
 
-            BloquearCampos(); // Los campos arrancan desactivados
+            HabilitarCampos(false);
+
+            // DESHABILITAR EL BOTÓN AL INICIO
+            btnLimpiar.Enabled = false;
+            btnGuardar.Enabled = false;
+            btnActualizar.Enabled = false;
+            btnCancelar.Enabled = false;
         }
 
-        // Método ASÍNCRONO para llenar los ComboBox
         private async Task CargarListasDesplegablesAsync()
         {
             try
             {
-                // Cargamos cada lista esperando la respuesta de la Capa de Negocio
                 cmbChofer.DataSource = await objChofer.MostrarChoferesAsync();
                 cmbChofer.DisplayMember = "NombreCompleto";
                 cmbChofer.ValueMember = "ID_Chofer";
@@ -71,135 +66,275 @@ namespace SistemaRecaudacionOMSA
                 cmbVehiculo.DisplayMember = "Ficha";
                 cmbVehiculo.ValueMember = "ID_Vehiculo";
 
-                // Limpieza de selecciones automáticas al iniciar
                 cmbChofer.SelectedIndex = -1;
                 cmbRuta.SelectedIndex = -1;
                 cmbVehiculo.SelectedIndex = -1;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar las listas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { MessageBox.Show("Error listas: " + ex.Message); }
         }
 
-        // Evento ASÍNCRONO para registrar un nuevo viaje
+        private void HabilitarCampos(bool estado)
+        {
+            // Campos
+            cmbChofer.Enabled = estado;
+            dtpFecha.Enabled = estado;
+            cmbRuta.Enabled = estado;
+            cmbVehiculo.Enabled = estado;
+
+            // Botones CRUD (Se ponen grises automáticamente si Enabled = false)
+            btnGuardar.Enabled = estado;
+            btnActualizar.Enabled = false; // Solo se activa al tocar la tabla
+            btnCancelar.Enabled = estado;
+            btnLimpiar.Enabled = true; // Limpiar siempre debería estar activo
+
+            // Colores de Labels
+            Color colorTexto = estado ? Color.White : Color.Gray;
+            lblChofer.ForeColor = colorTexto;
+            lblRuta.ForeColor = colorTexto;
+            lblVehiculo.ForeColor = colorTexto;
+            lblFecha.ForeColor = colorTexto;
+        }
+
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (cmbChofer.SelectedValue == null || cmbRuta.SelectedValue == null || cmbVehiculo.SelectedValue == null)
+            if (cmbChofer.SelectedValue == null || cmbRuta.SelectedValue == null)
             {
-                MessageBox.Show("Por favor, asegúrese de seleccionar Chofer, Ruta y Vehículo.", "Aviso OMSA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Faltan datos.");
                 return;
             }
 
             try
             {
-                string idChof = cmbChofer.SelectedValue.ToString();
-                string idRut = cmbRuta.SelectedValue.ToString();
-                string idVeh = cmbVehiculo.SelectedValue.ToString();
-                DateTime fechaViaje = dtpFecha.Value;
-                string estado = txtEstado.Text;
+                await objViaje.InsertarViajeAsync(
+    cmbChofer.SelectedValue.ToString(),
+    cmbRuta.SelectedValue.ToString(),
+    cmbVehiculo.SelectedValue.ToString(),
+    dtpFecha.Value,
+    "Activo" // <--- Aquí enviamos el estado por debajo de la mesa
+);
 
-                await objViaje.InsertarViajeAsync(idChof, idRut, idVeh, fechaViaje, estado);
+                MessageBox.Show("¡Guardado!");
+                await MostrarViajesTablaAsync();
+                btnLimpiar.PerformClick();
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
+        }
 
-                MessageBox.Show("¡Viaje registrado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private async void btnActualizar_Click(object sender, EventArgs e)
+        {
+            if (idViaje == 0) return;
+            try
+            {
+                // Añadimos "Activo" al final antes de cerrar el paréntesis
+                await objViaje.EditarViajeAsync(
+                    idViaje.ToString(),
+                    cmbChofer.SelectedValue.ToString(),
+                    cmbRuta.SelectedValue.ToString(),
+                    cmbVehiculo.SelectedValue.ToString(),
+                    dtpFecha.Value,
+                    "Activo" // <--- Este es el parámetro que faltaba
+                );
+
+                MessageBox.Show("¡Actualizado!");
                 await MostrarViajesTablaAsync();
                 btnLimpiar.PerformClick();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
-        // Método ASÍNCRONO para refrescar los datos de la tabla
-        private async Task MostrarViajesTablaAsync()
+        private void dgvViajes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            // REGLA DE ORO: Si el candado está cerrado, ignoramos el clic para el formulario
+            if (cmbChofer.Enabled == false) return;
+
+            if (e.RowIndex >= 0)
             {
-                dgvViajes.DataSource = await objViaje.MostrarViajesAsync();
-                AplicarEstiloTabla();
+                DataGridViewRow fila = dgvViajes.Rows[e.RowIndex];
+
+                // Solo si llegamos aquí (porque el candado está abierto), cargamos los datos
+                idViaje = Convert.ToInt32(fila.Cells["ID"].Value);
+                // (Dentro de dgvViajes_CellClick, después de asignar los combos)
+                cmbChofer.Text = fila.Cells["Chofer"].Value.ToString();
+                cmbRuta.Text = fila.Cells["Ruta"].Value.ToString();
+                cmbVehiculo.Text = fila.Cells["Ficha del Vehículo"].Value.ToString();
+
+                // GUARDAMOS LA FOTO ORIGINAL:
+                choferOriginal = cmbChofer.Text;
+                rutaOriginal = cmbRuta.Text;
+                vehiculoOriginal = cmbVehiculo.Text;
+
+                dtpFecha.MinDate = new DateTime(1900, 1, 1);
+                if (fila.Cells["Fecha y Hora"].Value != DBNull.Value)
+                {
+                    dtpFecha.Value = Convert.ToDateTime(fila.Cells["Fecha y Hora"].Value);
+                    fechaOriginal = dtpFecha.Value; // Guardamos la fecha original
+                }
+
+                // Habilitamos los botones de acción porque estamos en modo edición
+                btnActualizar.Enabled = true;
+                btnCancelar.Enabled = true;
+                btnLimpiar.Enabled = true;
+                btnGuardar.Enabled = false; // No se puede guardar uno nuevo si seleccionaste uno viejo
+                                            // 1. GUARDAMOS LA MEMORIA PRIMERO (Directo desde la fila)
+                choferOriginal = fila.Cells["Chofer"].Value.ToString();
+                rutaOriginal = fila.Cells["Ruta"].Value.ToString();
+                vehiculoOriginal = fila.Cells["Ficha del Vehículo"].Value.ToString();
+
+                dtpFecha.MinDate = new DateTime(1900, 1, 1);
+                if (fila.Cells["Fecha y Hora"].Value != DBNull.Value)
+                {
+                    fechaOriginal = Convert.ToDateTime(fila.Cells["Fecha y Hora"].Value);
+                }
+
+                // 2. LUEGO ASIGNAMOS A LOS CONTROLES
+                // (Ahora, si los controles disparan el evento de cambio, la memoria ya los está esperando)
+                cmbChofer.Text = choferOriginal;
+                cmbRuta.Text = rutaOriginal;
+                cmbVehiculo.Text = vehiculoOriginal;
+                dtpFecha.Value = fechaOriginal;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar la tabla: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // --- LÓGICA DE INTERFAZ: BLOQUEO Y HABILITACIÓN ---
-
-        private void BloquearCampos()
-        {
-            cmbChofer.Enabled = false;
-            cmbRuta.Enabled = false;
-            cmbVehiculo.Enabled = false;
-            dtpFecha.Enabled = false;
-            btnGuardar.Enabled = false;
-            btnActualizar.Enabled = false;
-            btnCancelar.Enabled = false;
-        }
-
-        private void HabilitarCampos()
-        {
-            cmbChofer.Enabled = true;
-            cmbRuta.Enabled = true;
-            cmbVehiculo.Enabled = true;
-            dtpFecha.Enabled = true;
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
+            // 1. Vaciamos los datos de los controles
+            idViaje = 0; // Importante resetear el ID a 0 para que sea un "Nuevo Viaje"
             cmbChofer.SelectedIndex = -1;
             cmbRuta.SelectedIndex = -1;
             cmbVehiculo.SelectedIndex = -1;
+
+            // Reseteamos la fecha a hoy (ajustando MinDate para evitar el error de rango)
+            dtpFecha.MinDate = new DateTime(1900, 1, 1);
             dtpFecha.Value = DateTime.Now;
-            txtEstado.Text = "Activo";
-            idViaje = 0;
+            dtpFecha.MinDate = DateTime.Today;
 
-            HabilitarCampos();
-            btnGuardar.Enabled = true;
-            btnActualizar.Enabled = false;
-            btnCancelar.Enabled = false;
+            // 2. ¡LA CORRECCIÓN! 
+            // NO llamamos a HabilitarCampos(false). 
+            // Los campos se quedan como están (si estaban habilitados, siguen habilitados).
 
-            if (modoFormulario.Equals("Consulta", StringComparison.OrdinalIgnoreCase))
-            {
-                panel1.Visible = false; // Se esconde al terminar
-            }
+            // 3. Ajustamos los botones de acción
+            // Como ahora todo está limpio, es un registro nuevo:
+            btnGuardar.Enabled = true;     // Se habilita para poder guardar lo nuevo
+            btnActualizar.Enabled = false; // Se apaga porque no hay nada viejo que actualizar
+            btnCancelar.Enabled = false;   // Se apaga porque no hay nada seleccionado
+
+            // Quitamos la selección azul de la tabla para que se vea visualmente "limpio"
+            dgvViajes.ClearSelection();
         }
 
-        private void dgvViajes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btnModoEdicion_Click(object sender, EventArgs e)
         {
-            if (e.RowIndex >= 0)
+            bool estaAbriendo = !cmbChofer.Enabled;
+            HabilitarCampos(estaAbriendo);
+
+            // (Dentro de btnModoEdicion_Click)
+            if (estaAbriendo)
             {
-                idViaje = Convert.ToInt32(dgvViajes.Rows[e.RowIndex].Cells["ID"].Value);
-                cmbChofer.Text = dgvViajes.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
-                cmbRuta.Text = dgvViajes.Rows[e.RowIndex].Cells["Ruta"].Value.ToString();
-                cmbVehiculo.Text = dgvViajes.Rows[e.RowIndex].Cells["Ficha del Vehículo"].Value.ToString();
-                dtpFecha.Value = Convert.ToDateTime(dgvViajes.Rows[e.RowIndex].Cells["Fecha y Hora"].Value);
-                txtEstado.Text = dgvViajes.Rows[e.RowIndex].Cells["Estado"].Value.ToString();
+                btnLimpiar.Enabled = true;
 
-                panel1.Visible = true; // Aparece el cajón para editar
-
-                HabilitarCampos();
-                btnGuardar.Enabled = false;
-                btnActualizar.Enabled = true;
-                btnCancelar.Enabled = true;
+                if (idViaje > 0)
+                {
+                    // OBLIGAMOS AL VIGILANTE A REVISAR AHORA MISMO
+                    VerificarSiHayCambios(null, null);
+                }
+                else
+                {
+                    btnGuardar.Enabled = true;
+                }
             }
         }
 
-        // Evento ASÍNCRONO para realizar el borrado lógico (Cancelación)
+        private void btnVerTabla_Click(object sender, EventArgs e)
+        {
+            dgvViajes.Visible = !dgvViajes.Visible;
+            btnVerTabla.Text = dgvViajes.Visible ? "Ocultar" : "Ver";
+            // Si la tabla se oculta, hacemos que el panel de arriba use más espacio si quieres
+        }
+
+        private async Task MostrarViajesTablaAsync()
+        {
+            dgvViajes.DataSource = await objViaje.MostrarViajesAsync();
+            // 1. Ocultar la columna ID (El despachador no necesita ver esto)
+            if (dgvViajes.Columns["ID"] != null)
+            {
+                dgvViajes.Columns["ID"].Visible = false;
+            }
+
+            // 2. Formatear la Fecha y Hora para que sea más limpia
+            if (dgvViajes.Columns["Fecha y Hora"] != null)
+            {
+                // Formato de 12 horas con AM/PM (ej: 03/04/2026 09:14 PM)
+                dgvViajes.Columns["Fecha y Hora"].DefaultCellStyle.Format = "dd/MM/yyyy hh:mm tt";
+
+                // Centramos el texto de la fecha para que se vea más ordenado
+                dgvViajes.Columns["Fecha y Hora"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+
+            // 3. Opcional: Darle más espacio a columnas importantes
+            if (dgvViajes.Columns["Chofer"] != null) dgvViajes.Columns["Chofer"].FillWeight = 150;
+            if (dgvViajes.Columns["Ruta"] != null) dgvViajes.Columns["Ruta"].FillWeight = 150;
+            if (dgvViajes.Columns["Estado"] != null) dgvViajes.Columns["Estado"].FillWeight = 80;
+            AplicarEstiloTabla();
+        }
+
+        private void AplicarEstiloTabla()
+        {
+            // 1. Alineación y Simetría
+            dgvViajes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvViajes.RowHeadersVisible = false; // Quita la columna gris de la izquierda
+            dgvViajes.BorderStyle = BorderStyle.None;
+
+            // 2. Tipografía (Cambia "Segoe UI" por el nombre exacto de tu Google Font)
+            Font fuenteGoogle = new Font("Segoe UI", 10); // <-- Pon aquí el nombre de tu fuente
+            Font fuenteGoogleBold = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            // 3. Estilo de Celdas
+            dgvViajes.DefaultCellStyle.Font = fuenteGoogle;
+            dgvViajes.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dgvViajes.DefaultCellStyle.ForeColor = Color.White;
+            dgvViajes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204); // Azul moderno
+
+            // 4. Estilo de Encabezados (Para que no sean blancos brillantes)
+            dgvViajes.EnableHeadersVisualStyles = false;
+            dgvViajes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dgvViajes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvViajes.ColumnHeadersDefaultCellStyle.Font = fuenteGoogleBold;
+            dgvViajes.ColumnHeadersHeight = 40;
+        }
+
+        // Eventos vacíos que puedes borrar si no los usas
+        private void label2_Click(object sender, EventArgs e) { }
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e) { }
+
+        private void lblFecha_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private async void btnCancelar_Click(object sender, EventArgs e)
         {
+            // Si no hay un viaje seleccionado, no hace nada
             if (idViaje == 0) return;
 
+            // Preguntamos para confirmar, porque cancelar es delicado
             DialogResult respuesta = MessageBox.Show("¿Está seguro de que desea cancelar este viaje?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (respuesta == DialogResult.Yes)
             {
                 try
                 {
+                    // Llamamos a tu capa de negocios para cancelar
                     await objViaje.CancelarViajeAsync(idViaje.ToString());
-                    MessageBox.Show("El viaje ha sido cancelado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MessageBox.Show("El viaje ha sido cancelado exitosamente.", "Sistema OMSA", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Recargamos la tabla para que se vea el cambio
                     await MostrarViajesTablaAsync();
+
+                    // Volvemos el formulario a su estado original
                     btnLimpiar.PerformClick();
                 }
                 catch (Exception ex)
@@ -209,55 +344,54 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Evento ASÍNCRONO para actualizar
-        private async void btnActualizar_Click(object sender, EventArgs e)
+        private void VerificarSiHayCambios(object sender, EventArgs e)
         {
-            if (idViaje == 0) return;
-
-            try
+            // Si no estamos en modo edición o es un viaje nuevo, apagamos y abortamos
+            if (idViaje == 0 || cmbChofer.Enabled == false)
             {
-                string idChof = cmbChofer.SelectedValue.ToString();
-                string idRut = cmbRuta.SelectedValue.ToString();
-                string idVeh = cmbVehiculo.SelectedValue.ToString();
-                DateTime fecha = dtpFecha.Value;
-                string estado = txtEstado.Text;
-
-                await objViaje.EditarViajeAsync(idViaje.ToString(), idChof, idRut, idVeh, fecha, estado);
-                MessageBox.Show("¡Viaje actualizado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                await MostrarViajesTablaAsync();
-                btnLimpiar.PerformClick();
+                btnActualizar.Enabled = false;
+                return;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al actualizar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
+            // Comparamos los textos (Usamos variables booleanas para que sea más fácil leer el código)
+            bool cambioChofer = (cmbChofer.Text != choferOriginal);
+            bool cambioRuta = (cmbRuta.Text != rutaOriginal);
+            bool cambioVehiculo = (cmbVehiculo.Text != vehiculoOriginal);
+
+            // Comparamos fecha y hora (ignorando los segundos y milisegundos)
+            bool cambioFecha = (dtpFecha.Value.ToString("yyyy-MM-dd HH:mm") != fechaOriginal.ToString("yyyy-MM-dd HH:mm"));
+
+            // Si CUALQUIERA de estas cosas es verdadera, se enciende. Si todas son falsas, se apaga.
+            btnActualizar.Enabled = (cambioChofer || cambioRuta || cambioVehiculo || cambioFecha);
         }
 
-        private void AplicarEstiloTabla()
+        private void dgvViajes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            dgvViajes.AllowUserToAddRows = false;
-            dgvViajes.RowHeadersVisible = false;
-            dgvViajes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvViajes.BackgroundColor = Color.White;
-            dgvViajes.BorderStyle = BorderStyle.None;
-            dgvViajes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvViajes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvViajes.GridColor = Color.Gainsboro;
-            dgvViajes.EnableHeadersVisualStyles = false;
-            dgvViajes.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
-            dgvViajes.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
-            dgvViajes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvViajes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            dgvViajes.ColumnHeadersHeight = 40;
-            dgvViajes.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvViajes.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
-            dgvViajes.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dgvViajes.RowTemplate.Height = 35;
-
-            if (dgvViajes.Columns.Count > 0)
+            // Verificamos que la fila y la columna sean válidas
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                dgvViajes.Columns["ID"].Width = 40;
+                // Revisamos si la columna que se está dibujando es la de "Estado"
+                if (dgvViajes.Columns[e.ColumnIndex].Name == "Estado" && e.Value != null)
+                {
+                    string estado = e.Value.ToString();
+
+                    // Si el viaje está Cancelado -> Texto Rojo (Salmon para que no lastime la vista en fondo oscuro)
+                    if (estado == "Cancelado")
+                    {
+                        e.CellStyle.ForeColor = Color.LightCoral;
+                        e.CellStyle.SelectionForeColor = Color.LightCoral; // Para que siga rojo si lo seleccionas
+
+                        // Efecto PRO: Tachar toda la fila si está cancelado (Opcional, pero se ve genial)
+                        // dgvViajes.Rows[e.RowIndex].DefaultCellStyle.Font = new Font(dgvViajes.Font, FontStyle.Strikeout);
+                    }
+                    // Si el viaje está Activo -> Texto Verde brillante
+                    else if (estado == "Activo")
+                    {
+                        e.CellStyle.ForeColor = Color.LightGreen;
+                        e.CellStyle.SelectionForeColor = Color.LightGreen;
+                        e.CellStyle.Font = new Font(dgvViajes.Font, FontStyle.Bold); // Letra en negrita
+                    }
+                }
             }
         }
     }

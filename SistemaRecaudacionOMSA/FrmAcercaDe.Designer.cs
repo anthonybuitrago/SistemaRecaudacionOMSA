@@ -28,76 +28,99 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblCreditos = new System.Windows.Forms.Label();
+            this.lblAnthony = new System.Windows.Forms.Label();
+            this.lblElvis = new System.Windows.Forms.Label();
+            this.lblEduardo = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // label2
+            // lblVersion
             // 
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(810, 579);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 23);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Versión 1.0.0";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblVersion.ForeColor = System.Drawing.Color.White;
+            this.lblVersion.Location = new System.Drawing.Point(823, 680);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(99, 23);
+            this.lblVersion.TabIndex = 3;
+            this.lblVersion.Text = "Versión 1.0.0";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblVersion.Click += new System.EventHandler(this.label2_Click);
             // 
-            // label3
+            // lblCreditos
             // 
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.label3.Location = new System.Drawing.Point(366, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(208, 35);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Desarrollado por:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCreditos.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblCreditos.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblCreditos.ForeColor = System.Drawing.Color.White;
+            this.lblCreditos.Location = new System.Drawing.Point(342, 331);
+            this.lblCreditos.Name = "lblCreditos";
+            this.lblCreditos.Size = new System.Drawing.Size(203, 45);
+            this.lblCreditos.TabIndex = 4;
+            this.lblCreditos.Text = "Desarrollado por:";
+            this.lblCreditos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // lblAnthony
             // 
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label4.Location = new System.Drawing.Point(371, 102);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(203, 23);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Anthony Buitrago";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAnthony.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblAnthony.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lblAnthony.ForeColor = System.Drawing.Color.White;
+            this.lblAnthony.Location = new System.Drawing.Point(342, 446);
+            this.lblAnthony.Name = "lblAnthony";
+            this.lblAnthony.Size = new System.Drawing.Size(203, 23);
+            this.lblAnthony.TabIndex = 5;
+            this.lblAnthony.Text = "Anthony Buitrago";
+            this.lblAnthony.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // lblElvis
             // 
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label5.Location = new System.Drawing.Point(371, 139);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(203, 23);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Elvis Baez";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblElvis.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblElvis.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lblElvis.ForeColor = System.Drawing.Color.White;
+            this.lblElvis.Location = new System.Drawing.Point(342, 415);
+            this.lblElvis.Name = "lblElvis";
+            this.lblElvis.Size = new System.Drawing.Size(203, 23);
+            this.lblElvis.TabIndex = 6;
+            this.lblElvis.Text = "Elvis Baez";
+            this.lblElvis.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // lblEduardo
             // 
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label6.Location = new System.Drawing.Point(371, 183);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(203, 23);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "Luis Eduardo Soto";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblEduardo.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblEduardo.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lblEduardo.ForeColor = System.Drawing.Color.White;
+            this.lblEduardo.Location = new System.Drawing.Point(342, 384);
+            this.lblEduardo.Name = "lblEduardo";
+            this.lblEduardo.Size = new System.Drawing.Size(203, 23);
+            this.lblEduardo.TabIndex = 7;
+            this.lblEduardo.Text = "Eduardo Soto";
+            this.lblEduardo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBox1.Image = global::SistemaRecaudacionOMSA.Properties.Resources.omsa_logo;
+            this.pictureBox1.Location = new System.Drawing.Point(342, 205);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(203, 123);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
             // 
             // FrmAcercaDe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(934, 611);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.ClientSize = new System.Drawing.Size(934, 712);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.lblEduardo);
+            this.Controls.Add(this.lblElvis);
+            this.Controls.Add(this.lblAnthony);
+            this.Controls.Add(this.lblCreditos);
+            this.Controls.Add(this.lblVersion);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -105,15 +128,17 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Acerca del Sistema de Recaudación OMSA";
             this.Load += new System.EventHandler(this.FrmAcercaDe_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblCreditos;
+        private System.Windows.Forms.Label lblAnthony;
+        private System.Windows.Forms.Label lblElvis;
+        private System.Windows.Forms.Label lblEduardo;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -164,6 +164,14 @@
         pKgW7kBuAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="btnVentaTickets.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAACFSURBVEhL7ZRLCsAgDEQ9mjf3Dr3CHKRFUImhiZ8o7cIHbvrGSXBR5w6/AYAHcC86nvfHATxk
+        Ory/DODfRxF7REEwZURBMGWyeJWdNDsAhBS4uGsR76S7gbsKbYNZV6EFZ11h6xPlDZpbKKgdoiCYMqIg
+        mDKiGETsyWLV4f1xwN7f9eEzHqQBGI+oHelbAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="btnDespachoViajes.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAVJJREFUSEvd
@@ -185,9 +193,9 @@
   </data>
   <data name="btnMenu.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAABBSURBVEhL7dAhDgBACANB/v/NPuTOIVaRguwk60gFVRGnJL2LuNt46MbdmOMv3bjbeOjG3Zjj
-        L92423joxt2InQ/TDYrw6kbLfwAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAEFJREFUSEvt
+        0CEOAEAIA0H+/80+5M4hVpGC7CTrSAVVEackvYu423joxt2Y4y/duNt46MbdmOMv3bjbeOjG3YidD9MN
+        ivDqRst/AAAAAElFTkSuQmCC
 </value>
   </data>
   <metadata name="tmrMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

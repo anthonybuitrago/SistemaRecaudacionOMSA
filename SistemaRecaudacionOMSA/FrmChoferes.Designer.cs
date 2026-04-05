@@ -28,221 +28,351 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtCedula = new System.Windows.Forms.TextBox();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-            this.txtLicencia = new System.Windows.Forms.TextBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmChoferes));
             this.dgvChoferes = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnEliminar = new System.Windows.Forms.Button();
-            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.flpAcciones = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnGuardar = new System.Windows.Forms.Button();
             this.btnActualizar = new System.Windows.Forms.Button();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.tlpChoferes = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCedula = new System.Windows.Forms.Label();
+            this.lblTitulo = new System.Windows.Forms.Label();
+            this.lblLicencia = new System.Windows.Forms.Label();
+            this.lblNombre = new System.Windows.Forms.Label();
+            this.flpToolbar = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnModoEdicion = new System.Windows.Forms.Button();
+            this.btnVerTabla = new System.Windows.Forms.Button();
+            this.lblTelefono = new System.Windows.Forms.Label();
+            this.txtNombre = new System.Windows.Forms.MaskedTextBox();
+            this.txtTelefono = new System.Windows.Forms.MaskedTextBox();
+            this.txtCedula = new System.Windows.Forms.MaskedTextBox();
+            this.txtLicencia = new System.Windows.Forms.MaskedTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvChoferes)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.flpAcciones.SuspendLayout();
+            this.tlpChoferes.SuspendLayout();
+            this.flpToolbar.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label1.Location = new System.Drawing.Point(50, 72);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 19);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Cédula de Identidad";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label2.Location = new System.Drawing.Point(50, 129);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(123, 19);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Nombre y Apellido";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label3.Location = new System.Drawing.Point(50, 191);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 19);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "No. Licencia";
-            // 
-            // txtCedula
-            // 
-            this.txtCedula.Location = new System.Drawing.Point(54, 94);
-            this.txtCedula.MaxLength = 11;
-            this.txtCedula.Name = "txtCedula";
-            this.txtCedula.Size = new System.Drawing.Size(180, 20);
-            this.txtCedula.TabIndex = 3;
-            this.txtCedula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCedula_KeyPress);
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.Location = new System.Drawing.Point(54, 151);
-            this.txtNombre.MaxLength = 50;
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(180, 20);
-            this.txtNombre.TabIndex = 4;
-            this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
-            // 
-            // txtLicencia
-            // 
-            this.txtLicencia.Location = new System.Drawing.Point(54, 213);
-            this.txtLicencia.MaxLength = 11;
-            this.txtLicencia.Name = "txtLicencia";
-            this.txtLicencia.Size = new System.Drawing.Size(180, 20);
-            this.txtLicencia.TabIndex = 5;
-            this.txtLicencia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLicencia_KeyPress);
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(132)))), ((int)(((byte)(61)))));
-            this.btnGuardar.FlatAppearance.BorderSize = 0;
-            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(54, 264);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(180, 31);
-            this.btnGuardar.TabIndex = 6;
-            this.btnGuardar.Text = "Guardar Chofer";
-            this.btnGuardar.UseVisualStyleBackColor = false;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // dgvChoferes
             // 
             this.dgvChoferes.AllowUserToAddRows = false;
-            this.dgvChoferes.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvChoferes.AllowUserToResizeColumns = false;
+            this.dgvChoferes.AllowUserToResizeRows = false;
+            this.dgvChoferes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvChoferes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
             this.dgvChoferes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvChoferes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvChoferes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvChoferes.Location = new System.Drawing.Point(280, 0);
+            this.dgvChoferes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvChoferes.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvChoferes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvChoferes.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.dgvChoferes.Location = new System.Drawing.Point(30, 340);
+            this.dgvChoferes.Margin = new System.Windows.Forms.Padding(0);
             this.dgvChoferes.Name = "dgvChoferes";
             this.dgvChoferes.ReadOnly = true;
             this.dgvChoferes.RowHeadersVisible = false;
-            this.dgvChoferes.RowHeadersWidth = 51;
             this.dgvChoferes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvChoferes.Size = new System.Drawing.Size(654, 712);
-            this.dgvChoferes.TabIndex = 7;
+            this.dgvChoferes.Size = new System.Drawing.Size(874, 312);
+            this.dgvChoferes.TabIndex = 6;
             this.dgvChoferes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChoferes_CellClick);
             // 
-            // panel1
+            // flpAcciones
             // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.btnEliminar);
-            this.panel1.Controls.Add(this.btnLimpiar);
-            this.panel1.Controls.Add(this.btnActualizar);
-            this.panel1.Controls.Add(this.txtNombre);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.txtLicencia);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.txtCedula);
-            this.panel1.Controls.Add(this.btnGuardar);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(280, 712);
-            this.panel1.TabIndex = 8;
+            this.flpAcciones.Controls.Add(this.btnGuardar);
+            this.flpAcciones.Controls.Add(this.btnActualizar);
+            this.flpAcciones.Controls.Add(this.btnEliminar);
+            this.flpAcciones.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flpAcciones.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flpAcciones.Location = new System.Drawing.Point(30, 283);
+            this.flpAcciones.Name = "flpAcciones";
+            this.flpAcciones.Padding = new System.Windows.Forms.Padding(0, 10, 30, 0);
+            this.flpAcciones.Size = new System.Drawing.Size(874, 57);
+            this.flpAcciones.TabIndex = 5;
             // 
-            // label4
+            // btnGuardar
             // 
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(0, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(280, 23);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "DATOS DEL CHOFER";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnEliminar
-            // 
-            this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btnEliminar.FlatAppearance.BorderSize = 0;
-            this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(54, 375);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(180, 33);
-            this.btnEliminar.TabIndex = 9;
-            this.btnEliminar.Text = "Eliminar";
-            this.btnEliminar.UseVisualStyleBackColor = false;
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
-            // 
-            // btnLimpiar
-            // 
-            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btnLimpiar.FlatAppearance.BorderSize = 0;
-            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLimpiar.ForeColor = System.Drawing.Color.White;
-            this.btnLimpiar.Location = new System.Drawing.Point(54, 301);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(180, 31);
-            this.btnLimpiar.TabIndex = 8;
-            this.btnLimpiar.Text = "Limpiar Campos";
-            this.btnLimpiar.UseVisualStyleBackColor = false;
-            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnGuardar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGuardar.FlatAppearance.BorderSize = 0;
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardar.Image")));
+            this.btnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGuardar.Location = new System.Drawing.Point(741, 13);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(100, 32);
+            this.btnGuardar.TabIndex = 0;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGuardar.UseVisualStyleBackColor = false;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnActualizar
             // 
-            this.btnActualizar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(209)))), ((int)(((byte)(0)))));
+            this.btnActualizar.BackColor = System.Drawing.Color.Khaki;
+            this.btnActualizar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnActualizar.FlatAppearance.BorderSize = 0;
             this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActualizar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnActualizar.ForeColor = System.Drawing.Color.White;
-            this.btnActualizar.Location = new System.Drawing.Point(54, 338);
+            this.btnActualizar.Image = ((System.Drawing.Image)(resources.GetObject("btnActualizar.Image")));
+            this.btnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnActualizar.Location = new System.Drawing.Point(620, 13);
             this.btnActualizar.Name = "btnActualizar";
-            this.btnActualizar.Size = new System.Drawing.Size(180, 31);
-            this.btnActualizar.TabIndex = 7;
+            this.btnActualizar.Size = new System.Drawing.Size(115, 32);
+            this.btnActualizar.TabIndex = 1;
             this.btnActualizar.Text = "Actualizar";
+            this.btnActualizar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnActualizar.UseVisualStyleBackColor = false;
             this.btnActualizar.Click += new System.EventHandler(this.btnActualizar_Click);
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEliminar.FlatAppearance.BorderSize = 0;
+            this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEliminar.ForeColor = System.Drawing.Color.White;
+            this.btnEliminar.Image = ((System.Drawing.Image)(resources.GetObject("btnEliminar.Image")));
+            this.btnEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEliminar.Location = new System.Drawing.Point(511, 13);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(103, 32);
+            this.btnEliminar.TabIndex = 2;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEliminar.UseVisualStyleBackColor = false;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // tlpChoferes
+            // 
+            this.tlpChoferes.ColumnCount = 2;
+            this.tlpChoferes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpChoferes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpChoferes.Controls.Add(this.lblTitulo, 0, 0);
+            this.tlpChoferes.Controls.Add(this.lblCedula, 1, 1);
+            this.tlpChoferes.Controls.Add(this.lblNombre, 0, 1);
+            this.tlpChoferes.Controls.Add(this.lblLicencia, 1, 3);
+            this.tlpChoferes.Controls.Add(this.lblTelefono, 0, 3);
+            this.tlpChoferes.Controls.Add(this.txtNombre, 0, 2);
+            this.tlpChoferes.Controls.Add(this.txtTelefono, 0, 4);
+            this.tlpChoferes.Controls.Add(this.txtCedula, 1, 2);
+            this.tlpChoferes.Controls.Add(this.txtLicencia, 1, 4);
+            this.tlpChoferes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tlpChoferes.ForeColor = System.Drawing.Color.White;
+            this.tlpChoferes.Location = new System.Drawing.Point(30, 55);
+            this.tlpChoferes.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpChoferes.Name = "tlpChoferes";
+            this.tlpChoferes.Padding = new System.Windows.Forms.Padding(30);
+            this.tlpChoferes.RowCount = 6;
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpChoferes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpChoferes.Size = new System.Drawing.Size(874, 228);
+            this.tlpChoferes.TabIndex = 4;
+            // 
+            // lblCedula
+            // 
+            this.lblCedula.AutoSize = true;
+            this.lblCedula.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblCedula.ForeColor = System.Drawing.Color.White;
+            this.lblCedula.Location = new System.Drawing.Point(440, 73);
+            this.lblCedula.Name = "lblCedula";
+            this.lblCedula.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.lblCedula.Size = new System.Drawing.Size(47, 30);
+            this.lblCedula.TabIndex = 1;
+            this.lblCedula.Text = "Cédula:";
+            // 
+            // lblTitulo
+            // 
+            this.lblTitulo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpChoferes.SetColumnSpan(this.lblTitulo, 2);
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblTitulo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTitulo.Location = new System.Drawing.Point(33, 30);
+            this.lblTitulo.Margin = new System.Windows.Forms.Padding(3, 0, 3, 20);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(808, 23);
+            this.lblTitulo.TabIndex = 0;
+            this.lblTitulo.Text = "DATOS DEL CHOFER";
+            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblLicencia
+            // 
+            this.lblLicencia.AutoSize = true;
+            this.lblLicencia.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblLicencia.ForeColor = System.Drawing.Color.White;
+            this.lblLicencia.Location = new System.Drawing.Point(440, 129);
+            this.lblLicencia.Name = "lblLicencia";
+            this.lblLicencia.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.lblLicencia.Size = new System.Drawing.Size(53, 30);
+            this.lblLicencia.TabIndex = 7;
+            this.lblLicencia.Text = "Licencia:";
+            // 
+            // lblNombre
+            // 
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblNombre.ForeColor = System.Drawing.Color.White;
+            this.lblNombre.Location = new System.Drawing.Point(33, 73);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.lblNombre.Size = new System.Drawing.Size(54, 30);
+            this.lblNombre.TabIndex = 5;
+            this.lblNombre.Text = "Nombre:";
+            // 
+            // flpToolbar
+            // 
+            this.flpToolbar.Controls.Add(this.btnModoEdicion);
+            this.flpToolbar.Controls.Add(this.btnVerTabla);
+            this.flpToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flpToolbar.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flpToolbar.Location = new System.Drawing.Point(30, 10);
+            this.flpToolbar.Name = "flpToolbar";
+            this.flpToolbar.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.flpToolbar.Size = new System.Drawing.Size(874, 45);
+            this.flpToolbar.TabIndex = 7;
+            // 
+            // btnModoEdicion
+            // 
+            this.btnModoEdicion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnModoEdicion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnModoEdicion.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnModoEdicion.ForeColor = System.Drawing.Color.White;
+            this.btnModoEdicion.Image = ((System.Drawing.Image)(resources.GetObject("btnModoEdicion.Image")));
+            this.btnModoEdicion.Location = new System.Drawing.Point(679, 3);
+            this.btnModoEdicion.Name = "btnModoEdicion";
+            this.btnModoEdicion.Size = new System.Drawing.Size(162, 36);
+            this.btnModoEdicion.TabIndex = 0;
+            this.btnModoEdicion.Text = "Editar";
+            this.btnModoEdicion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnModoEdicion.UseVisualStyleBackColor = true;
+            this.btnModoEdicion.Click += new System.EventHandler(this.btnModoEdicion_Click);
+            // 
+            // btnVerTabla
+            // 
+            this.btnVerTabla.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnVerTabla.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVerTabla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVerTabla.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnVerTabla.ForeColor = System.Drawing.Color.White;
+            this.btnVerTabla.Image = ((System.Drawing.Image)(resources.GetObject("btnVerTabla.Image")));
+            this.btnVerTabla.Location = new System.Drawing.Point(508, 3);
+            this.btnVerTabla.Name = "btnVerTabla";
+            this.btnVerTabla.Size = new System.Drawing.Size(165, 36);
+            this.btnVerTabla.TabIndex = 1;
+            this.btnVerTabla.Text = "Ver Tabla";
+            this.btnVerTabla.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnVerTabla.UseVisualStyleBackColor = true;
+            this.btnVerTabla.Click += new System.EventHandler(this.btnVerTabla_Click);
+            // 
+            // lblTelefono
+            // 
+            this.lblTelefono.AutoSize = true;
+            this.lblTelefono.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblTelefono.Location = new System.Drawing.Point(33, 129);
+            this.lblTelefono.Name = "lblTelefono";
+            this.lblTelefono.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.lblTelefono.Size = new System.Drawing.Size(53, 30);
+            this.lblTelefono.TabIndex = 11;
+            this.lblTelefono.Text = "Teléfono";
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNombre.Location = new System.Drawing.Point(33, 106);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(401, 20);
+            this.txtNombre.TabIndex = 13;
+            // 
+            // txtTelefono
+            // 
+            this.txtTelefono.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTelefono.Location = new System.Drawing.Point(33, 162);
+            this.txtTelefono.Mask = "(000) 000-0000";
+            this.txtTelefono.Name = "txtTelefono";
+            this.txtTelefono.Size = new System.Drawing.Size(401, 20);
+            this.txtTelefono.TabIndex = 14;
+            this.txtTelefono.Click += new System.EventHandler(this.AcomodarCursor_Click);
+            // 
+            // txtCedula
+            // 
+            this.txtCedula.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCedula.Location = new System.Drawing.Point(440, 106);
+            this.txtCedula.Mask = "000-0000000-0";
+            this.txtCedula.Name = "txtCedula";
+            this.txtCedula.Size = new System.Drawing.Size(401, 20);
+            this.txtCedula.TabIndex = 15;
+            this.txtCedula.Click += new System.EventHandler(this.AcomodarCursor_Click);
+            // 
+            // txtLicencia
+            // 
+            this.txtLicencia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLicencia.Location = new System.Drawing.Point(440, 162);
+            this.txtLicencia.Mask = "000-0000000-0";
+            this.txtLicencia.Name = "txtLicencia";
+            this.txtLicencia.Size = new System.Drawing.Size(401, 20);
+            this.txtLicencia.TabIndex = 16;
+            this.txtLicencia.Click += new System.EventHandler(this.AcomodarCursor_Click);
             // 
             // FrmChoferes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(934, 712);
             this.Controls.Add(this.dgvChoferes);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.flpAcciones);
+            this.Controls.Add(this.tlpChoferes);
+            this.Controls.Add(this.flpToolbar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmChoferes";
+            this.Padding = new System.Windows.Forms.Padding(30, 10, 30, 10);
             this.Text = "FrmChoferes";
             this.Load += new System.EventHandler(this.FrmChoferes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvChoferes)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.flpAcciones.ResumeLayout(false);
+            this.tlpChoferes.ResumeLayout(false);
+            this.tlpChoferes.PerformLayout();
+            this.flpToolbar.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtCedula;
-        private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.TextBox txtLicencia;
-        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.DataGridView dgvChoferes;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.FlowLayoutPanel flpAcciones;
+        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnActualizar;
-        private System.Windows.Forms.Button btnLimpiar;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.TableLayoutPanel tlpChoferes;
+        private System.Windows.Forms.Label lblCedula;
+        private System.Windows.Forms.Label lblTitulo;
+        private System.Windows.Forms.Label lblLicencia;
+        private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.FlowLayoutPanel flpToolbar;
+        private System.Windows.Forms.Button btnModoEdicion;
+        private System.Windows.Forms.Button btnVerTabla;
+        private System.Windows.Forms.Label lblTelefono;
+        private System.Windows.Forms.MaskedTextBox txtNombre;
+        private System.Windows.Forms.MaskedTextBox txtTelefono;
+        private System.Windows.Forms.MaskedTextBox txtCedula;
+        private System.Windows.Forms.MaskedTextBox txtLicencia;
     }
 }
 

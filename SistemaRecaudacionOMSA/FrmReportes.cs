@@ -68,38 +68,30 @@ namespace SistemaRecaudacionOMSA
         // Método para personalizar la apariencia visual de la tabla de datos
         private void AplicarEstiloTabla()
         {
-            // Configuración de estructura
-            dgvReporte.AllowUserToAddRows = false;
-            dgvReporte.AllowUserToResizeRows = false;
-            dgvReporte.RowHeadersVisible = false;
+            // Opciones generales
             dgvReporte.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvReporte.RowHeadersVisible = false;
+
+            // Bordes y colores de cuadrícula
             dgvReporte.BorderStyle = BorderStyle.None;
-            dgvReporte.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvReporte.ReadOnly = true; // Para que no escriban encima del reporte
-
-            // 🌙 COLORES DARK MODE
-            dgvReporte.BackgroundColor = Color.FromArgb(32, 32, 32); // Fondo oscuro
-            dgvReporte.GridColor = Color.FromArgb(64, 64, 64);
             dgvReporte.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvReporte.GridColor = Color.FromArgb(64, 64, 64);
 
-            // Encabezados
+            // Diseño de las Cabeceras (Sin bordes blancos)
             dgvReporte.EnableHeadersVisualStyles = false;
-            dgvReporte.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 20, 20); // Casi negro
+            dgvReporte.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvReporte.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
             dgvReporte.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvReporte.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvReporte.ColumnHeadersHeight = 40;
-            dgvReporte.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvReporte.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(20, 20, 20);
 
-            // Filas normales
-            dgvReporte.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40); // Gris oscuro
+            // Diseño de las Filas (Dark Flat)
+            dgvReporte.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
             dgvReporte.DefaultCellStyle.ForeColor = Color.White;
+            dgvReporte.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204); // Azul al seleccionar
+            dgvReporte.DefaultCellStyle.SelectionForeColor = Color.White;
             dgvReporte.DefaultCellStyle.Font = new Font("Segoe UI", 10);
             dgvReporte.RowTemplate.Height = 35;
-
-            // Color de Selección (Azul Windows)
-            dgvReporte.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
-            dgvReporte.DefaultCellStyle.SelectionForeColor = Color.White;
         }
     }
 }

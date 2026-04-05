@@ -1,110 +1,111 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Threading.Tasks; // Obligatorio para el asincronismo
+using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    // TODO: Requisito - Implementación de Interfaz ICrud
     public class D_Chofer : ICrud
     {
-        // Instancia para establecer la comunicación con el servidor SQL
         private ConexionBD conexion = new ConexionBD();
 
-        // TODO: Requisito - Llamada Asíncrona (Async/Await)
-        // Método para extraer y listar todos los choferes registrados de forma asíncrona
         public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
             SqlCommand comando = new SqlCommand();
             SqlDataReader leer;
 
-            // Abrimos el canal y preparamos la orden de consulta
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "SELECT * FROM Chofer";
+            // CAMBIO 1: Traemos el Teléfono y el Estado, y filtramos a los inactivos
+            comando.CommandText = "SELECT ID_Chofer, Cedula, NombreCompleto, Telefono, NumeroLicencia, Estado FROM Chofer WHERE Estado != 'Inactivo'";
             comando.CommandType = CommandType.Text;
 
-            // Ejecutamos la consulta asíncrona y volcamos los resultados en la tabla
             leer = await comando.ExecuteReaderAsync();
             tabla.Load(leer);
 
-            // Cerramos la comunicación de forma segura
             conexion.CerrarConexion();
             return tabla;
         }
 
-        // TODO: Requisito - Llamada Asíncrona usando el arreglo de parámetros de la Interfaz
-        // Método para registrar un nuevo chofer en la base de datos
         public async Task InsertarAsync(params object[] parametros)
         {
-            // Extraemos los datos del empaque basándonos en tu código original
+            // CAMBIO 2: Agregamos la extracción del Teléfono (posición 3 del arreglo)
             string cedula = parametros[0].ToString();
             string nombreCompleto = parametros[1].ToString();
             string numeroLicencia = parametros[2].ToString();
+            string telefono = parametros[3].ToString(); // <-- NUEVO
 
             SqlCommand comando = new SqlCommand();
-
-            // Abrimos el canal y preparamos la orden de inserción
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "INSERT INTO Chofer (Cedula, NombreCompleto, NumeroLicencia) VALUES (@Cedula, @Nombre, @Licencia)";
+
+            // Agregamos el Teléfono al INSERT
+            comando.CommandText = "INSERT INTO Chofer (Cedula, NombreCompleto, NumeroLicencia, Telefono) VALUES (@Cedula, @Nombre, @Licencia, @Telefono)";
             comando.CommandType = CommandType.Text;
 
-            // Empaquetamos los datos de forma segura para evitar hackeos (Inyección SQL)
             comando.Parameters.AddWithValue("@Cedula", cedula);
             comando.Parameters.AddWithValue("@Nombre", nombreCompleto);
             comando.Parameters.AddWithValue("@Licencia", numeroLicencia);
+            comando.Parameters.AddWithValue("@Telefono", telefono); // <-- NUEVO
 
-            // Ejecutamos la acción en el servidor de forma asíncrona y limpiamos el empaque
             await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
-
             conexion.CerrarConexion();
         }
 
-        // Método para modificar los datos de un chofer ya existente de forma asíncrona
         public async Task EditarAsync(params object[] parametros)
         {
-            // Extraemos los datos del empaque basándonos en tu código original
+            // CAMBIO 3: Agregamos la extracción del Teléfono (posición 4 del arreglo)
             int id = Convert.ToInt32(parametros[0]);
             string cedula = parametros[1].ToString();
             string nombre = parametros[2].ToString();
             string licencia = parametros[3].ToString();
+            string telefono = parametros[4].ToString(); // <-- NUEVO
 
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
 
-            // Preparamos la orden SQL de actualización
-            comando.CommandText = "UPDATE Chofer SET Cedula = @cedula, NombreCompleto = @nombre, NumeroLicencia = @licencia WHERE ID_Chofer = @id";
+            // Agregamos el Teléfono al UPDATE
+            comando.CommandText = "UPDATE Chofer SET Cedula = @cedula, NombreCompleto = @nombre, NumeroLicencia = @licencia, Telefono = @telefono WHERE ID_Chofer = @id";
             comando.CommandType = CommandType.Text;
 
-            // Asignamos los nuevos valores de forma segura
             comando.Parameters.AddWithValue("@cedula", cedula);
             comando.Parameters.AddWithValue("@nombre", nombre);
             comando.Parameters.AddWithValue("@licencia", licencia);
+            comando.Parameters.AddWithValue("@telefono", telefono); // <-- NUEVO
             comando.Parameters.AddWithValue("@id", id);
 
-            // Ejecutamos asíncronamente
             await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
 
-        // Método para borrar permanentemente el registro de un chofer de forma asíncrona
         public async Task EliminarAsync(int id)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
 
-            // Preparamos la orden SQL de eliminación
-            comando.CommandText = "DELETE FROM Chofer WHERE ID_Chofer = @id";
+            // CAMBIO 4: El Borrado Lógico. Cambiamos DELETE por UPDATE
+            comando.CommandText = "UPDATE Chofer SET Estado = 'Inactivo' WHERE ID_Chofer = @id";
             comando.CommandType = CommandType.Text;
 
             comando.Parameters.AddWithValue("@id", id);
 
-            // Ejecutamos asíncronamente
             await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
+        }
+
+        public async Task<bool> ExisteCedulaAsync(string cedula)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion(); // Usamos tu método de siempre
+            comando.CommandText = "SELECT COUNT(*) FROM Chofer WHERE Cedula = @cedula AND Estado != 'Inactivo'";
+            comando.Parameters.AddWithValue("@cedula", cedula);
+
+            int conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
+
+            conexion.CerrarConexion(); // Cerramos como lo haces tú
+            return conteo > 0;
         }
     }
 }

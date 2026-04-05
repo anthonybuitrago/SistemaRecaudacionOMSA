@@ -35,7 +35,6 @@ namespace CapaNegocios
         {
             try
             {
-                // Llamamos al método asíncrono de la capa de datos
                 return await objDatos.MostrarAsync();
             }
             catch (Exception ex)
@@ -45,44 +44,56 @@ namespace CapaNegocios
             }
         }
 
-        // Método para procesar y guardar un nuevo ticket de forma asíncrona
-        public async Task InsertarTicketAsync(string idViaje, string montoPagado)
+        // NUEVO MÉTODO: Para llenar el ComboBox inteligente con solo viajes "Activos"
+        public async Task<DataTable> MostrarViajesActivosAsync()
         {
             try
             {
-                // 1. Validaciones de negocio básicas (Que no envíen campos vacíos)
-                if (string.IsNullOrWhiteSpace(idViaje) || string.IsNullOrWhiteSpace(montoPagado))
-                {
-                    throw new Exception("Debe seleccionar un viaje y especificar el monto pagado.");
-                }
-
-                // 2. Convertimos los textos recibidos a sus tipos de datos correctos
-                int viajeId = Convert.ToInt32(idViaje);
-                decimal monto = Convert.ToDecimal(montoPagado);
-
-                // 3. Regla de negocio: El monto no puede ser negativo ni cero
-                if (monto <= 0)
-                {
-                    throw new Exception("El monto pagado debe ser mayor a cero.");
-                }
-
-                DateTime fechaActual = DateTime.Now;
-
-                // 4. Instanciamos el objeto Ticket usando la fecha y hora actuales
-                Ticket nuevoTicket = new Ticket(0, viajeId, fechaActual, monto);
-
-                // 5. Mandamos los datos a la Capa de Datos esperando (await) a que termine
-                await objDatos.InsertarAsync(nuevoTicket.ID_Viaje, nuevoTicket.HoraEmision, nuevoTicket.MontoPagado);
-            }
-            catch (FormatException)
-            {
-                // Este catch específico atrapa el error si el usuario escribe letras en lugar de números
-                throw new Exception("Por favor, ingrese valores numéricos válidos. No se permiten letras.");
+                return await objDatos.MostrarViajesActivosParaVentaAsync();
             }
             catch (Exception ex)
             {
-                // Este atrapa cualquier otro error general (como pérdida de conexión)
-                throw new Exception("Error al guardar el ticket: " + ex.Message);
+                throw new Exception("Error al cargar los viajes disponibles: " + ex.Message);
+            }
+        }
+
+        // MODIFICADO: Procesa la venta basada en CANTIDAD
+        public async Task VenderTicketsAsync(string idViaje, string tarifaPorTicket, string cantidadTickets)
+        {
+            try
+            {
+                // 1. Validaciones básicas
+                if (string.IsNullOrWhiteSpace(idViaje) || string.IsNullOrWhiteSpace(tarifaPorTicket) || string.IsNullOrWhiteSpace(cantidadTickets))
+                {
+                    throw new Exception("Debe seleccionar un viaje, tarifa y cantidad de tickets.");
+                }
+
+                // 2. Conversiones
+                int viajeId = Convert.ToInt32(idViaje);
+                decimal tarifa = Convert.ToDecimal(tarifaPorTicket);
+                int cantidad = Convert.ToInt32(cantidadTickets);
+
+                // 3. Reglas de negocio restrictivas
+                if (tarifa <= 0) throw new Exception("La tarifa del pasaje debe ser mayor a cero.");
+                if (cantidad <= 0) throw new Exception("Debe vender al menos 1 ticket.");
+
+                DateTime fechaActual = DateTime.Now;
+
+                // 4. El Ciclo de Venta (El "Truco" del Punto de Venta)
+                // Si el cliente pide 4 tickets, guardamos 4 registros individuales para que la auditoría cuadre
+                for (int i = 0; i < cantidad; i++)
+                {
+                    Ticket nuevoTicket = new Ticket(0, viajeId, fechaActual, tarifa);
+                    await objDatos.InsertarAsync(nuevoTicket.ID_Viaje, nuevoTicket.HoraEmision, nuevoTicket.MontoPagado);
+                }
+            }
+            catch (FormatException)
+            {
+                throw new Exception("Error de formato: Asegúrese de que la tarifa y cantidad sean números válidos.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al registrar la venta: " + ex.Message);
             }
         }
     }

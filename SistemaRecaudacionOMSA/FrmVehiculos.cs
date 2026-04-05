@@ -1,8 +1,7 @@
 ﻿using CapaNegocios;
 using System;
-using System.Data;
 using System.Drawing;
-using System.Threading.Tasks; // Obligatorio para Task
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
@@ -12,247 +11,288 @@ namespace SistemaRecaudacionOMSA
         // Instancia para la comunicación con la Capa de Negocio
         private N_Vehiculo objNegocio = new N_Vehiculo();
 
-        // Variable para almacenar el ID del vehículo seleccionado
         private int idVehiculo = 0;
-        private string modoFormulario;
+        private string fichaOriginal = "";
+        private string placaOriginal = "";
+        private string modeloOriginal = "";
+        private string capacidadOriginal = "";
 
-        // Constructor que inicializa los componentes de la ventana
         public FrmVehiculos()
         {
             InitializeComponent();
+
+            // Estética inicial de la tabla
+            dgvVehiculos.BackgroundColor = Color.FromArgb(28, 28, 28);
+            dgvVehiculos.BorderStyle = BorderStyle.None;
+            dgvVehiculos.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dgvVehiculos.DefaultCellStyle.ForeColor = Color.White;
+
             AplicarEstiloTabla();
-            ConfigurarVistaSegunModo();
         }
 
-        private void ConfigurarVistaSegunModo()
+        private async void FrmVehiculos_Load(object sender, EventArgs e)
         {
-            if (modoFormulario == "Consulta")
+            // Ocultamos la tabla al inicio
+            dgvVehiculos.Visible = false;
+
+            await MostrarVehiculosTablaAsync();
+
+            // Bloqueamos los campos y labels al inicio
+            HabilitarCampos(false);
+        }
+
+        // --- LÓGICA DE INTERFAZ (IGUAL A CHOFERES) ---
+
+        private void btnVerTabla_Click(object sender, EventArgs e)
+        {
+            dgvVehiculos.Visible = !dgvVehiculos.Visible;
+
+            if (dgvVehiculos.Visible)
             {
-                // Oculta las cajas de texto
-                panel1.Visible = false;
-                // Hace la tabla gigante
-                dgvVehiculos.Dock = DockStyle.Fill;
+                btnVerTabla.Text = "Ocultar Tabla";
+                btnVerTabla.ForeColor = Color.Yellow;
+                btnVerTabla.Image = Properties.Resources.view_off;
             }
             else
             {
-                // Oculta la tabla para dejar solo el registro
-                dgvVehiculos.Visible = false;
-                // Bloquea los campos al iniciar
-                BloquearCampos();
+                btnVerTabla.Text = "Ver Tabla";
+                btnVerTabla.ForeColor = Color.White;
+                btnVerTabla.Image = Properties.Resources.view;
             }
         }
 
-        // Evento ASÍNCRONO que carga los datos al abrir la ventana
-        private async void FrmVehiculos_Load(object sender, EventArgs e)
+        private void btnModoEdicion_Click(object sender, EventArgs e)
         {
-            await MostrarVehiculosTablaAsync();
+            bool estaAbriendo = !txtFicha.Enabled;
+            HabilitarCampos(estaAbriendo);
+
+            if (estaAbriendo)
+            {
+                btnModoEdicion.Text = "Cerrar Edición";
+                btnModoEdicion.ForeColor = Color.Tomato;
+                btnModoEdicion.Image = Properties.Resources.open_lock;
+            }
+            else
+            {
+                btnModoEdicion.Text = "Editar Datos";
+                btnModoEdicion.ForeColor = Color.White;
+                btnModoEdicion.Image = Properties.Resources.closed_lock;
+                LimpiarCampos();
+            }
         }
 
-        // Método ASÍNCRONO para solicitar y mostrar la lista de vehículos registrados
-        private async Task MostrarVehiculosTablaAsync()
+        private void HabilitarCampos(bool estado)
         {
-            try
-            {
-                dgvVehiculos.DataSource = await objNegocio.MostrarVehiculosAsync();
-                AplicarEstiloTabla();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar vehículos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // 1. Color para los Labels (Blanco si activo, Gris si apagado)
+            Color colorLabel = estado ? Color.White : Color.Gray;
+
+            lblFicha.ForeColor = colorLabel;
+            lblPlaca.ForeColor = colorLabel;
+            lblModelo.ForeColor = colorLabel;
+            lblCapacidad.ForeColor = colorLabel;
+
+            // 2. Control de los campos
+            txtFicha.Enabled = estado;
+            txtPlaca.Enabled = estado;
+            txtModelo.Enabled = estado;
+            txtCapacidad.Enabled = estado;
+
+            // 3. Control de los botones
+            btnGuardar.Enabled = estado;
+            btnActualizar.Enabled = estado;
+            btnEliminar.Enabled = estado;
         }
 
-        // Evento ASÍNCRONO para registrar un nuevo vehículo en el sistema
-        private async void btnGuardar_Click(object sender, EventArgs e)
-        {
-            // Validación de campos obligatorios
-            if (string.IsNullOrWhiteSpace(txtFicha.Text) || string.IsNullOrWhiteSpace(txtPlaca.Text) || string.IsNullOrWhiteSpace(txtCapacidad.Text))
-            {
-                MessageBox.Show("Por favor, complete todos los campos del vehículo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+        // --- EVENTOS DE LA TABLA ---
 
-            try
-            {
-                // Validación de lógica de negocio (capacidad positiva)
-                if (Convert.ToInt32(txtCapacidad.Text) <= 0)
-                {
-                    MessageBox.Show("La capacidad debe ser mayor a cero.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Envío asíncrono de datos a la Capa de Negocio
-                await objNegocio.InsertarVehiculoAsync(txtFicha.Text, txtPlaca.Text, txtCapacidad.Text);
-                MessageBox.Show("Vehículo guardado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Refresco visual y limpieza
-                await MostrarVehiculosTablaAsync();
-                btnLimpiar.PerformClick();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Evento ASÍNCRONO para guardar las modificaciones de un vehículo existente
-        private async void btnActualizar_Click(object sender, EventArgs e)
-        {
-            // Validación de selección previa
-            if (idVehiculo == 0)
-            {
-                MessageBox.Show("Seleccione un vehículo de la tabla.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                // Envío asíncrono de la actualización a la Capa de Negocio
-                await objNegocio.EditarVehiculoAsync(idVehiculo, txtFicha.Text, txtPlaca.Text, txtCapacidad.Text);
-                MessageBox.Show("Vehículo actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                await MostrarVehiculosTablaAsync();
-                btnLimpiar.PerformClick();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al actualizar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Evento ASÍNCRONO para borrar permanentemente un vehículo
-        private async void btnEliminar_Click(object sender, EventArgs e)
-        {
-            if (idVehiculo == 0)
-            {
-                MessageBox.Show("Seleccione un vehículo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            DialogResult respuesta = MessageBox.Show("¿Está seguro de eliminar este vehículo?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (respuesta == DialogResult.Yes)
-            {
-                try
-                {
-                    await objNegocio.EliminarVehiculoAsync(idVehiculo);
-                    MessageBox.Show("Vehículo eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    await MostrarVehiculosTablaAsync();
-                    btnLimpiar.PerformClick();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        // --- LÓGICA DE INTERFAZ: BLOQUEO Y HABILITACIÓN ---
-
-        private void BloquearCampos()
-        {
-            txtFicha.Enabled = false;
-            txtPlaca.Enabled = false;
-            txtCapacidad.Enabled = false;
-            btnGuardar.Enabled = false;
-            btnActualizar.Enabled = false;
-            btnEliminar.Enabled = false;
-        }
-
-        private void HabilitarCampos()
-        {
-            txtFicha.Enabled = true;
-            txtPlaca.Enabled = true;
-            txtCapacidad.Enabled = true;
-        }
-
-        // Evento para reiniciar el formulario (Botón "Nuevo")
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            txtFicha.Clear();
-            txtPlaca.Clear();
-            txtCapacidad.Clear();
-            idVehiculo = 0;
-
-            HabilitarCampos();
-            txtFicha.Focus();
-
-            btnGuardar.Enabled = true;
-            btnActualizar.Enabled = false;
-            btnEliminar.Enabled = false;
-
-            if (modoFormulario.Equals("Consulta", StringComparison.OrdinalIgnoreCase))
-            {
-                panel1.Visible = false; // Se esconde al terminar
-            }
-        }
-
-        // Evento para seleccionar un registro y cargar edición
         private void dgvVehiculos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                idVehiculo = Convert.ToInt32(dgvVehiculos.CurrentRow.Cells["ID_Vehiculo"].Value);
-                txtFicha.Text = dgvVehiculos.CurrentRow.Cells["Ficha"].Value.ToString();
-                txtPlaca.Text = dgvVehiculos.CurrentRow.Cells["Placa"].Value.ToString();
-                txtCapacidad.Text = dgvVehiculos.CurrentRow.Cells["Capacidad"].Value.ToString();
+                DataGridViewRow fila = dgvVehiculos.Rows[e.RowIndex];
 
-                panel1.Visible = true; // Aparece el cajón para editar
+                idVehiculo = Convert.ToInt32(fila.Cells["ID_Vehiculo"].Value);
 
-                HabilitarCampos();
-                btnGuardar.Enabled = false;
+                // Cargamos los campos
+                txtFicha.Text = fichaOriginal = fila.Cells["Ficha"].Value.ToString();
+                txtPlaca.Text = placaOriginal = fila.Cells["Placa"].Value.ToString();
+                txtModelo.Text = modeloOriginal = fila.Cells["Modelo"].Value.ToString();
+                txtCapacidad.Text = capacidadOriginal = fila.Cells["Capacidad"].Value.ToString();
+
+                // IMPORTANTE: NO deshabilitamos btnGuardar, solo activamos los otros
                 btnActualizar.Enabled = true;
                 btnEliminar.Enabled = true;
             }
         }
 
-        // Método de Estilos Visuales (Mantenemos tu diseño)
-        private void AplicarEstiloTabla()
+        // --- MÉTODOS CRUD ASÍNCRONOS ---
+
+        private async Task MostrarVehiculosTablaAsync()
         {
-            dgvVehiculos.AllowUserToAddRows = false;
-            dgvVehiculos.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dgvVehiculos.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvVehiculos.BackgroundColor = Color.White;
-            dgvVehiculos.BorderStyle = BorderStyle.None;
-            dgvVehiculos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvVehiculos.MultiSelect = false;
-            dgvVehiculos.ReadOnly = true;
-            dgvVehiculos.RowHeadersVisible = false;
-            dgvVehiculos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvVehiculos.EnableHeadersVisualStyles = false;
-
-            dgvVehiculos.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#404040");
-            dgvVehiculos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvVehiculos.ColumnHeadersDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#404040");
-            dgvVehiculos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            dgvVehiculos.ColumnHeadersHeight = 40;
-
-            dgvVehiculos.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvVehiculos.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E0F2E9");
-            dgvVehiculos.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dgvVehiculos.RowTemplate.Height = 35;
-
-            if (dgvVehiculos.Columns.Count > 0)
+            try
             {
-                if (dgvVehiculos.Columns.Contains("ID_Vehiculo")) dgvVehiculos.Columns["ID_Vehiculo"].HeaderText = "ID";
-                if (dgvVehiculos.Columns.Contains("Ficha")) dgvVehiculos.Columns["Ficha"].HeaderText = "Ficha OMSA";
-                if (dgvVehiculos.Columns.Contains("Placa")) dgvVehiculos.Columns["Placa"].HeaderText = "Placa";
-                if (dgvVehiculos.Columns.Contains("Capacidad")) dgvVehiculos.Columns["Capacidad"].HeaderText = "Capacidad";
+                dgvVehiculos.DataSource = await objNegocio.MostrarVehiculosAsync();
+
+                // Orden visual
+                if (dgvVehiculos.Columns["Ficha"] != null) dgvVehiculos.Columns["Ficha"].DisplayIndex = 0;
+                if (dgvVehiculos.Columns["Placa"] != null) dgvVehiculos.Columns["Placa"].DisplayIndex = 1;
+                if (dgvVehiculos.Columns["Modelo"] != null) dgvVehiculos.Columns["Modelo"].DisplayIndex = 2;
+                if (dgvVehiculos.Columns["Capacidad"] != null) dgvVehiculos.Columns["Capacidad"].DisplayIndex = 3;
+
+                // Ocultar columnas técnicas
+                if (dgvVehiculos.Columns["ID_Vehiculo"] != null) dgvVehiculos.Columns["ID_Vehiculo"].Visible = false;
+                if (dgvVehiculos.Columns["Estado"] != null) dgvVehiculos.Columns["Estado"].Visible = false;
+
+                AplicarEstiloTabla();
+            }
+            catch (Exception ex) { MessageBox.Show("Error al cargar datos: " + ex.Message); }
+        }
+
+        private async void btnGuardar_Click(object sender, EventArgs e)
+        {
+            // Si hay un ID seleccionado, avisamos que esto creará un duplicado o un registro nuevo
+            if (idVehiculo != 0)
+            {
+                DialogResult result = MessageBox.Show("¿Desea crear un nuevo registro con estos datos?",
+                                                     "Aviso de duplicidad", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.No) return;
             }
 
-            foreach (DataGridViewColumn columna in dgvVehiculos.Columns)
+            if (string.IsNullOrWhiteSpace(txtFicha.Text) || string.IsNullOrWhiteSpace(txtPlaca.Text))
             {
-                columna.SortMode = DataGridViewColumnSortMode.NotSortable;
+                MessageBox.Show("Por favor, complete los campos obligatorios para continuar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Validación de duplicados en BD
+                if (await objNegocio.VerificarFichaExiste(txtFicha.Text))
+                {
+                    MessageBox.Show("Esta Ficha ya está registrada.");
+                    return;
+                }
+
+                await objNegocio.InsertarVehiculoAsync(txtFicha.Text, txtPlaca.Text, txtModelo.Text, txtCapacidad.Text);
+                MessageBox.Show("¡Vehículo guardado!");
+                await MostrarVehiculosTablaAsync();
+                LimpiarCampos(); // Esto pondrá el idVehiculo en 0
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
+        }
+
+        private async void btnActualizar_Click(object sender, EventArgs e)
+        {
+            if (idVehiculo == 0) return;
+
+            if (!HayCambiosVehiculo())
+            {
+                MessageBox.Show("No hay cambios para actualizar.", "Aviso");
+                return;
+            }
+
+            // Alerta de confirmación
+            if (MessageBox.Show("¿Desea guardar los cambios realizados?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    await objNegocio.EditarVehiculoAsync(idVehiculo, txtFicha.Text, txtPlaca.Text, txtModelo.Text, txtCapacidad.Text);
+                    MessageBox.Show("Cambios guardados.");
+                    await MostrarVehiculosTablaAsync();
+                }
+                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
             }
         }
 
-        private void txtCapacidad_KeyPress(object sender, KeyPressEventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            if (idVehiculo == 0) return;
+
+            // Alerta de eliminación
+            if (MessageBox.Show("¿Está seguro de eliminar este vehículo?", "Eliminar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                e.Handled = true;
+                try
+                {
+                    await objNegocio.EliminarVehiculoAsync(idVehiculo);
+                    MessageBox.Show("Vehículo eliminado.");
+                    await MostrarVehiculosTablaAsync();
+                    LimpiarCampos();
+                }
+                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
             }
+        }
+
+        // --- ESTILO Y RESTRICCIONES ---
+
+        private void AplicarEstiloTabla()
+        {
+            // Colores de fondo y bordes
+            dgvVehiculos.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dgvVehiculos.BorderStyle = BorderStyle.None;
+            dgvVehiculos.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvVehiculos.GridColor = Color.FromArgb(64, 64, 64);
+
+            // Cabecera (Headers)
+            dgvVehiculos.EnableHeadersVisualStyles = false; // ¡IMPORTANTE para poder cambiar el color!
+            dgvVehiculos.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvVehiculos.ColumnHeadersHeight = 40;
+
+            // Celdas y Filas
+            dgvVehiculos.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dgvVehiculos.DefaultCellStyle.ForeColor = Color.White;
+            dgvVehiculos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204);
+            dgvVehiculos.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvVehiculos.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvVehiculos.RowTemplate.Height = 35;
+            dgvVehiculos.RowHeadersVisible = false;
+
+            // Ajuste automático y lectura
+            dgvVehiculos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVehiculos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVehiculos.ReadOnly = true;
+            dgvVehiculos.MultiSelect = false;
+
+            // Renombrar y Ocultar
+            if (dgvVehiculos.Columns["ID_Vehiculo"] != null) dgvVehiculos.Columns["ID_Vehiculo"].Visible = false;
+            if (dgvVehiculos.Columns["Estado"] != null) dgvVehiculos.Columns["Estado"].Visible = false;
+
+            // Si quieres que los títulos se vean bonitos
+            if (dgvVehiculos.Columns["Ficha"] != null) dgvVehiculos.Columns["Ficha"].HeaderText = "Ficha";
+            if (dgvVehiculos.Columns["Placa"] != null) dgvVehiculos.Columns["Placa"].HeaderText = "Placa";
+        }
+
+        private void AcomodarCursor_Click(object sender, EventArgs e)
+        {
+            MaskedTextBox m = sender as MaskedTextBox;
+            if (m != null && m.MaskedTextProvider != null)
+            {
+                int pos = m.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
+                if (pos != -1 && m.SelectionStart > pos) m.SelectionStart = pos;
+            }
+        }
+
+        private void LimpiarCampos()
+        {
+            idVehiculo = 0;
+            txtFicha.Clear();
+            txtPlaca.Clear();
+            txtModelo.Clear();
+            txtCapacidad.Clear();
+            fichaOriginal = placaOriginal = modeloOriginal = capacidadOriginal = "";
+        }
+
+        // Función para detectar si hubo cambios
+        private bool HayCambiosVehiculo()
+        {
+            return txtFicha.Text != fichaOriginal ||
+                   txtPlaca.Text != placaOriginal ||
+                   txtModelo.Text != modeloOriginal ||
+                   txtCapacidad.Text != capacidadOriginal;
         }
     }
 }

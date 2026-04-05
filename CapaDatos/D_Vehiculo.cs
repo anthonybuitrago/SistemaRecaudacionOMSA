@@ -12,82 +12,102 @@ namespace CapaDatos
         private ConexionBD conexion = new ConexionBD();
 
         // TODO: Requisito - Llamada Asíncrona (Async/Await)
-        // Método para extraer y listar todos los vehículos registrados de forma asíncrona
+        // Método para extraer y listar vehículos que NO estén inactivos
         public async Task<DataTable> MostrarAsync()
         {
-            // Abrimos el canal y preparamos la orden de consulta
-            SqlCommand comando = new SqlCommand("SELECT * FROM Vehiculo", conexion.AbrirConexion());
+            // Cambiamos el SELECT * por las columnas específicas incluyendo Modelo y Estado
+            string query = "SELECT ID_Vehiculo, Ficha, Placa, Modelo, Capacidad, Estado FROM Vehiculo WHERE Estado != 'Inactivo'";
+
+            SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
             DataTable tabla = new DataTable();
 
-            // Ejecutamos la consulta de forma asíncrona y volcamos los resultados en la tabla
             SqlDataReader leer = await comando.ExecuteReaderAsync();
             tabla.Load(leer);
 
-            // Cerramos la comunicación de forma segura
             conexion.CerrarConexion();
             return tabla;
         }
 
         // TODO: Requisito - Llamada Asíncrona usando el arreglo de parámetros de la Interfaz
-        // Método para registrar un nuevo vehículo en la base de datos
+        // Registro de un nuevo vehículo incluyendo el campo Modelo
         public async Task InsertarAsync(params object[] parametros)
         {
-            // Extraemos los datos del empaque: Ficha, Placa y Capacidad
+            // Extraemos 4 datos del empaque (Ficha, Placa, Modelo, Capacidad)
             string ficha = parametros[0].ToString();
             string placa = parametros[1].ToString();
-            int capacidad = Convert.ToInt32(parametros[2]);
+            string modelo = parametros[2].ToString();
+            int capacidad = Convert.ToInt32(parametros[3]);
 
-            // Abrimos el canal y preparamos la orden de inserción
-            SqlCommand comando = new SqlCommand("INSERT INTO Vehiculo (Ficha, Placa, Capacidad) VALUES (@ficha, @placa, @capacidad)", conexion.AbrirConexion());
+            SqlCommand comando = new SqlCommand(
+                "INSERT INTO Vehiculo (Ficha, Placa, Modelo, Capacidad) VALUES (@ficha, @placa, @modelo, @capacidad)",
+                conexion.AbrirConexion()
+            );
 
-            // Empaquetamos los datos de forma segura para evitar hackeos (Inyección SQL)
             comando.Parameters.AddWithValue("@ficha", ficha);
             comando.Parameters.AddWithValue("@placa", placa);
+            comando.Parameters.AddWithValue("@modelo", modelo);
             comando.Parameters.AddWithValue("@capacidad", capacidad);
 
-            // Ejecutamos la acción asíncrona en el servidor y cerramos la comunicación
             await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
 
-        // Método para modificar los datos de un vehículo ya existente usando su ID
+        // Modificación de datos incluyendo el campo Modelo
         public async Task EditarAsync(params object[] parametros)
         {
-            // Extraemos los datos del empaque: ID, Ficha, Placa y Capacidad
+            // Extraemos 5 datos del empaque: ID + los 4 campos del formulario
             int id = Convert.ToInt32(parametros[0]);
             string ficha = parametros[1].ToString();
             string placa = parametros[2].ToString();
-            int capacidad = Convert.ToInt32(parametros[3]);
+            string modelo = parametros[3].ToString();
+            int capacidad = Convert.ToInt32(parametros[4]);
 
-            // Abrimos el canal y preparamos la orden SQL de actualización
-            SqlCommand comando = new SqlCommand("UPDATE Vehiculo SET Ficha=@ficha, Placa=@placa, Capacidad=@capacidad WHERE ID_Vehiculo=@id", conexion.AbrirConexion());
+            SqlCommand comando = new SqlCommand(
+                "UPDATE Vehiculo SET Ficha=@ficha, Placa=@placa, Modelo=@modelo, Capacidad=@capacidad WHERE ID_Vehiculo=@id",
+                conexion.AbrirConexion()
+            );
 
-            // Asignamos los nuevos valores de forma segura
             comando.Parameters.AddWithValue("@id", id);
             comando.Parameters.AddWithValue("@ficha", ficha);
             comando.Parameters.AddWithValue("@placa", placa);
+            comando.Parameters.AddWithValue("@modelo", modelo);
             comando.Parameters.AddWithValue("@capacidad", capacidad);
 
-            // Ejecutamos la acción asíncrona en el servidor y cerramos la comunicación
             await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
 
-        // Método para borrar permanentemente el registro de un vehículo
+        // TODO: Requisito - Borrado Lógico
+        // Cambiamos el estado a Inactivo en lugar de borrar la fila
         public async Task EliminarAsync(int id)
         {
-            // Abrimos el canal y preparamos la orden SQL de eliminación
-            SqlCommand comando = new SqlCommand("DELETE FROM Vehiculo WHERE ID_Vehiculo=@id", conexion.AbrirConexion());
+            SqlCommand comando = new SqlCommand(
+                "UPDATE Vehiculo SET Estado='Inactivo' WHERE ID_Vehiculo=@id",
+                conexion.AbrirConexion()
+            );
 
-            // Empaquetamos el ID de forma segura
             comando.Parameters.AddWithValue("@id", id);
 
-            // Ejecutamos la acción asíncrona en el servidor y cerramos la comunicación
             await comando.ExecuteNonQueryAsync();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
+        }
+
+        // MÉTODO EXTRA: Para validar si la ficha ya existe y evitar duplicados
+        public async Task<bool> ExisteFichaAsync(string ficha)
+        {
+            SqlCommand comando = new SqlCommand(
+                "SELECT COUNT(*) FROM Vehiculo WHERE Ficha = @ficha AND Estado != 'Inactivo'",
+                conexion.AbrirConexion()
+            );
+            comando.Parameters.AddWithValue("@ficha", ficha);
+
+            int conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
+
+            conexion.CerrarConexion();
+            return conteo > 0;
         }
     }
 }

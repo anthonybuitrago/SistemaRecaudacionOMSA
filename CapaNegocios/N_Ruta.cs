@@ -5,20 +5,24 @@ using CapaDatos;
 
 namespace CapaNegocios
 {
-    // TODO: Requisito - Creación de Entidad/Clase
+    // TODO: Requisito - Creación de Entidad/Clase con el diseño 2x2
     public class Ruta
     {
         // Propiedades de la ruta
         public int ID_Ruta { get; set; }
         public string NombreRuta { get; set; }
-        public decimal TarifaPasaje { get; set; }
+        public decimal Tarifa { get; set; }
+        public string Origen { get; set; }  // <-- NUEVO
+        public string Destino { get; set; } // <-- NUEVO
 
-        // Constructor
-        public Ruta(int id, string nombre, decimal tarifa)
+        // Constructor actualizado
+        public Ruta(int id, string nombre, decimal tarifa, string origen, string destino)
         {
             ID_Ruta = id;
             NombreRuta = nombre;
-            TarifaPasaje = tarifa;
+            Tarifa = tarifa;
+            Origen = origen;
+            Destino = destino;
         }
     }
 
@@ -27,39 +31,44 @@ namespace CapaNegocios
         // Conexión con la Capa de Datos
         private D_Ruta objDatos = new D_Ruta();
 
-        // --- MÉTODOS BÁSICOS ASÍNCRONOS (Solo para que compile el proyecto) ---
-        // Nota: Faltan las validaciones y try/catch que hará tu compañero.
+        // --- MÉTODOS ASÍNCRONOS ---
 
-        // Método para pedir la lista de rutas
+        // Pedir la lista de rutas activas
         public async Task<DataTable> MostrarRutasAsync()
         {
             return await objDatos.MostrarAsync();
         }
 
-        // Método para enviar una nueva ruta a guardar
-        public async Task InsertarRutaAsync(string nombreRuta, string tarifaPasaje)
+        // Insertar procesando los 4 campos
+        public async Task InsertarRutaAsync(string nombre, string tarifaText, string origen, string destino)
         {
-            // Convertimos el texto a decimal para la tarifa
-            decimal tarifa = Convert.ToDecimal(tarifaPasaje);
+            // Convertimos la tarifa (viene de un MaskedTextBox como string)
+            decimal tarifa = Convert.ToDecimal(tarifaText);
 
-            // Instanciamos el objeto Ruta
-            Ruta nuevaRuta = new Ruta(0, nombreRuta, tarifa);
+            // Instanciamos el objeto con la nueva estructura
+            Ruta nuevaRuta = new Ruta(0, nombre, tarifa, origen, destino);
 
-            // Mandamos los datos del objeto a la Capa de Datos asíncronamente
-            await objDatos.InsertarAsync(nuevaRuta.NombreRuta, nuevaRuta.TarifaPasaje.ToString());
+            // Mandamos los 4 datos a la Capa de Datos
+            await objDatos.InsertarAsync(nuevaRuta.NombreRuta, nuevaRuta.Tarifa, nuevaRuta.Origen, nuevaRuta.Destino);
         }
 
-        // Puente para enviar la orden de eliminar a la Capa de Datos
+        // Editar procesando ID + los 4 campos
+        public async Task EditarRutaAsync(int id, string nombre, string tarifaText, string origen, string destino)
+        {
+            decimal tarifa = Convert.ToDecimal(tarifaText);
+            await objDatos.EditarAsync(id, nombre, tarifa, origen, destino);
+        }
+
+        // Eliminar (Borrado Lógico)
         public async Task EliminarRutaAsync(int id)
         {
             await objDatos.EliminarAsync(id);
         }
 
-        // Puente para enviar los datos editados a la Capa de Datos
-        public async Task EditarRutaAsync(int id, string nombreRuta, string tarifaPasaje)
+        // MÉTODO EXTRA: Para que el formulario pueda validar duplicados antes de guardar
+        public async Task<bool> VerificarSiExiste(string nombreRuta)
         {
-            decimal tarifa = Convert.ToDecimal(tarifaPasaje);
-            await objDatos.EditarAsync(id, nombreRuta, tarifa);
+            return await objDatos.ExisteRutaAsync(nombreRuta);
         }
     }
 }

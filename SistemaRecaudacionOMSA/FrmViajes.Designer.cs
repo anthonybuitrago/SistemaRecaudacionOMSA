@@ -29,22 +29,21 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmViajes));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpViaje = new System.Windows.Forms.TableLayoutPanel();
             this.lblChofer = new System.Windows.Forms.Label();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.cmbChofer = new System.Windows.Forms.ComboBox();
+            this.lblVehiculo = new System.Windows.Forms.Label();
+            this.cmbVehiculo = new System.Windows.Forms.ComboBox();
+            this.lblRuta = new System.Windows.Forms.Label();
             this.lblFecha = new System.Windows.Forms.Label();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.cmbRuta = new System.Windows.Forms.ComboBox();
-            this.lblRuta = new System.Windows.Forms.Label();
-            this.lblVehiculo = new System.Windows.Forms.Label();
-            this.cmbVehiculo = new System.Windows.Forms.ComboBox();
             this.flpAcciones = new System.Windows.Forms.FlowLayoutPanel();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnLimpiar = new System.Windows.Forms.Button();
             this.dgvViajes = new System.Windows.Forms.DataGridView();
             this.flpToolbar = new System.Windows.Forms.FlowLayoutPanel();
             this.btnModoEdicion = new System.Windows.Forms.Button();
@@ -83,9 +82,8 @@
             this.tlpViaje.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpViaje.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpViaje.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpViaje.Size = new System.Drawing.Size(874, 275);
+            this.tlpViaje.Size = new System.Drawing.Size(874, 230);
             this.tlpViaje.TabIndex = 0;
-            this.tlpViaje.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // lblChofer
             // 
@@ -112,7 +110,7 @@
             this.lblTitulo.Size = new System.Drawing.Size(808, 23);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "DESPACHAR VIAJES";
-            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cmbChofer
             // 
@@ -125,54 +123,6 @@
             this.cmbChofer.Size = new System.Drawing.Size(401, 21);
             this.cmbChofer.TabIndex = 2;
             this.cmbChofer.SelectedIndexChanged += new System.EventHandler(this.VerificarSiHayCambios);
-            // 
-            // lblFecha
-            // 
-            this.lblFecha.AutoSize = true;
-            this.lblFecha.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblFecha.ForeColor = System.Drawing.Color.White;
-            this.lblFecha.Location = new System.Drawing.Point(440, 130);
-            this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
-            this.lblFecha.Size = new System.Drawing.Size(88, 30);
-            this.lblFecha.TabIndex = 3;
-            this.lblFecha.Text = "Fecha del Viaje:";
-            this.lblFecha.Click += new System.EventHandler(this.lblFecha_Click);
-            // 
-            // dtpFecha
-            // 
-            this.dtpFecha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpFecha.Enabled = false;
-            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(440, 163);
-            this.dtpFecha.Name = "dtpFecha";
-            this.dtpFecha.Size = new System.Drawing.Size(401, 20);
-            this.dtpFecha.TabIndex = 4;
-            this.dtpFecha.ValueChanged += new System.EventHandler(this.VerificarSiHayCambios);
-            // 
-            // cmbRuta
-            // 
-            this.cmbRuta.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbRuta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRuta.Enabled = false;
-            this.cmbRuta.FormattingEnabled = true;
-            this.cmbRuta.Location = new System.Drawing.Point(440, 106);
-            this.cmbRuta.Name = "cmbRuta";
-            this.cmbRuta.Size = new System.Drawing.Size(401, 21);
-            this.cmbRuta.TabIndex = 6;
-            this.cmbRuta.SelectedIndexChanged += new System.EventHandler(this.VerificarSiHayCambios);
-            // 
-            // lblRuta
-            // 
-            this.lblRuta.AutoSize = true;
-            this.lblRuta.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblRuta.ForeColor = System.Drawing.Color.White;
-            this.lblRuta.Location = new System.Drawing.Point(440, 73);
-            this.lblRuta.Name = "lblRuta";
-            this.lblRuta.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
-            this.lblRuta.Size = new System.Drawing.Size(97, 30);
-            this.lblRuta.TabIndex = 5;
-            this.lblRuta.Text = "Seleccionar Ruta:";
             // 
             // lblVehiculo
             // 
@@ -198,15 +148,61 @@
             this.cmbVehiculo.TabIndex = 8;
             this.cmbVehiculo.SelectedIndexChanged += new System.EventHandler(this.VerificarSiHayCambios);
             // 
+            // lblRuta
+            // 
+            this.lblRuta.AutoSize = true;
+            this.lblRuta.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblRuta.ForeColor = System.Drawing.Color.White;
+            this.lblRuta.Location = new System.Drawing.Point(440, 73);
+            this.lblRuta.Name = "lblRuta";
+            this.lblRuta.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.lblRuta.Size = new System.Drawing.Size(97, 30);
+            this.lblRuta.TabIndex = 5;
+            this.lblRuta.Text = "Seleccionar Ruta:";
+            // 
+            // lblFecha
+            // 
+            this.lblFecha.AutoSize = true;
+            this.lblFecha.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblFecha.ForeColor = System.Drawing.Color.White;
+            this.lblFecha.Location = new System.Drawing.Point(440, 130);
+            this.lblFecha.Name = "lblFecha";
+            this.lblFecha.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.lblFecha.Size = new System.Drawing.Size(88, 30);
+            this.lblFecha.TabIndex = 3;
+            this.lblFecha.Text = "Fecha del Viaje:";
+            // 
+            // dtpFecha
+            // 
+            this.dtpFecha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtpFecha.Enabled = false;
+            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFecha.Location = new System.Drawing.Point(440, 163);
+            this.dtpFecha.Name = "dtpFecha";
+            this.dtpFecha.Size = new System.Drawing.Size(401, 20);
+            this.dtpFecha.TabIndex = 4;
+            this.dtpFecha.ValueChanged += new System.EventHandler(this.VerificarSiHayCambios);
+            // 
+            // cmbRuta
+            // 
+            this.cmbRuta.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbRuta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRuta.Enabled = false;
+            this.cmbRuta.FormattingEnabled = true;
+            this.cmbRuta.Location = new System.Drawing.Point(440, 106);
+            this.cmbRuta.Name = "cmbRuta";
+            this.cmbRuta.Size = new System.Drawing.Size(401, 21);
+            this.cmbRuta.TabIndex = 6;
+            this.cmbRuta.SelectedIndexChanged += new System.EventHandler(this.VerificarSiHayCambios);
+            // 
             // flpAcciones
             // 
             this.flpAcciones.Controls.Add(this.btnGuardar);
             this.flpAcciones.Controls.Add(this.btnActualizar);
             this.flpAcciones.Controls.Add(this.btnCancelar);
-            this.flpAcciones.Controls.Add(this.btnLimpiar);
             this.flpAcciones.Dock = System.Windows.Forms.DockStyle.Top;
             this.flpAcciones.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpAcciones.Location = new System.Drawing.Point(30, 330);
+            this.flpAcciones.Location = new System.Drawing.Point(30, 285);
             this.flpAcciones.Name = "flpAcciones";
             this.flpAcciones.Padding = new System.Windows.Forms.Padding(0, 10, 30, 0);
             this.flpAcciones.Size = new System.Drawing.Size(874, 60);
@@ -269,25 +265,6 @@
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
-            // btnLimpiar
-            // 
-            this.btnLimpiar.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.btnLimpiar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLimpiar.FlatAppearance.BorderSize = 0;
-            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLimpiar.ForeColor = System.Drawing.Color.White;
-            this.btnLimpiar.Image = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.Image")));
-            this.btnLimpiar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLimpiar.Location = new System.Drawing.Point(410, 13);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(95, 32);
-            this.btnLimpiar.TabIndex = 3;
-            this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnLimpiar.UseVisualStyleBackColor = false;
-            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
-            // 
             // dgvViajes
             // 
             this.dgvViajes.AllowUserToAddRows = false;
@@ -297,17 +274,17 @@
             this.dgvViajes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
             this.dgvViajes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvViajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvViajes.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvViajes.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvViajes.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgvViajes.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.dgvViajes.Location = new System.Drawing.Point(30, 390);
+            this.dgvViajes.Location = new System.Drawing.Point(30, 345);
             this.dgvViajes.Margin = new System.Windows.Forms.Padding(0);
             this.dgvViajes.Name = "dgvViajes";
             this.dgvViajes.ReadOnly = true;
@@ -332,14 +309,14 @@
             // 
             // btnModoEdicion
             // 
+            this.btnModoEdicion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.btnModoEdicion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModoEdicion.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnModoEdicion.ForeColor = System.Drawing.Color.White;
             this.btnModoEdicion.Image = ((System.Drawing.Image)(resources.GetObject("btnModoEdicion.Image")));
-            this.btnModoEdicion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnModoEdicion.Location = new System.Drawing.Point(728, 3);
+            this.btnModoEdicion.Location = new System.Drawing.Point(679, 3);
             this.btnModoEdicion.Name = "btnModoEdicion";
-            this.btnModoEdicion.Size = new System.Drawing.Size(113, 36);
+            this.btnModoEdicion.Size = new System.Drawing.Size(162, 36);
             this.btnModoEdicion.TabIndex = 0;
             this.btnModoEdicion.Text = "Editar";
             this.btnModoEdicion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -348,13 +325,14 @@
             // 
             // btnVerTabla
             // 
+            this.btnVerTabla.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVerTabla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVerTabla.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnVerTabla.ForeColor = System.Drawing.Color.White;
             this.btnVerTabla.Image = ((System.Drawing.Image)(resources.GetObject("btnVerTabla.Image")));
-            this.btnVerTabla.Location = new System.Drawing.Point(606, 3);
+            this.btnVerTabla.Location = new System.Drawing.Point(520, 3);
             this.btnVerTabla.Name = "btnVerTabla";
-            this.btnVerTabla.Size = new System.Drawing.Size(116, 36);
+            this.btnVerTabla.Size = new System.Drawing.Size(153, 36);
             this.btnVerTabla.TabIndex = 1;
             this.btnVerTabla.Text = "Ver Tabla";
             this.btnVerTabla.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -401,7 +379,6 @@
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.DataGridView dgvViajes;
         private System.Windows.Forms.FlowLayoutPanel flpToolbar;
         private System.Windows.Forms.Button btnModoEdicion;

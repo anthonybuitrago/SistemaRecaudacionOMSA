@@ -166,10 +166,10 @@
   </data>
   <data name="btnVentaTickets.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAACFSURBVEhL7ZRLCsAgDEQ9mjf3Dr3CHKRFUImhiZ8o7cIHbvrGSXBR5w6/AYAHcC86nvfHATxk
-        Ory/DODfRxF7REEwZURBMGWyeJWdNDsAhBS4uGsR76S7gbsKbYNZV6EFZ11h6xPlDZpbKKgdoiCYMqIg
-        mDKiGETsyWLV4f1xwN7f9eEzHqQBGI+oHelbAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAIVJREFUSEvt
+        lEsKwCAMRD2aN/cOvcIcpEVQiaGJnyjtwgdu+sZJcFHnDr8BgAdwLzqe98cBPGQ6vL8M4N9HEXtEQTBl
+        REEwZbJ4lZ00OwCEFLi4axHvpLuBuwptg1lXoQVnXWHrE+UNmlsoqB2iIJgyoiCYMqIYROzJYtXh/XHA
+        3t/14TMepAEYj6gd6VsAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="btnDespachoViajes.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -41,18 +41,30 @@ namespace SistemaRecaudacionOMSA
 
         private void HabilitarCampos(bool estado)
         {
+            // Colores definidos
             Color colorTexto = estado ? Color.White : Color.Gray;
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro para cuando están deshabilitados
 
-            // Labels
+            // 1. Labels
             lblChofer.ForeColor = lblRuta.ForeColor = lblVehiculo.ForeColor = lblFecha.ForeColor = colorTexto;
 
-            // Controles
+            // 2. Controles (Cajas y Listas)
             cmbChofer.Enabled = dtpFecha.Enabled = cmbRuta.Enabled = cmbVehiculo.Enabled = estado;
 
-            // Botones CRUD: Ahora SIEMPRE se encienden cuando estás en modo edición
+            // 3. Botones CRUD (Habilitar/Deshabilitar lógicamente)
             btnGuardar.Enabled = estado;
             btnActualizar.Enabled = estado;
             btnCancelar.Enabled = estado;
+
+            // 4. Color de Fondo de los Botones
+            btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
+            btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
+            btnCancelar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
+
+            // 5. Color del Texto de los Botones
+            btnGuardar.ForeColor = colorTexto;
+            btnActualizar.ForeColor = colorTexto;
+            btnCancelar.ForeColor = colorTexto;
         }
 
         private void btnModoEdicion_Click(object sender, EventArgs e)

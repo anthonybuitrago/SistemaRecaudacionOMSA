@@ -95,25 +95,36 @@ namespace SistemaRecaudacionOMSA
 
         private void HabilitarCampos(bool estado)
         {
-            // 1. Color para los Labels (Blanco si activo, Gris si apagado)
+            // Colores definidos
             Color colorLabel = estado ? Color.White : Color.Gray;
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro
 
-            // Ajusta los nombres de tus labels aquí (asumo que se llaman así):
+            // 1. Color para los Labels
             lblNombre.ForeColor = colorLabel;
             lblCedula.ForeColor = colorLabel;
             lblTelefono.ForeColor = colorLabel;
             lblLicencia.ForeColor = colorLabel;
 
-            // 2. Control de los campos (Incluyendo el Teléfono)
+            // 2. Control de los campos
             txtNombre.Enabled = estado;
             txtCedula.Enabled = estado;
-            txtTelefono.Enabled = estado; // Aquí corregimos lo del teléfono
+            txtTelefono.Enabled = estado;
             txtLicencia.Enabled = estado;
 
             // 3. Control de los botones CRUD
             btnGuardar.Enabled = estado;
             btnActualizar.Enabled = estado;
             btnEliminar.Enabled = estado;
+
+            // 4. Color de Fondo de los Botones
+            btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
+            btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
+            btnEliminar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
+
+            // 5. Color del Texto de los Botones
+            btnGuardar.ForeColor = colorLabel;
+            btnActualizar.ForeColor = colorLabel;
+            btnEliminar.ForeColor = colorLabel;
         }
 
         // --- EVENTOS DE LA TABLA Y EL DETECTOR ---

@@ -83,9 +83,11 @@ namespace SistemaRecaudacionOMSA
 
         private void HabilitarCampos(bool estado)
         {
-            // 1. Color para los Labels (Blanco si activo, Gris si apagado)
+            // Colores definidos
             Color colorLabel = estado ? Color.White : Color.Gray;
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro
 
+            // 1. Color para los Labels
             lblFicha.ForeColor = colorLabel;
             lblPlaca.ForeColor = colorLabel;
             lblModelo.ForeColor = colorLabel;
@@ -97,10 +99,20 @@ namespace SistemaRecaudacionOMSA
             txtModelo.Enabled = estado;
             txtCapacidad.Enabled = estado;
 
-            // 3. Control de los botones
+            // 3. Control de los botones CRUD
             btnGuardar.Enabled = estado;
             btnActualizar.Enabled = estado;
             btnEliminar.Enabled = estado;
+
+            // 4. Color de Fondo de los Botones
+            btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
+            btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
+            btnEliminar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
+
+            // 5. Color del Texto de los Botones
+            btnGuardar.ForeColor = colorLabel;
+            btnActualizar.ForeColor = colorLabel;
+            btnEliminar.ForeColor = colorLabel;
         }
 
         // --- EVENTOS DE LA TABLA ---

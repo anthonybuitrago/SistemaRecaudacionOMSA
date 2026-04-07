@@ -38,17 +38,35 @@ namespace SistemaRecaudacionOMSA
 
         private void HabilitarCampos(bool estado)
         {
+            // Colores definidos
             Color colorTexto = estado ? Color.White : Color.Gray;
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro
 
+            // 1. Labels
             lblViaje.ForeColor = lblCantidadTickets.ForeColor = lblTarifa.ForeColor = lblTotalPagar.ForeColor = colorTexto;
 
+            // 2. Controles de selección
             cmbViaje.Enabled = cmbCantidadTickets.Enabled = estado;
+
             // OJO: La Tarifa y el TotalPagar NUNCA se habilitan para escribir, solo muestran datos
             txtTarifa.Enabled = false;
-            txtTotalPagar.Enabled = false; // Asumo que usas un TextBox/MaskedTextBox llamado txtTotalPagar por tu outline
+            txtTotalPagar.Enabled = false;
 
+            // 3. Botones CRUD
             btnGuardar.Enabled = estado;
-            // Para la venta de tickets, no se debe permitir Actualizar. Solo Cancelar la operación.
+
+            // NOTA: Si en tu diseño tienes el botón "Cancelar" o "Limpiar", agrégalo aquí de forma similar a Guardar.
+            // btnCancelar.Enabled = estado;
+
+            // 4. Color de Fondo de los Botones (Respetando el verde que usas en el diseño)
+            btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
+
+            // Si agregas el botón Cancelar:
+            // btnCancelar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
+
+            // 5. Color del Texto de los Botones
+            btnGuardar.ForeColor = colorTexto;
+            // Si agregas Cancelar: btnCancelar.ForeColor = colorTexto;
         }
 
         private void btnModoEdicion_Click(object sender, EventArgs e)

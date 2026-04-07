@@ -36,16 +36,30 @@ namespace SistemaRecaudacionOMSA
 
         private void HabilitarCampos(bool estado)
         {
+            // Colores definidos
             Color colorLabel = estado ? Color.White : Color.Gray;
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro
 
-            // Labels
+            // 1. Color para los Labels
             lblNombreRuta.ForeColor = lblTarifa.ForeColor = lblTiempo.ForeColor = lblDistancia.ForeColor = colorLabel;
 
-            // Controles (Asegúrate que estos sean los nombres de tus campos en el diseño)
+            // 2. Control de los campos
             txtNombreRuta.Enabled = txtTarifa.Enabled = txtTiempo.Enabled = txtDistancia.Enabled = estado;
 
-            // Botones
-            btnGuardar.Enabled = btnActualizar.Enabled = btnEliminar.Enabled = estado;
+            // 3. Control de los botones CRUD
+            btnGuardar.Enabled = estado;
+            btnActualizar.Enabled = estado;
+            btnEliminar.Enabled = estado;
+
+            // 4. Color de Fondo de los Botones
+            btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
+            btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
+            btnEliminar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
+
+            // 5. Color del Texto de los Botones
+            btnGuardar.ForeColor = colorLabel;
+            btnActualizar.ForeColor = colorLabel;
+            btnEliminar.ForeColor = colorLabel;
         }
 
         private void btnModoEdicion_Click(object sender, EventArgs e)

@@ -167,5 +167,17 @@ namespace SistemaRecaudacionOMSA
                 menuExpandido = true;
             }
         }
+
+        private void pnlContenedor_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            FrmLogin frmLogin = new FrmLogin();
+            frmLogin.Show();
+        }
     }
 }

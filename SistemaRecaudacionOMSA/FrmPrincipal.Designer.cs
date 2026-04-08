@@ -47,6 +47,7 @@
             this.btnMenu = new System.Windows.Forms.Button();
             this.pnlContenedor = new System.Windows.Forms.Panel();
             this.tmrMenu = new System.Windows.Forms.Timer(this.components);
+            this.btnSalir = new System.Windows.Forms.Button();
             this.pnlLateral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgOmsa)).BeginInit();
             this.pnlSuperior.SuspendLayout();
@@ -55,6 +56,7 @@
             // pnlLateral
             // 
             this.pnlLateral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.pnlLateral.Controls.Add(this.btnSalir);
             this.pnlLateral.Controls.Add(this.btnAcercaDe);
             this.pnlLateral.Controls.Add(this.btnReportes);
             this.pnlLateral.Controls.Add(this.lblSistema);
@@ -319,10 +321,31 @@
             this.pnlContenedor.Name = "pnlContenedor";
             this.pnlContenedor.Size = new System.Drawing.Size(934, 712);
             this.pnlContenedor.TabIndex = 9;
+            this.pnlContenedor.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlContenedor_Paint);
             // 
             // tmrMenu
             // 
             this.tmrMenu.Interval = 10;
+            // 
+            // btnSalir
+            // 
+            this.btnSalir.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSalir.FlatAppearance.BorderSize = 0;
+            this.btnSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSalir.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnSalir.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btnSalir.Image = ((System.Drawing.Image)(resources.GetObject("btnSalir.Image")));
+            this.btnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSalir.Location = new System.Drawing.Point(0, 660);
+            this.btnSalir.Name = "btnSalir";
+            this.btnSalir.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnSalir.Size = new System.Drawing.Size(250, 60);
+            this.btnSalir.TabIndex = 11;
+            this.btnSalir.Text = "Cerrrar sección";
+            this.btnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSalir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSalir.UseVisualStyleBackColor = true;
+            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
             // 
             // FrmPrincipal
             // 
@@ -362,5 +385,6 @@
         private System.Windows.Forms.Label lblOperacion;
         private System.Windows.Forms.Timer tmrMenu;
         private System.Windows.Forms.Button btnMenu;
+        private System.Windows.Forms.Button btnSalir;
     }
 }

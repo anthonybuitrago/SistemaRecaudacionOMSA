@@ -18,6 +18,7 @@ namespace CapaDatos
                 string query = "SELECT COUNT(*) FROM Usuario " +
                  "WHERE NombreUsuario = @usuario AND Contrasena = @clave";
 
+
                 SqlCommand cmd = new SqlCommand(query, cn);
                 cmd.Parameters.AddWithValue("@usuario", usuario);
                 cmd.Parameters.AddWithValue("@clave", clave);

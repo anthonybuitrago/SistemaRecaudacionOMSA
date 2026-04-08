@@ -5,6 +5,7 @@ using System.Configuration;
 
 namespace CapaDatos
 {
+    // Probando y ya
     public class ConexionBD
     {
         // Ruta de acceso extraída de las configuraciones del sistema (App.config)

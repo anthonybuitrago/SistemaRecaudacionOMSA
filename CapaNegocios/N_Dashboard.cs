@@ -1,35 +1,29 @@
 ﻿using System;
 using System.Data;
 using System.Threading.Tasks;
-using CapaDatos; // IMPORTANTE: Para conectar con D_Dashboard
+using CapaDatos;
 
 namespace CapaNegocios
 {
     public class N_Dashboard
     {
-        // Instancia de la capa de datos
+        // Referencia a la capa de persistencia de datos del Dashboard
         private D_Dashboard objDatos = new D_Dashboard();
 
-        /// <summary>
-        /// Solicita los totales generales para las tarjetas del Dashboard
-        /// </summary>
-        /// <returns>DataTable con las columnas: RecaudacionHoy, TicketsVendidosHoy, ViajesActivos, TotalVehiculos</returns>
+        // Solicita el procesamiento de las métricas globales para la interfaz principal
+        // Retorna un objeto DataTable con las métricas de recaudación, ventas y operatividad
         public async Task<DataTable> ObtenerTotalesAsync()
         {
             try
             {
-                // Llamamos al método en la capa de datos
+                // Invocación del método de consulta en la capa de datos
                 return await objDatos.ObtenerResumenDashboardAsync();
             }
             catch (Exception ex)
             {
-                // Registramos el error y lo lanzamos a la interfaz
-                throw new Exception("Error en CapaNegocios al obtener totales: " + ex.Message);
+                // Encapsulamiento de la excepción original con contexto de la capa de negocios
+                throw new Exception("Error en la lógica de negocio del Dashboard: " + ex.Message);
             }
         }
-
-        /* Aquí puedes agregar más métodos en el futuro, por ejemplo:
-           public async Task<DataTable> ObtenerDatosGraficoSemanalAsync() { ... }
-        */
     }
 }

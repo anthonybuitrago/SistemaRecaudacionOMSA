@@ -48,7 +48,6 @@
             this.lblVersion.TabIndex = 3;
             this.lblVersion.Text = "Versión 1.0.0";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblVersion.Click += new System.EventHandler(this.label2_Click);
             // 
             // lblCreditos
             // 
@@ -127,7 +126,6 @@
             this.Name = "FrmAcercaDe";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Acerca del Sistema de Recaudación OMSA";
-            this.Load += new System.EventHandler(this.FrmAcercaDe_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Data;
-using System.Threading.Tasks; // Obligatorio para el asincronismo
+using System.Threading.Tasks;
 using CapaDatos;
 
 namespace CapaNegocios
 {
-    // TODO: Requisito - Creación de Entidad/Clase
+    // Entidad que representa la programación de un viaje
     public class Viaje
     {
-        // Propiedades que enlazan el viaje con su chofer, ruta y vehículo
         public int ID_Viaje { get; set; }
         public int ID_Chofer { get; set; }
         public int ID_Ruta { get; set; }
@@ -16,7 +15,6 @@ namespace CapaNegocios
         public DateTime FechaViaje { get; set; }
         public string Estado { get; set; }
 
-        // Constructor
         public Viaje(int id, int chofer, int ruta, int vehiculo, DateTime fecha, string estado)
         {
             ID_Viaje = id;
@@ -28,32 +26,42 @@ namespace CapaNegocios
         }
     }
 
+    // Gestiona la lógica y reglas de negocio para la programación de viajes
     public class N_Viaje
     {
-        // Conexión con la Capa de Datos
         private D_Viaje objDatos = new D_Viaje();
 
-        // --- MÉTODOS BÁSICOS ASÍNCRONOS (Solo para que compile el proyecto) ---
-        // Nota: Faltan las validaciones y try/catch que hará tu compañero.
-
-        // Método para pedir la lista completa de viajes
         public async Task<DataTable> MostrarViajesAsync()
         {
             return await objDatos.MostrarAsync();
         }
 
-        // Método para enviar un nuevo viaje a guardar
+        // Obtiene la lista de viajes formateada para el selector de la pantalla de ventas
+        public async Task<DataTable> MostrarViajesComboAsync()
+        {
+            return await objDatos.MostrarParaComboAsync();
+        }
+
+        // Valida las reglas de negocio y envía a guardar un nuevo viaje
         public async Task InsertarViajeAsync(string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
         {
-            // Convertimos los identificadores de texto a números enteros
+            // Validaciones (Reglas de Negocio)
+            if (string.IsNullOrWhiteSpace(idChofer) || string.IsNullOrWhiteSpace(idRuta) || string.IsNullOrWhiteSpace(idVehiculo))
+            {
+                throw new Exception("Debe seleccionar un chofer, una ruta y un vehículo para programar el viaje.");
+            }
+
+            if (fecha < DateTime.Now.Date)
+            {
+                throw new Exception("No se puede programar un viaje con una fecha anterior a la actual.");
+            }
+
             int choferId = Convert.ToInt32(idChofer);
             int rutaId = Convert.ToInt32(idRuta);
             int vehiculoId = Convert.ToInt32(idVehiculo);
 
-            // Instanciamos el objeto Viaje
             Viaje nuevoViaje = new Viaje(0, choferId, rutaId, vehiculoId, fecha, estado);
 
-            // Mandamos los datos a la Capa de Datos de forma asíncrona
             await objDatos.InsertarAsync(
                 nuevoViaje.ID_Chofer,
                 nuevoViaje.ID_Ruta,
@@ -63,28 +71,30 @@ namespace CapaNegocios
             );
         }
 
-        // Método para pedir los viajes disponibles y mostrarlos en selectores (ComboBox)
-        public async Task<DataTable> MostrarViajesComboAsync()
-        {
-            return await objDatos.MostrarParaComboAsync();
-        }
-
-        // Puente para enviar la orden de cancelar un viaje a la Capa de Datos
-        public async Task CancelarViajeAsync(string idViaje)
-        {
-            await objDatos.CancelarAsync(Convert.ToInt32(idViaje));
-        }
-
-        // Puente para enviar los datos editados a la Capa de Datos
+        // Valida y envía la modificación de un viaje existente
         public async Task EditarViajeAsync(string idViaje, string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
         {
-            // Convertimos los identificadores de texto a números enteros
+            if (string.IsNullOrWhiteSpace(idChofer) || string.IsNullOrWhiteSpace(idRuta) || string.IsNullOrWhiteSpace(idVehiculo))
+            {
+                throw new Exception("Los datos del viaje no pueden quedar vacíos.");
+            }
+
             int viajeId = Convert.ToInt32(idViaje);
             int choferId = Convert.ToInt32(idChofer);
             int rutaId = Convert.ToInt32(idRuta);
             int vehiculoId = Convert.ToInt32(idVehiculo);
 
             await objDatos.EditarAsync(viajeId, choferId, rutaId, vehiculoId, fecha, estado);
+        }
+
+        // Cambia el estado del viaje a 'Cancelado'
+        public async Task CancelarViajeAsync(string idViaje)
+        {
+            if (string.IsNullOrWhiteSpace(idViaje))
+            {
+                throw new Exception("ID de viaje inválido para cancelar.");
+            }
+            await objDatos.CancelarAsync(Convert.ToInt32(idViaje));
         }
     }
 }

@@ -7,16 +7,16 @@ using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
+    // Módulo de punto de venta y emisión de boletos
     public partial class FrmTickets : Form
     {
         private N_Ticket objTicket = new N_Ticket();
-        private decimal tarifaActual = 0m; // Para guardar el precio en la memoria temporal
+        private decimal tarifaActual = 0m;
 
         public FrmTickets()
         {
             InitializeComponent();
 
-            // Configurar diseño base del DGV
             dgvTickets.BackgroundColor = Color.FromArgb(28, 28, 28);
             dgvTickets.BorderStyle = BorderStyle.None;
         }
@@ -25,69 +25,53 @@ namespace SistemaRecaudacionOMSA
         {
             dgvTickets.Visible = false;
 
-            // Llenar el combo de cantidad (1 al 10, por ejemplo)
             LlenarComboCantidad();
-
             await CargarViajesActivosAsync();
             await MostrarTicketsTablaAsync();
 
             HabilitarCampos(false);
         }
 
-        // --- LÓGICA DE INTERFAZ Y BOTONES ---
+        // --- GESTIÓN DE INTERFAZ Y ESTADOS ---
 
+        // Controla la habilitación visual y funcional de los componentes del formulario
         private void HabilitarCampos(bool estado)
         {
-            // Colores definidos
             Color colorTexto = estado ? Color.White : Color.Gray;
-            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48);
 
-            // 1. Labels
             lblViaje.ForeColor = lblCantidadTickets.ForeColor = lblTarifa.ForeColor = lblTotalPagar.ForeColor = colorTexto;
 
-            // 2. Controles de selección
             cmbViaje.Enabled = cmbCantidadTickets.Enabled = estado;
 
-            // OJO: La Tarifa y el TotalPagar NUNCA se habilitan para escribir, solo muestran datos
+            // Bloqueo de campos calculados
             txtTarifa.Enabled = false;
             txtTotalPagar.Enabled = false;
 
-            // 3. Botones CRUD
             btnGuardar.Enabled = estado;
-
-            // NOTA: Si en tu diseño tienes el botón "Cancelar" o "Limpiar", agrégalo aquí de forma similar a Guardar.
-            // btnCancelar.Enabled = estado;
-
-            // 4. Color de Fondo de los Botones (Respetando el verde que usas en el diseño)
             btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
-
-            // Si agregas el botón Cancelar:
-            // btnCancelar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
-
-            // 5. Color del Texto de los Botones
             btnGuardar.ForeColor = colorTexto;
-            // Si agregas Cancelar: btnCancelar.ForeColor = colorTexto;
         }
 
+        // Alterna el estado operativo de la caja registradora
         private void btnModoEdicion_Click(object sender, EventArgs e)
         {
-            bool estaAbriendo = !cmbViaje.Enabled;
-            HabilitarCampos(estaAbriendo);
+            bool habilitar = !cmbViaje.Enabled;
+            HabilitarCampos(habilitar);
 
-            if (estaAbriendo)
+            if (habilitar)
             {
-                btnModoEdicion.Text = "Cerrar Edición";
+                btnModoEdicion.Text = "Cerrar Caja";
                 btnModoEdicion.ForeColor = Color.Tomato;
                 btnModoEdicion.Image = Properties.Resources.open_lock;
 
-                // Valores por defecto al abrir la caja
-                cmbCantidadTickets.SelectedIndex = 0; // Selecciona "1" por defecto
+                cmbCantidadTickets.SelectedIndex = 0;
                 txtTarifa.Text = "0.00";
                 txtTotalPagar.Text = "0.00";
             }
             else
             {
-                btnModoEdicion.Text = "Vender Tickets"; // Cambiado de "Editar" a "Vender" por lógica
+                btnModoEdicion.Text = "Vender Tickets";
                 btnModoEdicion.ForeColor = Color.White;
                 btnModoEdicion.Image = Properties.Resources.closed_lock;
                 LimpiarFormulario();
@@ -97,22 +81,24 @@ namespace SistemaRecaudacionOMSA
         private void btnVerTabla_Click(object sender, EventArgs e)
         {
             dgvTickets.Visible = !dgvTickets.Visible;
-            btnVerTabla.Text = dgvTickets.Visible ? "Ocultar Tabla" : "Ver Tabla";
+            btnVerTabla.Text = dgvTickets.Visible ? "Ocultar Historial" : "Ver Historial";
             btnVerTabla.ForeColor = dgvTickets.Visible ? Color.Yellow : Color.White;
             btnVerTabla.Image = dgvTickets.Visible ? Properties.Resources.view_off : Properties.Resources.view;
         }
 
-        // --- CARGA DE DATOS Y CÁLCULOS AUTOMÁTICOS ---
+        // --- CARGA DE DATOS Y LÓGICA FINANCIERA ---
 
+        // Configura el selector de volumen de compra
         private void LlenarComboCantidad()
         {
             cmbCantidadTickets.Items.Clear();
-            for (int i = 1; i <= 20; i++) // Permite vender hasta 20 tickets de un golpe
+            for (int i = 1; i <= 20; i++)
             {
                 cmbCantidadTickets.Items.Add(i.ToString());
             }
         }
 
+        // Recupera y enlista los viajes disponibles para asignación de tickets
         private async Task CargarViajesActivosAsync()
         {
             try
@@ -120,28 +106,25 @@ namespace SistemaRecaudacionOMSA
                 DataTable dtViajes = await objTicket.MostrarViajesActivosAsync();
 
                 cmbViaje.DataSource = dtViajes;
-                cmbViaje.DisplayMember = "DescripcionViaje"; // Lo que ve el usuario (Ruta + Chofer)
-                cmbViaje.ValueMember = "ID_Viaje";           // El ID oculto
+                cmbViaje.DisplayMember = "DescripcionViaje";
+                cmbViaje.ValueMember = "ID_Viaje";
 
-                // Reiniciar selección
                 cmbViaje.SelectedIndex = -1;
             }
-            catch (Exception ex) { MessageBox.Show("Error al cargar viajes activos: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar cartelera de viajes: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        // ¡LA MAGIA OCURRE AQUÍ! Cuando el cajero elige un viaje...
+        // Actualiza el precio unitario basado en el viaje seleccionado
         private void cmbViaje_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Verificamos si hay un viaje seleccionado y si tenemos los datos cargados (DataRowView)
             if (cmbViaje.SelectedIndex != -1 && cmbViaje.SelectedItem is DataRowView filaSeleccionada)
             {
-                // Extraemos la tarifa oculta que vino de la base de datos
                 tarifaActual = Convert.ToDecimal(filaSeleccionada["Tarifa"]);
+                txtTarifa.Text = tarifaActual.ToString("N2");
 
-                // La mostramos en pantalla formateada
-                txtTarifa.Text = tarifaActual.ToString("N2"); // Formato de 2 decimales
-
-                // Recalculamos el total automáticamente
                 CalcularTotalPagar();
             }
             else
@@ -152,12 +135,13 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Cuando el cajero cambia la cantidad (ej. de 1 ticket a 3 tickets)...
+        // Dispara la re-evaluación financiera al modificar el volumen
         private void cmbCantidadTickets_SelectedIndexChanged(object sender, EventArgs e)
         {
             CalcularTotalPagar();
         }
 
+        // Ejecuta el cálculo del monto total de la transacción
         private void CalcularTotalPagar()
         {
             if (cmbCantidadTickets.SelectedItem != null && tarifaActual > 0)
@@ -165,24 +149,24 @@ namespace SistemaRecaudacionOMSA
                 int cantidad = Convert.ToInt32(cmbCantidadTickets.SelectedItem);
                 decimal total = cantidad * tarifaActual;
 
-                // Mostramos el gran total al cajero
                 txtTotalPagar.Text = total.ToString("N2");
             }
         }
 
-        // --- PROCESO DE VENTA (CRUD) ---
+        // --- TRANSACCIONES CRUD ---
 
+        // Procesa y formaliza la venta de boletos
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
             if (cmbViaje.SelectedValue == null)
             {
-                MessageBox.Show("Por favor, seleccione un viaje activo de la lista.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, seleccione un viaje activo de la cartelera.", "Requisito Incompleto", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (cmbCantidadTickets.SelectedItem == null)
             {
-                MessageBox.Show("Debe indicar la cantidad de tickets a vender.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe indicar el volumen de tickets a emitir.", "Requisito Incompleto", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -192,61 +176,68 @@ namespace SistemaRecaudacionOMSA
                 string cantidad = cmbCantidadTickets.SelectedItem.ToString();
                 string tarifaTexto = tarifaActual.ToString();
 
-                // Confirmación visual estilo cajero
-                string mensaje = $"¿Confirmar venta de {cantidad} ticket(s) por un total de RD$ {txtTotalPagar.Text}?";
-                if (MessageBox.Show(mensaje, "Procesar Venta", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                string mensajeValidacion = $"¿Autoriza la emisión de {cantidad} ticket(s) por un valor total de RD$ {txtTotalPagar.Text}?";
+
+                if (MessageBox.Show(mensajeValidacion, "Confirmar Transacción", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    // Mandamos a vender a la Capa de Negocio
                     await objTicket.VenderTicketsAsync(idViaje, tarifaTexto, cantidad);
 
-                    MessageBox.Show("¡Venta procesada con éxito!", "Ticket(s) Generado(s)", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Transacción procesada correctamente.", "Emisión Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     await MostrarTicketsTablaAsync();
                     LimpiarFormulario();
-
-                    // Volvemos a seleccionar 1 cantidad por defecto para la siguiente venta rápida
                     cmbCantidadTickets.SelectedIndex = 0;
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message, "Error en Venta", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error durante la emisión: " + ex.Message, "Fallo Transaccional", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
+        // Cancela la operación actual y limpia la interfaz
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            // Para la caja, el botón rojo simplemente limpia el formulario rápidamente sin cerrar el candado
             LimpiarFormulario();
-            cmbCantidadTickets.SelectedIndex = 0;
+            if (cmbCantidadTickets.Items.Count > 0) cmbCantidadTickets.SelectedIndex = 0;
         }
 
         private void LimpiarFormulario()
         {
             cmbViaje.SelectedIndex = -1;
-            // No limpiamos el combo de cantidad para que siga en "1"
             txtTarifa.Text = "0.00";
             txtTotalPagar.Text = "0.00";
             dgvTickets.ClearSelection();
         }
 
-        // --- ESTILO DE LA TABLA (DARK FLAT) ---
+        // --- PRESENTACIÓN DE DATOS (HISTÓRICO) ---
 
+        // Consulta y muestra el registro histórico de ventas
         private async Task MostrarTicketsTablaAsync()
         {
-            dgvTickets.DataSource = await objTicket.MostrarTicketsAsync();
-
-            if (dgvTickets.Columns["ID_Ticket"] != null) dgvTickets.Columns["ID_Ticket"].HeaderText = "No. Ticket";
-            if (dgvTickets.Columns["MontoPagado"] != null) dgvTickets.Columns["MontoPagado"].HeaderText = "Monto (RD$)";
-            if (dgvTickets.Columns["Estado"] != null) dgvTickets.Columns["Estado"].HeaderText = "Estado";
-
-            // Formatear Fecha
-            if (dgvTickets.Columns["Fecha"] != null)
+            try
             {
-                dgvTickets.Columns["Fecha"].DefaultCellStyle.Format = "dd/MM/yyyy";
-                dgvTickets.Columns["Fecha"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
+                dgvTickets.DataSource = await objTicket.MostrarTicketsAsync();
 
-            AplicarEstiloTabla();
+                if (dgvTickets.Columns["ID_Ticket"] != null) dgvTickets.Columns["ID_Ticket"].HeaderText = "No. Ticket";
+                if (dgvTickets.Columns["MontoPagado"] != null) dgvTickets.Columns["MontoPagado"].HeaderText = "Monto (RD$)";
+                if (dgvTickets.Columns["Estado"] != null) dgvTickets.Columns["Estado"].HeaderText = "Estado";
+
+                if (dgvTickets.Columns["Fecha"] != null)
+                {
+                    dgvTickets.Columns["Fecha"].DefaultCellStyle.Format = "dd/MM/yyyy";
+                    dgvTickets.Columns["Fecha"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+
+                AplicarEstiloTabla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar histórico de ventas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
+        // Aplica el diseño corporativo a la cuadrícula de datos
         private void AplicarEstiloTabla()
         {
             dgvTickets.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -273,8 +264,7 @@ namespace SistemaRecaudacionOMSA
 
         private void dgvTickets_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Las cajas registradoras no permiten editar tickets tocando la tabla.
-            // Así que este evento se queda vacío a propósito.
+            
         }
     }
 }

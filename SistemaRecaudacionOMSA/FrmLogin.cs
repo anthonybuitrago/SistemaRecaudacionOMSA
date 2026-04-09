@@ -1,51 +1,47 @@
-﻿using OMSA_Recaudacion.CapaNegocio;
+﻿using CapaNegocios;
 using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
-namespace CapaPresentacion
+namespace SistemaRecaudacionOMSA
 {
+    // Formulario de autenticación para el acceso al sistema
     public partial class FrmLogin : Form
     {
-        // Instancia de la capa de negocio para validar credenciales
-        N_Usuario negocio = new N_Usuario();
+        private N_Usuario negocio = new N_Usuario();
 
         public FrmLogin()
         {
             InitializeComponent();
         }
 
-        // Al cargar el formulario ocultamos el mensaje de error
         private void FrmLogin_Load(object sender, EventArgs e)
         {
             lblError.Visible = false;
-            txtUsuario.Focus(); // El cursor inicia en el campo usuario
+            txtUsuario.Focus();
         }
 
-        // Evento del botón Ingresar
+        // Procesa la solicitud de acceso al sistema
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            // Validar que los campos no estén vacíos
-            if (string.IsNullOrEmpty(txtUsuario.Text) ||
-                string.IsNullOrEmpty(txtClave.Text))
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text))
             {
                 lblError.Text = "Por favor complete todos los campos.";
                 lblError.Visible = true;
                 return;
             }
 
-            // Validar credenciales contra la base de datos
+            // Validación de credenciales en la capa de datos
             bool acceso = negocio.ValidarUsuario(txtUsuario.Text, txtClave.Text);
 
             if (acceso)
             {
-                // Condición 17: cierra el login y deja abierto el principal
+                // TODO: [REQUISITO] - El usuario entra al programa, la validación se hace y se cierra el login
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
             {
-                // Muestra error si las credenciales son incorrectas
                 lblError.Text = "Usuario o contraseña incorrectos.";
                 lblError.Visible = true;
                 txtClave.Clear();
@@ -53,28 +49,15 @@ namespace CapaPresentacion
             }
         }
 
-        // Condición 13: permite presionar Enter desde el campo contraseña
+        // TODO: [REQUISITO] - El usuario puede dar Enter luego de colocar el password para ingresar
+        // Detecta si se presiona la tecla Enter estando en el campo de contraseña
         private void txtClave_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
+                e.Handled = true; // Evita el sonido de "beep" de Windows
                 btnIngresar_Click(sender, e);
             }
-        }
-
-        private void lblError_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnlHeader_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void lblSubtitulo_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

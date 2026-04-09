@@ -1,33 +1,36 @@
-﻿using CapaPresentacion;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
+    // Formulario contenedor principal con menú lateral animado y panel de navegación
     public partial class FrmPrincipal : Form
     {
-        // Variables de estado
+        // Gestión de estado de la interfaz
         private Button botonActivo = null;
         private Form formularioActivo = null;
 
-        // Colores de la interfaz
-        private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D"); // Gris oscuro
-        private Color colorActivo = ColorTranslator.FromHtml("#1C1C1C");   // Gris más profundo / Activo
-
-        bool menuExpandido = true;
+        // Definición de la paleta de colores corporativa
+        private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
+        private Color colorActivo = ColorTranslator.FromHtml("#1C1C1C");
+        private bool menuExpandido = true;
 
         public FrmPrincipal()
         {
             InitializeComponent();
         }
 
-        // =====================================================================
-        // 1. MOTOR PRINCIPAL: ABRIR FORMULARIOS EN EL PANEL CENTRAL
-        // =====================================================================
+        private void FrmPrincipal_Load(object sender, EventArgs e)
+        {
+            // Carga inicial del Dashboard
+            ActivarBoton(btnDashboard);
+            AbrirFormularioEnPanel(new FrmDashboard());
+        }
+
+        // Carga un formulario hijo dentro del panel contenedor central
         private void AbrirFormularioEnPanel(Form formularioHijo)
         {
-            // Si hay un formulario previo, lo cerramos para liberar memoria
             if (formularioActivo != null)
             {
                 formularioActivo.Close();
@@ -38,7 +41,6 @@ namespace SistemaRecaudacionOMSA
             formularioHijo.FormBorderStyle = FormBorderStyle.None;
             formularioHijo.Dock = DockStyle.Fill;
 
-            // Limpiamos el contenedor antes de agregar el nuevo
             this.pnlContenedor.Controls.Clear();
             this.pnlContenedor.Controls.Add(formularioHijo);
             this.pnlContenedor.Tag = formularioHijo;
@@ -46,9 +48,7 @@ namespace SistemaRecaudacionOMSA
             formularioHijo.Show();
         }
 
-        // =====================================================================
-        // 2. EFECTOS VISUALES: GESTIÓN DE BOTONES
-        // =====================================================================
+        // Resalta visualmente el botón seleccionado en el menú lateral
         private void ActivarBoton(Button btn)
         {
             if (btn != null)
@@ -59,6 +59,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Restablece el color de fondo de todos los botones del menú
         private void RestaurarColoresBotones()
         {
             foreach (Control control in pnlLateral.Controls)
@@ -70,18 +71,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // =====================================================================
-        // 3. EVENTOS DE CARGA Y NAVEGACIÓN
-        // =====================================================================
-
-        private void FrmPrincipal_Load(object sender, EventArgs e)
-        {
-            // Llamamos directamente al nombre del botón, sin usar (Button)sender
-            ActivarBoton(btnDashboard);
-
-            // Abrimos el dashboard de una vez
-            AbrirFormularioEnPanel(new FrmDashboard());
-        }
+        // --- MANEJADORES DE EVENTOS DE NAVEGACIÓN ---
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
@@ -131,14 +121,12 @@ namespace SistemaRecaudacionOMSA
             AbrirFormularioEnPanel(new FrmAcercaDe());
         }
 
-        // =====================================================================
-        // 4. ANIMACIÓN DEL MENÚ LATERAL
-        // =====================================================================
+        // Gestiona la animación de expansión y colapso del menú lateral
         private void btnMenu_Click(object sender, EventArgs e)
         {
             if (menuExpandido)
             {
-                // --- COLAPSAR ---
+                // Colapsar menú
                 pnlLateral.Width = 65;
                 lblOperacion.Visible = lblAdministracion.Visible = lblSistema.Visible = false;
 
@@ -155,7 +143,7 @@ namespace SistemaRecaudacionOMSA
             }
             else
             {
-                // --- EXPANDIR ---
+                // Expandir menú
                 pnlLateral.Width = 250;
                 lblOperacion.Visible = lblAdministracion.Visible = lblSistema.Visible = true;
 

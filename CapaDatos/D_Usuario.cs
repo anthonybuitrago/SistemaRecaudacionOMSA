@@ -1,11 +1,13 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace CapaDatos
 {
+    // TODO: [REQUISITO] - Login para el acceso de la aplicación con conexión a base de datos
+    // Gestiona la validación de credenciales de los usuarios en el sistema
     public class D_Usuario
     {
-        // TODO: ESTO ES PARA VALIDAR USUARIO Y CONTRASEÑA
-      
+        // Verifica si el usuario y la contraseña coinciden con los registros activos
         public bool ValidarUsuario(string usuario, string clave)
         {
             bool acceso = false;
@@ -15,20 +17,21 @@ namespace CapaDatos
             {
                 SqlConnection cn = bd.AbrirConexion();
 
-                string query = "SELECT COUNT(*) FROM Usuario " +
-                 "WHERE NombreUsuario = @usuario AND Contrasena = @clave";
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = cn;
+                    cmd.CommandText = "SELECT COUNT(*) FROM Usuario WHERE NombreUsuario = @usuario AND Contrasena = @clave";
 
+                    cmd.Parameters.AddWithValue("@usuario", usuario);
+                    cmd.Parameters.AddWithValue("@clave", clave);
 
-                SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@usuario", usuario);
-                cmd.Parameters.AddWithValue("@clave", clave);
-
-                int resultado = (int)cmd.ExecuteScalar();
-                acceso = resultado > 0;
+                    int resultado = Convert.ToInt32(cmd.ExecuteScalar());
+                    acceso = resultado > 0;
+                }
             }
             finally
             {
-                bd.CerrarConexion(); 
+                bd.CerrarConexion();
             }
 
             return acceso;

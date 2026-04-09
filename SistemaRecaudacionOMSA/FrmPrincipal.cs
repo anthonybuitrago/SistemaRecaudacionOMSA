@@ -256,12 +256,31 @@ namespace SistemaRecaudacionOMSA
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            FrmLogin login = new FrmLogin();
-            if (login.ShowDialog() == DialogResult.OK)
-                this.Show();
-            else
-                Application.Exit();
+            var confirmacion = MessageBox.Show(
+                "¿Estás seguro que querés cerrar sesión?",
+                "Cerrar sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                Sesion.CerrarSesion();
+                this.Hide();
+
+                FrmLogin login = new FrmLogin();
+
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    // Login exitoso, volvé a aplicar permisos y mostrá el principal
+                    AplicarPermisos();
+                    this.Show();
+                }
+                else
+                {
+                    // Cerró el login sin entrar, salir del programa
+                    Application.Exit();
+                }
+            }
         }
     }
 }

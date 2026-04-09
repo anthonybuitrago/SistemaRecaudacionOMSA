@@ -1,37 +1,84 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace CapaDatos
 {
     public class D_Usuario
     {
-        // TODO: ESTO ES PARA VALIDAR USUARIO Y CONTRASEÑA
-      
-        public bool ValidarUsuario(string usuario, string clave)
-        {
-            bool acceso = false;
-            ConexionBD bd = new ConexionBD();
+        // Propiedades
+        public int IdUsuario { get; set; }
+        public string NombreUsuario { get; set; }
+        public string Contrasena { get; set; }
+        public string Rol { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public bool Activo { get; set; }
 
+        // Validar login - devuelve el usuario si existe o null si no
+        public static D_Usuario Validar(string nombreUsuario, string contrasena)
+        {
             try
             {
-                SqlConnection cn = bd.AbrirConexion();
+                ConexionBD bd = new ConexionBD();
+                SqlConnection con = bd.AbrirConexion();
 
-                string query = "SELECT COUNT(*) FROM Usuario " +
-                 "WHERE NombreUsuario = @usuario AND Contrasena = @clave";
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT ID_Usuario, NombreUsuario, Rol
+                    FROM Usuario
+                    WHERE NombreUsuario = @nombre
+                      AND Contrasena = @contrasena
+                      AND Activo = 1", con);
 
+                cmd.Parameters.AddWithValue("@nombre", nombreUsuario);
+                cmd.Parameters.AddWithValue("@contrasena", contrasena);
 
-                SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@usuario", usuario);
-                cmd.Parameters.AddWithValue("@clave", clave);
+                SqlDataReader dr = cmd.ExecuteReader();
 
-                int resultado = (int)cmd.ExecuteScalar();
-                acceso = resultado > 0;
+                if (dr.Read())
+                {
+                    D_Usuario u = new D_Usuario
+                    {
+                        IdUsuario = Convert.ToInt32(dr["ID_Usuario"]),
+                        NombreUsuario = dr["NombreUsuario"].ToString(),
+                        Rol = dr["Rol"].ToString()
+                    };
+                    dr.Close();
+                    bd.CerrarConexion();
+                    return u;
+                }
+
+                dr.Close();
+                bd.CerrarConexion();
+                return null;
             }
-            finally
+            catch (Exception ex)
             {
-                bd.CerrarConexion(); 
+                throw new Exception("Error al validar usuario: " + ex.Message);
             }
+        }
 
-            return acceso;
+        // Insertar usuario nuevo
+        public static void Insertar(string nombreUsuario, string contrasena, string rol)
+        {
+            try
+            {
+                ConexionBD bd = new ConexionBD();
+                SqlConnection con = bd.AbrirConexion();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    INSERT INTO Usuario (NombreUsuario, Contrasena, Rol)
+                    VALUES (@nombre, @contrasena, @rol)", con);
+
+                cmd.Parameters.AddWithValue("@nombre", nombreUsuario);
+                cmd.Parameters.AddWithValue("@contrasena", contrasena);
+                cmd.Parameters.AddWithValue("@rol", rol);
+
+                cmd.ExecuteNonQuery();
+                bd.CerrarConexion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al insertar usuario: " + ex.Message);
+            }
         }
     }
 }

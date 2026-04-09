@@ -1,16 +1,27 @@
 ﻿using CapaDatos;
 
-
 namespace OMSA_Recaudacion.CapaNegocio
 {
     public class N_Usuario
     {
-        D_Usuario datos = new D_Usuario();
-
-        // TODO: Es para Llamar a la capa de datos para validar credenciales
-        public bool ValidarUsuario(string usuario, string clave)
+        public bool ValidarUsuario(string nombreUsuario, string contrasena)
         {
-            return datos.ValidarUsuario(usuario, clave);
+            D_Usuario u = D_Usuario.Validar(nombreUsuario, contrasena);
+
+            if (u != null)
+            {
+                Sesion.IdUsuario = u.IdUsuario;
+                Sesion.NombreUsuario = u.NombreUsuario;
+                Sesion.Rol = u.Rol;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void CrearUsuario(string nombreUsuario, string contrasena, string rol)
+        {
+            D_Usuario.Insertar(nombreUsuario, contrasena, rol);
         }
     }
 }

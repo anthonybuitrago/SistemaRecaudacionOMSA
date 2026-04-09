@@ -249,18 +249,19 @@ namespace SistemaRecaudacionOMSA
 
         private void pnlContenedor_Paint(object sender, PaintEventArgs e)
         {
-        }
+        
 
-        private void pnlContenedor_Paint(object sender, PaintEventArgs e)
-        {
 
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
             this.Hide();
-            FrmLogin frmLogin = new FrmLogin();
-            frmLogin.Show();
+            FrmLogin login = new FrmLogin();
+            if (login.ShowDialog() == DialogResult.OK)
+                this.Show();
+            else
+                Application.Exit();
         }
     }
 }

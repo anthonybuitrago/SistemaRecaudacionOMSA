@@ -1,6 +1,6 @@
 ﻿using CapaDatos;
 
-namespace OMSA_Recaudacion.CapaNegocio
+namespace CapaNegocios
 {
     // Gestiona la lógica de seguridad y validación de acceso al sistema
     public class N_Usuario

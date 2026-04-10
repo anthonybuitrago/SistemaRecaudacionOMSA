@@ -1,5 +1,4 @@
-﻿using CapaPresentacion;
-using OMSA_Recaudacion.CapaNegocio;
+﻿using CapaNegocios;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,6 +8,9 @@ namespace SistemaRecaudacionOMSA
     // Formulario contenedor principal con menú lateral animado y panel de navegación
     public partial class FrmPrincipal : Form
     {
+
+        private bool menuExpandido = true; // Variable para el control del menú lateral
+
         // Gestión de estado de la interfaz
         private Button botonActivo = null;
         private Form formularioActivo = null;
@@ -20,13 +22,6 @@ namespace SistemaRecaudacionOMSA
         public FrmPrincipal()
         {
             InitializeComponent();
-        }
-
-        private void FrmPrincipal_Load(object sender, EventArgs e)
-        {
-            // Carga inicial del Dashboard
-            ActivarBoton(btnDashboard);
-            AbrirFormularioEnPanel(new FrmDashboard());
         }
 
         // Carga un formulario hijo dentro del panel contenedor central

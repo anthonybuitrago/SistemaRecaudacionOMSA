@@ -5,25 +5,27 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
+    // Persistencia de datos especializada en métricas operativas del sistema (Dashboard)
     public class D_Dashboard
     {
-        // Instancia para gestionar la comunicación con la base de datos
+        // Instancia de gestión de conexión
         private ConexionBD conexion = new ConexionBD();
 
-        // Obtiene las métricas principales del Dashboard ejecutando el procedimiento almacenado correspondiente.
+        // Ejecuta el procedimiento almacenado para recuperar los KPIs globales consolidados
         public async Task<DataTable> ObtenerResumenDashboardAsync()
         {
             DataTable dt = new DataTable();
             try
             {
-                // Se establece y abre el canal de comunicación con SQL Server
+                // Apertura del canal de comunicación con SQL Server
                 SqlConnection cn = conexion.AbrirConexion();
 
+                // Implementación mediante Procedimiento Almacenado para optimización de rendimiento
                 using (SqlCommand cmd = new SqlCommand("SP_Dashboard_Totales", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Ejecución asíncrona del lector para optimizar el rendimiento de la aplicación
+                    // Lectura asíncrona de datos para mantener la fluidez de la interfaz
                     using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
                         dt.Load(dr);
@@ -32,12 +34,12 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                // Captura y propagación de excepciones ocurridas en la capa de persistencia
-                throw new Exception("Error en el acceso a datos del Dashboard: " + ex.Message);
+                // Propagación controlada de excepciones de persistencia
+                throw new Exception("Error en el acceso a datos analíticos del Dashboard: " + ex.Message);
             }
             finally
             {
-                // Asegura la liberación de los recursos de conexión tras la consulta
+                // Liberación obligatoria de recursos de conexión
                 conexion.CerrarConexion();
             }
             return dt;

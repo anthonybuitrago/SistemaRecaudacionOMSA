@@ -5,13 +5,16 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    // Maneja las operaciones de la base de datos relacionadas con los tickets
+    // Persistencia de datos para la emisión de boletos (Implementación ICrud)
     public class D_Ticket : ICrud
     {
         private ConexionBD conexion = new ConexionBD();
 
-        // TODO: [REQUISITO] - Llaves foráneas correspondientes (Demostrado mediante JOINs relacionales)
-        // Muestra el historial completo cruzando IDs con sus descripciones reales
+        // ==========================================================
+        // CONSULTAS DE DATOS RELACIONALES
+        // ==========================================================
+
+        // Extrae el historial resolviendo llaves foráneas mediante JOINs relacionales
         public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
@@ -19,6 +22,8 @@ namespace CapaDatos
             {
                 using (SqlCommand comando = new SqlCommand())
                 {
+                    // TODO: [REQUISITO] - Llaves Foráneas: Integridad referencial demostrada mediante consultas relacionales(JOINs)
+
                     comando.Connection = conexion.AbrirConexion();
                     comando.CommandText = @"
                         SELECT 
@@ -49,7 +54,7 @@ namespace CapaDatos
             return tabla;
         }
 
-        // Obtiene únicamente los viajes con estado activo para cargar en el selector de ventas
+        // Obtiene la disponibilidad de viajes activos para la interfaz de ventas
         public async Task<DataTable> MostrarViajesActivosParaVentaAsync()
         {
             DataTable tabla = new DataTable();
@@ -83,7 +88,11 @@ namespace CapaDatos
             return tabla;
         }
 
-        // Inserta un nuevo ticket en la base de datos
+        // ==========================================================
+        // OPERACIONES TRANSACCIONALES
+        // ==========================================================
+
+        // Registra una nueva venta de ticket en la base de datos
         public async Task InsertarAsync(params object[] parametros)
         {
             int idViaje = Convert.ToInt32(parametros[0]);
@@ -111,7 +120,7 @@ namespace CapaDatos
             }
         }
 
-        // Modifica un ticket existente 
+        // Modifica los datos de un ticket registrado anteriormente
         public async Task EditarAsync(params object[] parametros)
         {
             int idTicket = Convert.ToInt32(parametros[0]);
@@ -141,7 +150,7 @@ namespace CapaDatos
             }
         }
 
-        // Elimina un ticket físicamente de la base de datos
+        // Ejecuta la eliminación física del registro de ticket
         public async Task EliminarAsync(int id)
         {
             try

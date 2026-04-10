@@ -5,12 +5,13 @@ using CapaDatos;
 
 namespace CapaNegocios
 {
-    // Gestiona la lógica de negocio para la generación de reportes financieros y operativos
+    // Reglas de negocio y orquestación para la generación de reportes financieros y operativos
     public class N_Reporte
     {
+        // Enlace de comunicación con la capa de persistencia de datos
         private D_Reporte objDatos = new D_Reporte();
 
-        // Obtiene el reporte consolidado de ingresos y pasajeros agrupado por ruta
+        // Genera el reporte consolidado de ingresos y flujo de pasajeros agrupado por ruta
         public async Task<DataTable> MostrarRecaudacionRutaAsync()
         {
             try

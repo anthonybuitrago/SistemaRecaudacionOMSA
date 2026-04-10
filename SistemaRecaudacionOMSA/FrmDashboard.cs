@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CapaNegocios;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using CapaNegocios;
 
 namespace SistemaRecaudacionOMSA
 {

@@ -9,9 +9,10 @@ namespace SistemaRecaudacionOMSA
     // Formulario para la gestión (CRUD) de los choferes del sistema
     public partial class FrmChoferes : Form
     {
+        // Instancia de la capa de negocios
         private N_Chofer objNegocio = new N_Chofer();
 
-        // Variables de control de estado para el modo edición
+        // Control de estado para validación de modificaciones
         private int idChofer = 0;
         private string cedulaOriginal = "";
         private string nombreOriginal = "";
@@ -22,9 +23,14 @@ namespace SistemaRecaudacionOMSA
             InitializeComponent();
         }
 
+        // TODO: [REQUISITO] - Los controles de entrada inician deshabilitados al cargar el formulario.
+
+        // Evento de inicialización del formulario
         private async void FrmChoferes_Load(object sender, EventArgs e)
         {
             dgvChoferes.Visible = false;
+
+            // Carga asíncrona del catálogo de choferes
             await MostrarChoferesTablaAsync();
 
             HabilitarCampos(false);
@@ -34,6 +40,10 @@ namespace SistemaRecaudacionOMSA
 
             AplicarEstiloTabla();
         }
+
+        // ==========================================================
+        // GESTIÓN VISUAL Y DE INTERFAZ
+        // ==========================================================
 
         // Alterna la visibilidad de la tabla de registros
         private void btnVerTabla_Click(object sender, EventArgs e)
@@ -53,6 +63,8 @@ namespace SistemaRecaudacionOMSA
                 btnVerTabla.Image = Properties.Resources.view;
             }
         }
+
+        // TODO: [REQUISITO] - Botón habilitador: Activa los campos de entrada para permitir el ingreso de datos.
 
         // Alterna entre el modo de lectura y el modo de edición de datos
         private void btnModoEdicion_Click(object sender, EventArgs e)
@@ -103,24 +115,9 @@ namespace SistemaRecaudacionOMSA
             btnEliminar.ForeColor = colorLabel;
         }
 
-        // Carga los datos de la fila seleccionada en los campos del formulario
-        private void dgvChoferes_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow fila = dgvChoferes.Rows[e.RowIndex];
-
-                idChofer = Convert.ToInt32(fila.Cells["ID_Chofer"].Value);
-                txtCedula.Text = fila.Cells["Cedula"].Value.ToString();
-                txtNombre.Text = fila.Cells["NombreCompleto"].Value.ToString();
-                txtLicencia.Text = fila.Cells["NumeroLicencia"].Value.ToString();
-                txtTelefono.Text = fila.Cells["Telefono"].Value.ToString();
-
-                cedulaOriginal = txtCedula.Text;
-                nombreOriginal = txtNombre.Text;
-                licenciaOriginal = txtLicencia.Text;
-            }
-        }
+        // ==========================================================
+        // OPERACIONES DE BASE DE DATOS (CRUD)
+        // ==========================================================
 
         // Consulta la base de datos y refresca la tabla
         private async Task MostrarChoferesTablaAsync()
@@ -139,6 +136,7 @@ namespace SistemaRecaudacionOMSA
         // Procesa el registro de un nuevo chofer
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
+            // Validación estricta de campos y completitud de máscaras
             if (string.IsNullOrWhiteSpace(txtNombre.Text) || !txtCedula.MaskCompleted || !txtTelefono.MaskCompleted || string.IsNullOrWhiteSpace(txtLicencia.Text))
             {
                 MessageBox.Show("Por favor, complete todos los campos obligatorios con el formato correcto.", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -147,6 +145,7 @@ namespace SistemaRecaudacionOMSA
 
             try
             {
+                // Validación de registro único (Cédula)
                 bool yaExiste = await objNegocio.VerificarSiExisteCedula(txtCedula.Text);
 
                 if (yaExiste)
@@ -182,7 +181,11 @@ namespace SistemaRecaudacionOMSA
                 return;
             }
 
-            if (txtCedula.Text == cedulaOriginal && txtNombre.Text == nombreOriginal && txtLicencia.Text == licenciaOriginal && txtTelefono.Text != "") // Se asume verificación simple
+            // Verificación para evitar actualizaciones innecesarias a la base de datos
+            if (txtCedula.Text == cedulaOriginal &&
+                txtNombre.Text == nombreOriginal &&
+                txtLicencia.Text == licenciaOriginal &&
+                txtTelefono.Text != "")
             {
                 MessageBox.Show("No se han detectado cambios en la información actual.", "Sin Cambios", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -218,6 +221,7 @@ namespace SistemaRecaudacionOMSA
                 try
                 {
                     await objNegocio.EliminarChoferAsync(idChofer);
+
                     MessageBox.Show("El registro ha sido eliminado del sistema.", "Eliminación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     await MostrarChoferesTablaAsync();
                     LimpiarCampos();
@@ -229,7 +233,30 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Aplica el diseño visual corporativo a la cuadrícula de datos
+        // ==========================================================
+        // LÓGICA DE CONTROL Y EVENTOS VISUALES
+        // ==========================================================
+
+        // Carga los datos de la fila seleccionada en los campos del formulario
+        private void dgvChoferes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow fila = dgvChoferes.Rows[e.RowIndex];
+
+                idChofer = Convert.ToInt32(fila.Cells["ID_Chofer"].Value);
+                txtCedula.Text = fila.Cells["Cedula"].Value.ToString();
+                txtNombre.Text = fila.Cells["NombreCompleto"].Value.ToString();
+                txtLicencia.Text = fila.Cells["NumeroLicencia"].Value.ToString();
+                txtTelefono.Text = fila.Cells["Telefono"].Value.ToString();
+
+                cedulaOriginal = txtCedula.Text;
+                nombreOriginal = txtNombre.Text;
+                licenciaOriginal = txtLicencia.Text;
+            }
+        }
+
+        // Aplica el diseño visual corporativo (Dark Mode) a la cuadrícula de datos
         private void AplicarEstiloTabla()
         {
             dgvChoferes.BackgroundColor = Color.FromArgb(30, 30, 30);
@@ -258,10 +285,15 @@ namespace SistemaRecaudacionOMSA
             dgvChoferes.ReadOnly = true;
             dgvChoferes.MultiSelect = false;
 
-            // Organización de columnas
-            if (dgvChoferes.Columns["ID_Chofer"] != null) dgvChoferes.Columns["ID_Chofer"].Visible = false;
-            if (dgvChoferes.Columns["Estado"] != null) dgvChoferes.Columns["Estado"].Visible = false;
-            if (dgvChoferes.Columns["NumeroLicencia"] != null) dgvChoferes.Columns["NumeroLicencia"].Visible = false;
+            // Organización y formato de columnas (Ocultar y renombrar)
+            if (dgvChoferes.Columns["ID_Chofer"] != null)
+                dgvChoferes.Columns["ID_Chofer"].Visible = false;
+
+            if (dgvChoferes.Columns["Estado"] != null)
+                dgvChoferes.Columns["Estado"].Visible = false;
+
+            if (dgvChoferes.Columns["NumeroLicencia"] != null)
+                dgvChoferes.Columns["NumeroLicencia"].Visible = false;
 
             if (dgvChoferes.Columns["NombreCompleto"] != null)
             {
@@ -298,6 +330,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Restablece los controles a su estado inicial
         private void LimpiarCampos()
         {
             idChofer = 0;

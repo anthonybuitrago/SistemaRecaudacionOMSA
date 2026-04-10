@@ -9,10 +9,11 @@ namespace SistemaRecaudacionOMSA
     // Formulario para la gestión (CRUD) de las rutas de transporte
     public partial class FrmRutas : Form
     {
+        // Instancia de la capa de negocios
         private N_Ruta objNegocio = new N_Ruta();
         private int idRuta = 0;
 
-        // Variables de estado para detectar modificaciones en los datos
+        // Control de estado para validación de modificaciones
         private string nombreOriginal = "";
         private string tarifaOriginal = "";
         private string tiempoOriginal = "";
@@ -23,40 +24,40 @@ namespace SistemaRecaudacionOMSA
             InitializeComponent();
         }
 
+        // Evento de inicialización del formulario
         private async void FrmRutas_Load(object sender, EventArgs e)
         {
             dgvRutas.Visible = false;
+
+            // Carga asíncrona del catálogo de rutas
             await MostrarRutasTablaAsync();
 
             HabilitarCampos(false);
         }
 
-        // --- GESTIÓN VISUAL Y DE ESTADO DE LA INTERFAZ ---
+        // ==========================================================
+        // GESTIÓN VISUAL Y DE INTERFAZ
+        // ==========================================================
 
-        // Configura la disponibilidad de los controles según el modo de operación (Lectura/Edición)
+        // Controla la disponibilidad de los campos y botones según el modo
         private void HabilitarCampos(bool estado)
         {
             Color colorLabel = estado ? Color.White : Color.Gray;
             Color colorBotonApagado = Color.FromArgb(45, 45, 48);
 
             lblNombreRuta.ForeColor = lblTarifa.ForeColor = lblTiempo.ForeColor = lblDistancia.ForeColor = colorLabel;
-
             txtNombreRuta.Enabled = txtTarifa.Enabled = txtTiempo.Enabled = txtDistancia.Enabled = estado;
 
-            btnGuardar.Enabled = estado;
-            btnActualizar.Enabled = estado;
-            btnEliminar.Enabled = estado;
+            btnGuardar.Enabled = btnActualizar.Enabled = btnEliminar.Enabled = estado;
 
             btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
             btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
             btnEliminar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
 
-            btnGuardar.ForeColor = colorLabel;
-            btnActualizar.ForeColor = colorLabel;
-            btnEliminar.ForeColor = colorLabel;
+            btnGuardar.ForeColor = btnActualizar.ForeColor = btnEliminar.ForeColor = colorLabel;
         }
 
-        // Alterna entre el modo de visualización protegida y edición activa
+        // Alterna entre modo de visualización protegida y edición activa
         private void btnModoEdicion_Click(object sender, EventArgs e)
         {
             bool habilitar = !txtNombreRuta.Enabled;
@@ -81,12 +82,26 @@ namespace SistemaRecaudacionOMSA
         private void btnVerTabla_Click(object sender, EventArgs e)
         {
             dgvRutas.Visible = !dgvRutas.Visible;
-            btnVerTabla.Text = dgvRutas.Visible ? "Ocultar Tabla" : "Ver Tabla";
-            btnVerTabla.ForeColor = dgvRutas.Visible ? Color.Yellow : Color.White;
-            btnVerTabla.Image = dgvRutas.Visible ? Properties.Resources.view_off : Properties.Resources.view;
+
+            if (dgvRutas.Visible)
+            {
+                btnVerTabla.Text = "Ocultar Tabla";
+                btnVerTabla.ForeColor = Color.Yellow;
+                btnVerTabla.Image = Properties.Resources.view_off;
+            }
+            else
+            {
+                btnVerTabla.Text = "Ver Tabla";
+                btnVerTabla.ForeColor = Color.White;
+                btnVerTabla.Image = Properties.Resources.view;
+            }
         }
 
-        // Verifica si el usuario ha realizado cambios respecto a los datos cargados de la tabla
+        // ==========================================================
+        // LÓGICA DE VALIDACIÓN Y CONTROL
+        // ==========================================================
+
+        // Verifica si el usuario ha modificado los datos cargados de la tabla
         private bool HayCambiosReales()
         {
             return txtNombreRuta.Text != nombreOriginal ||
@@ -95,7 +110,34 @@ namespace SistemaRecaudacionOMSA
                    txtDistancia.Text != distanciaOriginal;
         }
 
-        // --- OPERACIONES DE BASE DE DATOS (CRUD) ---
+        // Restablece los controles a su estado inicial
+        private void LimpiarCampos()
+        {
+            idRuta = 0;
+            txtNombreRuta.Clear();
+            txtTarifa.Clear();
+            txtTiempo.Clear();
+            txtDistancia.Clear();
+            nombreOriginal = tarifaOriginal = tiempoOriginal = distanciaOriginal = "";
+        }
+
+        // Posiciona correctamente el cursor en máscaras de texto
+        private void AcomodarCursor_Click(object sender, EventArgs e)
+        {
+            MaskedTextBox mascara = sender as MaskedTextBox;
+            if (mascara != null && mascara.MaskedTextProvider != null)
+            {
+                int posicionVisible = mascara.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
+                if (posicionVisible != -1 && mascara.SelectionStart > posicionVisible)
+                {
+                    mascara.SelectionStart = posicionVisible;
+                }
+            }
+        }
+
+        // ==========================================================
+        // OPERACIONES DE BASE DE DATOS (CRUD)
+        // ==========================================================
 
         // Consulta y renderiza el listado de rutas disponibles
         private async Task MostrarRutasTablaAsync()
@@ -116,7 +158,10 @@ namespace SistemaRecaudacionOMSA
         {
             if (idRuta != 0)
             {
-                if (MessageBox.Show("¿Desea crear un registro nuevo utilizando estos datos?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                if (MessageBox.Show("¿Desea crear un registro nuevo utilizando estos datos?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return;
+                }
             }
 
             if (string.IsNullOrWhiteSpace(txtNombreRuta.Text) || string.IsNullOrWhiteSpace(txtTarifa.Text))
@@ -127,6 +172,7 @@ namespace SistemaRecaudacionOMSA
 
             try
             {
+                // Validación de registro único
                 if (await objNegocio.VerificarSiExiste(txtNombreRuta.Text))
                 {
                     MessageBox.Show("Esta ruta ya se encuentra registrada en el sistema.", "Registro Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -194,7 +240,9 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // --- EVENTOS DE CONTROLES Y DISEÑO VISUAL ---
+        // ==========================================================
+        // EVENTOS DE CONTROLES VISUALES
+        // ==========================================================
 
         // Transfiere los datos de la fila seleccionada a los controles de edición
         private void dgvRutas_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -202,8 +250,8 @@ namespace SistemaRecaudacionOMSA
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow fila = dgvRutas.Rows[e.RowIndex];
-                idRuta = Convert.ToInt32(fila.Cells["ID_Ruta"].Value);
 
+                idRuta = Convert.ToInt32(fila.Cells["ID_Ruta"].Value);
                 txtNombreRuta.Text = nombreOriginal = fila.Cells["NombreRuta"].Value.ToString();
                 txtTarifa.Text = tarifaOriginal = fila.Cells["Tarifa"].Value.ToString();
                 txtTiempo.Text = tiempoOriginal = fila.Cells["TiempoMinutos"].Value.ToString();
@@ -211,21 +259,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Posiciona correctamente el cursor en máscaras de texto al hacer clic
-        private void AcomodarCursor_Click(object sender, EventArgs e)
-        {
-            MaskedTextBox mascara = sender as MaskedTextBox;
-            if (mascara != null && mascara.MaskedTextProvider != null)
-            {
-                int posicionVisible = mascara.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
-                if (posicionVisible != -1 && mascara.SelectionStart > posicionVisible)
-                {
-                    mascara.SelectionStart = posicionVisible;
-                }
-            }
-        }
-
-        // Aplica el diseño visual corporativo a la cuadrícula
+        // Aplica el diseño visual corporativo (Dark Mode) a la cuadrícula
         private void AplicarEstiloTabla()
         {
             dgvRutas.BackgroundColor = Color.FromArgb(30, 30, 30);
@@ -245,7 +279,6 @@ namespace SistemaRecaudacionOMSA
             dgvRutas.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204);
             dgvRutas.DefaultCellStyle.SelectionForeColor = Color.White;
             dgvRutas.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-
             dgvRutas.RowTemplate.Height = 35;
             dgvRutas.RowHeadersVisible = false;
 
@@ -253,25 +286,24 @@ namespace SistemaRecaudacionOMSA
             dgvRutas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRutas.ReadOnly = true;
 
-            // Formato de cabeceras
-            if (dgvRutas.Columns["NombreRuta"] != null) dgvRutas.Columns["NombreRuta"].HeaderText = "Nombre de la Ruta";
-            if (dgvRutas.Columns["Tarifa"] != null) dgvRutas.Columns["Tarifa"].HeaderText = "Tarifa (RD$)";
-            if (dgvRutas.Columns["TiempoMinutos"] != null) dgvRutas.Columns["TiempoMinutos"].HeaderText = "Tiempo (Min)";
-            if (dgvRutas.Columns["DistanciaKM"] != null) dgvRutas.Columns["DistanciaKM"].HeaderText = "Distancia (Km)";
+            // Formato de cabeceras (Renombrar y ocultar)
+            if (dgvRutas.Columns["NombreRuta"] != null)
+                dgvRutas.Columns["NombreRuta"].HeaderText = "Nombre de la Ruta";
 
-            if (dgvRutas.Columns["ID_Ruta"] != null) dgvRutas.Columns["ID_Ruta"].Visible = false;
-            if (dgvRutas.Columns["Estado"] != null) dgvRutas.Columns["Estado"].Visible = false;
-        }
+            if (dgvRutas.Columns["Tarifa"] != null)
+                dgvRutas.Columns["Tarifa"].HeaderText = "Tarifa (RD$)";
 
-        // Restablece los controles a su estado inicial
-        private void LimpiarCampos()
-        {
-            idRuta = 0;
-            txtNombreRuta.Clear();
-            txtTarifa.Clear();
-            txtTiempo.Clear();
-            txtDistancia.Clear();
-            nombreOriginal = tarifaOriginal = tiempoOriginal = distanciaOriginal = "";
+            if (dgvRutas.Columns["TiempoMinutos"] != null)
+                dgvRutas.Columns["TiempoMinutos"].HeaderText = "Tiempo (Min)";
+
+            if (dgvRutas.Columns["DistanciaKM"] != null)
+                dgvRutas.Columns["DistanciaKM"].HeaderText = "Distancia (Km)";
+
+            if (dgvRutas.Columns["ID_Ruta"] != null)
+                dgvRutas.Columns["ID_Ruta"].Visible = false;
+
+            if (dgvRutas.Columns["Estado"] != null)
+                dgvRutas.Columns["Estado"].Visible = false;
         }
     }
 }

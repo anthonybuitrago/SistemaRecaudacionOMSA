@@ -3,11 +3,10 @@ using System.Data.SqlClient;
 
 namespace CapaDatos
 {
-    // TODO: [REQUISITO] - Login para el acceso de la aplicación con conexión a base de datos
-    // Gestiona la validación de credenciales de los usuarios en el sistema
+    // Gestión de autenticación y persistencia de usuarios
     public class D_Usuario
     {
-        // Propiedades
+        // Propiedades de la entidad de usuario
         public int IdUsuario { get; set; }
         public string NombreUsuario { get; set; }
         public string Contrasena { get; set; }
@@ -15,7 +14,9 @@ namespace CapaDatos
         public DateTime FechaCreacion { get; set; }
         public bool Activo { get; set; }
 
-        // Validar login - devuelve el usuario si existe o null si no
+        // TODO: [REQUISITO] - Login: Validación de acceso al sistema consultando la tabla Usuario.
+
+        // Valida las credenciales y retorna el perfil si el usuario está activo
         public static D_Usuario Validar(string nombreUsuario, string contrasena)
         {
             try
@@ -23,6 +24,7 @@ namespace CapaDatos
                 ConexionBD bd = new ConexionBD();
                 SqlConnection con = bd.AbrirConexion();
 
+                // Consulta con parámetros para prevenir Inyección SQL
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT ID_Usuario, NombreUsuario, Rol
                     FROM Usuario
@@ -54,11 +56,11 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al validar usuario: " + ex.Message);
+                throw new Exception("Error al validar usuario en base de datos: " + ex.Message);
             }
         }
 
-        // Insertar usuario nuevo
+        // Registra un nuevo acceso de usuario en el sistema
         public static void Insertar(string nombreUsuario, string contrasena, string rol)
         {
             try
@@ -79,7 +81,7 @@ namespace CapaDatos
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al insertar usuario: " + ex.Message);
+                throw new Exception("Error al insertar usuario en base de datos: " + ex.Message);
             }
         }
     }

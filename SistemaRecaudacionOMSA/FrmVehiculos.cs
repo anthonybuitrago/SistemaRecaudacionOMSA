@@ -9,9 +9,10 @@ namespace SistemaRecaudacionOMSA
     // Formulario para la gestión (CRUD) del inventario de vehículos
     public partial class FrmVehiculos : Form
     {
+        // Instancia de la capa de negocios
         private N_Vehiculo objNegocio = new N_Vehiculo();
 
-        // Variables de control de estado y detección de cambios
+        // Control de estado para validación de modificaciones
         private int idVehiculo = 0;
         private string fichaOriginal = "";
         private string placaOriginal = "";
@@ -23,16 +24,21 @@ namespace SistemaRecaudacionOMSA
             InitializeComponent();
         }
 
+        // Evento de inicialización del formulario
         private async void FrmVehiculos_Load(object sender, EventArgs e)
         {
             dgvVehiculos.Visible = false;
+
+            // Carga asíncrona del catálogo de vehículos
             await MostrarVehiculosTablaAsync();
 
             HabilitarCampos(false);
             AplicarEstiloTabla();
         }
 
-        // --- GESTIÓN VISUAL Y DE INTERFAZ ---
+        // ==========================================================
+        // GESTIÓN VISUAL Y DE INTERFAZ
+        // ==========================================================
 
         // Controla la disponibilidad de los campos y botones según el modo (Lectura/Edición)
         private void HabilitarCampos(bool estado)
@@ -41,12 +47,9 @@ namespace SistemaRecaudacionOMSA
             Color colorBotonApagado = Color.FromArgb(45, 45, 48);
 
             lblFicha.ForeColor = lblPlaca.ForeColor = lblModelo.ForeColor = lblCapacidad.ForeColor = colorLabel;
-
             txtFicha.Enabled = txtPlaca.Enabled = txtModelo.Enabled = txtCapacidad.Enabled = estado;
 
-            btnGuardar.Enabled = estado;
-            btnActualizar.Enabled = estado;
-            btnEliminar.Enabled = estado;
+            btnGuardar.Enabled = btnActualizar.Enabled = btnEliminar.Enabled = estado;
 
             btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
             btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
@@ -95,7 +98,9 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // --- OPERACIONES DE BASE DE DATOS (CRUD) ---
+        // ==========================================================
+        // OPERACIONES DE BASE DE DATOS (CRUD)
+        // ==========================================================
 
         // Recupera y renderiza el listado de vehículos activos
         private async Task MostrarVehiculosTablaAsync()
@@ -116,7 +121,10 @@ namespace SistemaRecaudacionOMSA
         {
             if (idVehiculo != 0)
             {
-                if (MessageBox.Show("¿Desea crear un nuevo registro con estos datos?", "Confirmar Nuevo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                if (MessageBox.Show("¿Desea crear un nuevo registro con estos datos?", "Confirmar Nuevo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return;
+                }
             }
 
             if (string.IsNullOrWhiteSpace(txtFicha.Text) || string.IsNullOrWhiteSpace(txtPlaca.Text))
@@ -127,6 +135,7 @@ namespace SistemaRecaudacionOMSA
 
             try
             {
+                // Validación de registro único
                 if (await objNegocio.VerificarFichaExiste(txtFicha.Text))
                 {
                     MessageBox.Show("El número de Ficha ingresado ya pertenece a otro vehículo.", "Registro Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -194,7 +203,47 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // --- EVENTOS DE CONTROLES Y DISEÑO ---
+        // ==========================================================
+        // LÓGICA DE VALIDACIÓN Y CONTROL
+        // ==========================================================
+
+        // Verifica si el usuario realizó modificaciones en el registro
+        private bool HayCambiosVehiculo()
+        {
+            return txtFicha.Text != fichaOriginal ||
+                   txtPlaca.Text != placaOriginal ||
+                   txtModelo.Text != modeloOriginal ||
+                   txtCapacidad.Text != capacidadOriginal;
+        }
+
+        // Restablece los controles a su estado inicial
+        private void LimpiarCampos()
+        {
+            idVehiculo = 0;
+            txtFicha.Clear();
+            txtPlaca.Clear();
+            txtModelo.Clear();
+            txtCapacidad.Clear();
+            fichaOriginal = placaOriginal = modeloOriginal = capacidadOriginal = "";
+        }
+
+        // Posiciona el cursor en el primer espacio editable de un MaskedTextBox
+        private void AcomodarCursor_Click(object sender, EventArgs e)
+        {
+            MaskedTextBox m = sender as MaskedTextBox;
+            if (m != null && m.MaskedTextProvider != null)
+            {
+                int pos = m.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
+                if (pos != -1 && m.SelectionStart > pos)
+                {
+                    m.SelectionStart = pos;
+                }
+            }
+        }
+
+        // ==========================================================
+        // EVENTOS DE CONTROLES Y DISEÑO VISUAL
+        // ==========================================================
 
         // Carga los datos de la fila seleccionada en los campos de edición
         private void dgvVehiculos_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -214,7 +263,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Aplica el estilo visual profesional a la tabla
+        // Aplica el estilo visual profesional (Dark Mode) a la tabla
         private void AplicarEstiloTabla()
         {
             dgvVehiculos.BackgroundColor = Color.FromArgb(30, 30, 30);
@@ -242,41 +291,18 @@ namespace SistemaRecaudacionOMSA
             dgvVehiculos.ReadOnly = true;
             dgvVehiculos.MultiSelect = false;
 
-            // Formato de columnas
-            if (dgvVehiculos.Columns["ID_Vehiculo"] != null) dgvVehiculos.Columns["ID_Vehiculo"].Visible = false;
-            if (dgvVehiculos.Columns["Estado"] != null) dgvVehiculos.Columns["Estado"].Visible = false;
+            // Formato de columnas (Ocultar y renombrar)
+            if (dgvVehiculos.Columns["ID_Vehiculo"] != null)
+                dgvVehiculos.Columns["ID_Vehiculo"].Visible = false;
 
-            if (dgvVehiculos.Columns["Ficha"] != null) dgvVehiculos.Columns["Ficha"].HeaderText = "Ficha";
-            if (dgvVehiculos.Columns["Placa"] != null) dgvVehiculos.Columns["Placa"].HeaderText = "Placa";
-        }
+            if (dgvVehiculos.Columns["Estado"] != null)
+                dgvVehiculos.Columns["Estado"].Visible = false;
 
-        // Posiciona el cursor en el primer espacio editable de un MaskedTextBox
-        private void AcomodarCursor_Click(object sender, EventArgs e)
-        {
-            MaskedTextBox m = sender as MaskedTextBox;
-            if (m != null && m.MaskedTextProvider != null)
-            {
-                int pos = m.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
-                if (pos != -1 && m.SelectionStart > pos) m.SelectionStart = pos;
-            }
-        }
+            if (dgvVehiculos.Columns["Ficha"] != null)
+                dgvVehiculos.Columns["Ficha"].HeaderText = "Ficha";
 
-        private void LimpiarCampos()
-        {
-            idVehiculo = 0;
-            txtFicha.Clear();
-            txtPlaca.Clear();
-            txtModelo.Clear();
-            txtCapacidad.Clear();
-            fichaOriginal = placaOriginal = modeloOriginal = capacidadOriginal = "";
-        }
-
-        private bool HayCambiosVehiculo()
-        {
-            return txtFicha.Text != fichaOriginal ||
-                   txtPlaca.Text != placaOriginal ||
-                   txtModelo.Text != modeloOriginal ||
-                   txtCapacidad.Text != capacidadOriginal;
+            if (dgvVehiculos.Columns["Placa"] != null)
+                dgvVehiculos.Columns["Placa"].HeaderText = "Placa";
         }
     }
 }

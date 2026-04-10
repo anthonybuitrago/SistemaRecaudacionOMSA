@@ -10,6 +10,7 @@ namespace SistemaRecaudacionOMSA
     // Módulo de punto de venta y emisión de boletos
     public partial class FrmTickets : Form
     {
+        // Instancias de la capa de negocios y variables de estado
         private N_Ticket objTicket = new N_Ticket();
         private decimal tarifaActual = 0m;
 
@@ -17,34 +18,39 @@ namespace SistemaRecaudacionOMSA
         {
             InitializeComponent();
 
+            // Configuración visual base de la cuadrícula
             dgvTickets.BackgroundColor = Color.FromArgb(28, 28, 28);
             dgvTickets.BorderStyle = BorderStyle.None;
         }
 
+        // Evento de inicialización del formulario
         private async void FrmTickets_Load(object sender, EventArgs e)
         {
             dgvTickets.Visible = false;
 
             LlenarComboCantidad();
+
+            // Carga asíncrona para evitar congelamientos en la interfaz
             await CargarViajesActivosAsync();
             await MostrarTicketsTablaAsync();
 
             HabilitarCampos(false);
         }
 
-        // --- GESTIÓN DE INTERFAZ Y ESTADOS ---
+        // ==========================================================
+        // GESTIÓN DE INTERFAZ Y ESTADOS VISUALES
+        // ==========================================================
 
-        // Controla la habilitación visual y funcional de los componentes del formulario
+        // Activa o desactiva controles ajustando su paleta de colores
         private void HabilitarCampos(bool estado)
         {
             Color colorTexto = estado ? Color.White : Color.Gray;
             Color colorBotonApagado = Color.FromArgb(45, 45, 48);
 
             lblViaje.ForeColor = lblCantidadTickets.ForeColor = lblTarifa.ForeColor = lblTotalPagar.ForeColor = colorTexto;
-
             cmbViaje.Enabled = cmbCantidadTickets.Enabled = estado;
 
-            // Bloqueo de campos calculados
+            // Bloqueo estricto de campos calculados por el sistema
             txtTarifa.Enabled = false;
             txtTotalPagar.Enabled = false;
 
@@ -78,17 +84,30 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Muestra u oculta la tabla del histórico de ventas
         private void btnVerTabla_Click(object sender, EventArgs e)
         {
             dgvTickets.Visible = !dgvTickets.Visible;
-            btnVerTabla.Text = dgvTickets.Visible ? "Ocultar Historial" : "Ver Historial";
-            btnVerTabla.ForeColor = dgvTickets.Visible ? Color.Yellow : Color.White;
-            btnVerTabla.Image = dgvTickets.Visible ? Properties.Resources.view_off : Properties.Resources.view;
+
+            if (dgvTickets.Visible)
+            {
+                btnVerTabla.Text = "Ocultar Historial";
+                btnVerTabla.ForeColor = Color.Yellow;
+                btnVerTabla.Image = Properties.Resources.view_off;
+            }
+            else
+            {
+                btnVerTabla.Text = "Ver Historial";
+                btnVerTabla.ForeColor = Color.White;
+                btnVerTabla.Image = Properties.Resources.view;
+            }
         }
 
-        // --- CARGA DE DATOS Y LÓGICA FINANCIERA ---
+        // ==========================================================
+        // CARGA DE DATOS Y LÓGICA FINANCIERA
+        // ==========================================================
 
-        // Configura el selector de volumen de compra
+        // Configura el selector de volumen de compra (1 a 20 tickets)
         private void LlenarComboCantidad()
         {
             cmbCantidadTickets.Items.Clear();
@@ -98,7 +117,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Recupera y enlista los viajes disponibles para asignación de tickets
+        // Recupera y enlista los viajes disponibles para asignación
         private async Task CargarViajesActivosAsync()
         {
             try
@@ -124,7 +143,6 @@ namespace SistemaRecaudacionOMSA
             {
                 tarifaActual = Convert.ToDecimal(filaSeleccionada["Tarifa"]);
                 txtTarifa.Text = tarifaActual.ToString("N2");
-
                 CalcularTotalPagar();
             }
             else
@@ -153,7 +171,9 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // --- TRANSACCIONES CRUD ---
+        // ==========================================================
+        // TRANSACCIONES CRUD
+        // ==========================================================
 
         // Procesa y formaliza la venta de boletos
         private async void btnGuardar_Click(object sender, EventArgs e)
@@ -199,9 +219,14 @@ namespace SistemaRecaudacionOMSA
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             LimpiarFormulario();
-            if (cmbCantidadTickets.Items.Count > 0) cmbCantidadTickets.SelectedIndex = 0;
+
+            if (cmbCantidadTickets.Items.Count > 0)
+            {
+                cmbCantidadTickets.SelectedIndex = 0;
+            }
         }
 
+        // Restablece los controles a su estado inicial
         private void LimpiarFormulario()
         {
             cmbViaje.SelectedIndex = -1;
@@ -210,7 +235,9 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.ClearSelection();
         }
 
-        // --- PRESENTACIÓN DE DATOS (HISTÓRICO) ---
+        // ==========================================================
+        // PRESENTACIÓN DE DATOS (HISTÓRICO)
+        // ==========================================================
 
         // Consulta y muestra el registro histórico de ventas
         private async Task MostrarTicketsTablaAsync()
@@ -219,9 +246,15 @@ namespace SistemaRecaudacionOMSA
             {
                 dgvTickets.DataSource = await objTicket.MostrarTicketsAsync();
 
-                if (dgvTickets.Columns["ID_Ticket"] != null) dgvTickets.Columns["ID_Ticket"].HeaderText = "No. Ticket";
-                if (dgvTickets.Columns["MontoPagado"] != null) dgvTickets.Columns["MontoPagado"].HeaderText = "Monto (RD$)";
-                if (dgvTickets.Columns["Estado"] != null) dgvTickets.Columns["Estado"].HeaderText = "Estado";
+                // Formateo condicional de columnas si existen
+                if (dgvTickets.Columns["ID_Ticket"] != null)
+                    dgvTickets.Columns["ID_Ticket"].HeaderText = "No. Ticket";
+
+                if (dgvTickets.Columns["MontoPagado"] != null)
+                    dgvTickets.Columns["MontoPagado"].HeaderText = "Monto (RD$)";
+
+                if (dgvTickets.Columns["Estado"] != null)
+                    dgvTickets.Columns["Estado"].HeaderText = "Estado";
 
                 if (dgvTickets.Columns["Fecha"] != null)
                 {
@@ -237,7 +270,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Aplica el diseño corporativo a la cuadrícula de datos
+        // Aplica el diseño corporativo (Dark Mode) a la cuadrícula
         private void AplicarEstiloTabla()
         {
             dgvTickets.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -262,9 +295,10 @@ namespace SistemaRecaudacionOMSA
             dgvTickets.RowTemplate.Height = 35;
         }
 
+        // Evento de selección de celda (Sin acción requerida para histórico de solo lectura)
         private void dgvTickets_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+            // El histórico de tickets es de solo lectura, no requiere mapeo de datos a campos
         }
     }
 }

@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    // Maneja las operaciones de la base de datos relacionadas con los vehículos
+    // Persistencia de datos para el inventario de unidades (Implementación ICrud)
     public class D_Vehiculo : ICrud
     {
         private ConexionBD conexion = new ConexionBD();
 
-        // Extrae la lista de vehículos activos
+        // ==========================================================
+        // CONSULTAS DE DATOS
+        // ==========================================================
+
+        // Extrae el listado de vehículos que no han sido dados de baja
         public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
@@ -35,14 +39,41 @@ namespace CapaDatos
             return tabla;
         }
 
-        // TODO: [REQUISITO] - Captura de error para evitar cierre forzado del sistema
-        // Registra un nuevo vehículo asegurando que el programa no colapse si falla la base de datos
+        // Verifica la existencia de una ficha para evitar colisiones de registros
+        public async Task<bool> ExisteFichaAsync(string ficha)
+        {
+            int conteo = 0;
+            try
+            {
+                using (SqlCommand comando = new SqlCommand())
+                {
+                    comando.Connection = conexion.AbrirConexion();
+                    comando.CommandText = "SELECT COUNT(*) FROM Vehiculo WHERE Ficha = @ficha AND Estado != 'Inactivo'";
+                    comando.Parameters.AddWithValue("@ficha", ficha);
+
+                    conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
+                }
+            }
+            finally
+            {
+                conexion.CerrarConexion();
+            }
+            return conteo > 0;
+        }
+
+        // ==========================================================
+        // OPERACIONES TRANSACCIONALES
+        // ==========================================================
+
+        // Registra una nueva unidad con gestión de excepciones SQL
         public async Task InsertarAsync(params object[] parametros)
         {
             string ficha = parametros[0].ToString();
             string placa = parametros[1].ToString();
             string modelo = parametros[2].ToString();
             int capacidad = Convert.ToInt32(parametros[3]);
+
+            // TODO: [REQUISITO] - Captura de error: Uso de Try-Catch para evitar el cierre forzado ante fallos de SQL.
 
             try
             {
@@ -61,7 +92,7 @@ namespace CapaDatos
             }
             catch (SqlException ex)
             {
-                // Capturamos el error para que la capa superior decida cómo mostrarlo al usuario
+                // Captura controlada para integridad de datos en la base de datos
                 throw new Exception("Error en la base de datos al guardar el vehículo: " + ex.Message);
             }
             finally
@@ -70,7 +101,7 @@ namespace CapaDatos
             }
         }
 
-        // Modifica los datos de un vehículo existente
+        // Actualiza los datos técnicos de un vehículo existente
         public async Task EditarAsync(params object[] parametros)
         {
             int id = Convert.ToInt32(parametros[0]);
@@ -101,7 +132,7 @@ namespace CapaDatos
             }
         }
 
-        // Realiza un borrado lógico del vehículo (cambia a Inactivo)
+        // Ejecuta la baja lógica del vehículo cambiando su estado operativo
         public async Task EliminarAsync(int id)
         {
             try
@@ -119,28 +150,6 @@ namespace CapaDatos
             {
                 conexion.CerrarConexion();
             }
-        }
-
-        // Verifica si la ficha de un vehículo ya está registrada
-        public async Task<bool> ExisteFichaAsync(string ficha)
-        {
-            int conteo = 0;
-            try
-            {
-                using (SqlCommand comando = new SqlCommand())
-                {
-                    comando.Connection = conexion.AbrirConexion();
-                    comando.CommandText = "SELECT COUNT(*) FROM Vehiculo WHERE Ficha = @ficha AND Estado != 'Inactivo'";
-                    comando.Parameters.AddWithValue("@ficha", ficha);
-
-                    conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
-                }
-            }
-            finally
-            {
-                conexion.CerrarConexion();
-            }
-            return conteo > 0;
         }
     }
 }

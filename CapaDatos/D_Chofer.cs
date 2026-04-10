@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
+    // Persistencia de datos para la gestión de conductores (Implementación del contrato ICrud)
     public class D_Chofer : ICrud
     {
         private ConexionBD conexion = new ConexionBD();
 
-        // TODO: [REQUISITO] - Opción consulta (vistazo a datos ya guardados)
-        // Extrae la lista de choferes activos desde la base de datos
+        // ==========================================================
+        // CONSULTAS DE DATOS
+        // ==========================================================
+
+        // Recupera el listado de choferes con estado operativo activo
         public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
@@ -35,8 +39,33 @@ namespace CapaDatos
             return tabla;
         }
 
-        // TODO: [REQUISITO] - Opción de entrada (Agregar datos en la base de datos)
-        // Registra un nuevo chofer en el sistema
+        // Verifica la existencia de una cédula para prevenir registros duplicados
+        public async Task<bool> ExisteCedulaAsync(string cedula)
+        {
+            int conteo = 0;
+            try
+            {
+                using (SqlCommand comando = new SqlCommand())
+                {
+                    comando.Connection = conexion.AbrirConexion();
+                    comando.CommandText = "SELECT COUNT(*) FROM Chofer WHERE Cedula = @cedula AND Estado != 'Inactivo'";
+                    comando.Parameters.AddWithValue("@cedula", cedula);
+
+                    conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
+                }
+            }
+            finally
+            {
+                conexion.CerrarConexion();
+            }
+            return conteo > 0;
+        }
+
+        // ==========================================================
+        // OPERACIONES TRANSACCIONALES
+        // ==========================================================
+
+        // Procesa el registro de un nuevo conductor en la base de datos
         public async Task InsertarAsync(params object[] parametros)
         {
             string cedula = parametros[0].ToString();
@@ -66,7 +95,7 @@ namespace CapaDatos
             }
         }
 
-        // Modifica los datos de un chofer existente
+        // Actualiza la información de perfil de un conductor existente
         public async Task EditarAsync(params object[] parametros)
         {
             int id = Convert.ToInt32(parametros[0]);
@@ -98,7 +127,7 @@ namespace CapaDatos
             }
         }
 
-        // Realiza un borrado lógico del chofer (cambio de estado)
+        // Ejecuta la baja lógica del registro (cambio de estado operativo)
         public async Task EliminarAsync(int id)
         {
             try
@@ -117,28 +146,6 @@ namespace CapaDatos
             {
                 conexion.CerrarConexion();
             }
-        }
-
-        // Verifica si una cédula ya está registrada para evitar duplicados
-        public async Task<bool> ExisteCedulaAsync(string cedula)
-        {
-            int conteo = 0;
-            try
-            {
-                using (SqlCommand comando = new SqlCommand())
-                {
-                    comando.Connection = conexion.AbrirConexion();
-                    comando.CommandText = "SELECT COUNT(*) FROM Chofer WHERE Cedula = @cedula AND Estado != 'Inactivo'";
-                    comando.Parameters.AddWithValue("@cedula", cedula);
-
-                    conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
-                }
-            }
-            finally
-            {
-                conexion.CerrarConexion();
-            }
-            return conteo > 0;
         }
     }
 }

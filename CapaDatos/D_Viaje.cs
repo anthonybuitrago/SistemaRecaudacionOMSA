@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    // TODO: [REQUISITO] - Interfaz (Implementación de ICrud en tabla transaccional)
-    // Gestiona las operaciones de base de datos para la programación y despacho de viajes
+    // Implementación del contrato ICrud para la gestión transaccional de viajes
     public class D_Viaje : ICrud
     {
+        // Instancia de conexión a la base de datos
         private ConexionBD conexion = new ConexionBD();
 
-        // Extrae el listado de viajes cruzando datos con choferes, rutas y vehículos
+        // TODO: [REQUISITO] - Llamadas Asíncronas: Implementación de Task y Async/Await para procesos no bloqueantes.
+
+        // Extrae el listado detallado de viajes con cruce relacional (Chofer, Ruta, Vehículo)
         public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
@@ -48,7 +50,7 @@ namespace CapaDatos
             return tabla;
         }
 
-        // Obtiene los viajes activos formateados para rellenar listas desplegables (ComboBox)
+        // Obtiene los viajes activos concatenados para selectores de interfaz
         public async Task<DataTable> MostrarParaComboAsync()
         {
             DataTable tabla = new DataTable();
@@ -82,7 +84,7 @@ namespace CapaDatos
             return tabla;
         }
 
-        // Registra la programación de un nuevo viaje en el sistema
+        // Registra la programación de un nuevo viaje en la base de datos
         public async Task InsertarAsync(params object[] parametros)
         {
             int idChofer = Convert.ToInt32(parametros[0]);
@@ -148,7 +150,7 @@ namespace CapaDatos
             }
         }
 
-        // Elimina el registro físico del viaje (Método requerido por ICrud)
+        // Ejecuta el borrado físico del registro en la tabla (Requisito ICrud)
         public async Task EliminarAsync(int id)
         {
             try
@@ -169,7 +171,7 @@ namespace CapaDatos
             }
         }
 
-        // Cancela la programación de un viaje (Borrado lógico)
+        // Ejecuta la baja lógica (cancelación) cambiando el estado del viaje
         public async Task CancelarAsync(int idViaje)
         {
             try

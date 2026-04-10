@@ -5,7 +5,7 @@ using CapaDatos;
 
 namespace CapaNegocios
 {
-    // Entidad que representa la programación de un viaje
+    // Entidad de dominio que representa la estructura de un viaje
     public class Viaje
     {
         public int ID_Viaje { get; set; }
@@ -26,26 +26,28 @@ namespace CapaNegocios
         }
     }
 
-    // Gestiona la lógica y reglas de negocio para la programación de viajes
+    // Reglas de negocio y validaciones para la gestión operativa de viajes
     public class N_Viaje
     {
+        // Enlace de comunicación con la capa de persistencia de datos
         private D_Viaje objDatos = new D_Viaje();
 
+        // Recupera el historial completo de viajes programados
         public async Task<DataTable> MostrarViajesAsync()
         {
             return await objDatos.MostrarAsync();
         }
 
-        // Obtiene la lista de viajes formateada para el selector de la pantalla de ventas
+        // Recupera los viajes activos formateados para selectores de interfaz (Combobox)
         public async Task<DataTable> MostrarViajesComboAsync()
         {
             return await objDatos.MostrarParaComboAsync();
         }
 
-        // Valida las reglas de negocio y envía a guardar un nuevo viaje
+        // Valida las reglas de negocio y registra un nuevo despacho
         public async Task InsertarViajeAsync(string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
         {
-            // Validaciones (Reglas de Negocio)
+            // Validaciones estructurales y operativas
             if (string.IsNullOrWhiteSpace(idChofer) || string.IsNullOrWhiteSpace(idRuta) || string.IsNullOrWhiteSpace(idVehiculo))
             {
                 throw new Exception("Debe seleccionar un chofer, una ruta y un vehículo para programar el viaje.");
@@ -56,6 +58,7 @@ namespace CapaNegocios
                 throw new Exception("No se puede programar un viaje con una fecha anterior a la actual.");
             }
 
+            // Conversión de tipos tras validación exitosa
             int choferId = Convert.ToInt32(idChofer);
             int rutaId = Convert.ToInt32(idRuta);
             int vehiculoId = Convert.ToInt32(idVehiculo);
@@ -71,7 +74,7 @@ namespace CapaNegocios
             );
         }
 
-        // Valida y envía la modificación de un viaje existente
+        // Valida y procesa la modificación de un registro existente
         public async Task EditarViajeAsync(string idViaje, string idChofer, string idRuta, string idVehiculo, DateTime fecha, string estado)
         {
             if (string.IsNullOrWhiteSpace(idChofer) || string.IsNullOrWhiteSpace(idRuta) || string.IsNullOrWhiteSpace(idVehiculo))
@@ -87,13 +90,14 @@ namespace CapaNegocios
             await objDatos.EditarAsync(viajeId, choferId, rutaId, vehiculoId, fecha, estado);
         }
 
-        // Cambia el estado del viaje a 'Cancelado'
+        // Ejecuta la baja lógica (Cancelación) de un viaje en el sistema
         public async Task CancelarViajeAsync(string idViaje)
         {
             if (string.IsNullOrWhiteSpace(idViaje))
             {
                 throw new Exception("ID de viaje inválido para cancelar.");
             }
+
             await objDatos.CancelarAsync(Convert.ToInt32(idViaje));
         }
     }

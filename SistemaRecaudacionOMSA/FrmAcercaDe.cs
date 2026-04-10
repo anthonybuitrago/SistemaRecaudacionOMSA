@@ -3,18 +3,24 @@ using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
-    // Pantalla de información general sobre el sistema y sus creadores
+    // TODO: [REQUISITO] - Opción Sistema: Información de los desarrolladores del proyecto.
+
+    // Interfaz de información general del sistema y créditos corporativos (Acerca De)
     public partial class FrmAcercaDe : Form
     {
         public FrmAcercaDe()
         {
             InitializeComponent();
 
-            // Elimina los bordes de la ventana para permitir su integración limpia en el panel principal
+            // Configuración visual para acoplamiento nativo en el panel contenedor principal
             this.FormBorderStyle = FormBorderStyle.None;
         }
 
-        // Cierra la pantalla informativa
+        // ==========================================================
+        // EVENTOS DE CONTROL DE INTERFAZ
+        // ==========================================================
+
+        // Finaliza el ciclo de vida del formulario y cierra la vista
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -5,26 +5,30 @@ using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
-    // Formulario contenedor principal con menú lateral animado y panel de navegación
+    // Formulario contenedor principal y gestor de navegación
     public partial class FrmPrincipal : Form
     {
-
-        private bool menuExpandido = true; // Variable para el control del menú lateral
-
-        // Gestión de estado de la interfaz
+        // Variables de control de interfaz
+        private bool menuExpandido = true;
         private Button botonActivo = null;
         private Form formularioActivo = null;
 
-        // Colores de la interfaz
+        // Paleta de colores para el menú de navegación
         private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
         private Color colorActivo = ColorTranslator.FromHtml("#1C1C1C");
+
+        // TODO: [REQUISITO] - Menú de navegación principal con accesos a Entrada, Consulta y Sistema.
 
         public FrmPrincipal()
         {
             InitializeComponent();
         }
 
-        // Carga un formulario hijo dentro del panel contenedor central
+        // ==========================================================
+        // GESTIÓN DE NAVEGACIÓN E INTERFAZ
+        // ==========================================================
+
+        // Renderiza un formulario hijo dentro del panel central
         private void AbrirFormularioEnPanel(Form formularioHijo)
         {
             if (formularioActivo != null)
@@ -40,6 +44,7 @@ namespace SistemaRecaudacionOMSA
             this.pnlContenedor.Controls.Clear();
             this.pnlContenedor.Controls.Add(formularioHijo);
             this.pnlContenedor.Tag = formularioHijo;
+
             formularioHijo.BringToFront();
             formularioHijo.Show();
         }
@@ -67,15 +72,13 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // =====================================================================
-        // 3. PERMISOS SEGÚN ROL
-        // =====================================================================
+        // ==========================================================
+        // SEGURIDAD Y CONTROL DE ACCESO (RBAC)
+        // ==========================================================
+
+        // Habilita o deshabilita módulos según el rol del usuario logueado
         private void AplicarPermisos()
         {
-            // Mostrar usuario logueado si tenés esos labels
-            // lblUsuario.Text = Sesion.NombreUsuario;
-            // lblRol.Text     = Sesion.Rol;
-
             if (Sesion.EsAdministrador)
             {
                 btnDespachoViajes.Enabled = true;
@@ -96,15 +99,55 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // =====================================================================
-        // 4. EVENTOS DE CARGA Y NAVEGACIÓN
-        // =====================================================================
+        // ==========================================================
+        // EVENTOS DE CARGA Y MENÚ
+        // ==========================================================
+
+        // Inicialización del entorno de trabajo post-login
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
             ActivarBoton(btnDashboard);
             AbrirFormularioEnPanel(new FrmDashboard());
             AplicarPermisos();
         }
+
+        // Animación de expansión y contracción del menú lateral
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            if (menuExpandido)
+            {
+                pnlLateral.Width = 65;
+                lblOperacion.Visible = lblAdministracion.Visible = lblSistema.Visible = false;
+
+                foreach (Control control in pnlLateral.Controls)
+                {
+                    if (control is Button btn)
+                    {
+                        if (btn.Tag == null || string.IsNullOrEmpty(btn.Tag.ToString()))
+                            btn.Tag = btn.Text;
+
+                        btn.Text = "";
+                    }
+                }
+                menuExpandido = false;
+            }
+            else
+            {
+                pnlLateral.Width = 250;
+                lblOperacion.Visible = lblAdministracion.Visible = lblSistema.Visible = true;
+
+                foreach (Control control in pnlLateral.Controls)
+                {
+                    if (control is Button btn && btn.Tag != null)
+                        btn.Text = btn.Tag.ToString();
+                }
+                menuExpandido = true;
+            }
+        }
+
+        // ==========================================================
+        // EVENTOS DE NAVEGACIÓN DIRECTA
+        // ==========================================================
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
@@ -128,10 +171,7 @@ namespace SistemaRecaudacionOMSA
         {
             if (!Sesion.EsAdministrador)
             {
-                MessageBox.Show("No tenés permisos para acceder a esta sección.",
-                                "Acceso denegado",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                MessageBox.Show("No tenés permisos para acceder a esta sección.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             ActivarBoton((Button)sender);
@@ -142,10 +182,7 @@ namespace SistemaRecaudacionOMSA
         {
             if (!Sesion.EsAdministrador)
             {
-                MessageBox.Show("No tenés permisos para acceder a esta sección.",
-                                "Acceso denegado",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                MessageBox.Show("No tenés permisos para acceder a esta sección.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             ActivarBoton((Button)sender);
@@ -156,10 +193,7 @@ namespace SistemaRecaudacionOMSA
         {
             if (!Sesion.EsAdministrador)
             {
-                MessageBox.Show("No tenés permisos para acceder a esta sección.",
-                                "Acceso denegado",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                MessageBox.Show("No tenés permisos para acceder a esta sección.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             ActivarBoton((Button)sender);
@@ -170,10 +204,7 @@ namespace SistemaRecaudacionOMSA
         {
             if (!Sesion.EsAdministrador)
             {
-                MessageBox.Show("No tenés permisos para acceder a esta sección.",
-                                "Acceso denegado",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                MessageBox.Show("No tenés permisos para acceder a esta sección.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             ActivarBoton((Button)sender);
@@ -186,74 +217,23 @@ namespace SistemaRecaudacionOMSA
             AbrirFormularioEnPanel(new FrmAcercaDe());
         }
 
-        // =====================================================================
-        // 5. CERRAR SESIÓN
-        // =====================================================================
+        // ==========================================================
+        // EVENTOS DE CIERRE DE SESIÓN Y SALIDA
+        // ==========================================================
+
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
-            var confirmacion = MessageBox.Show(
-                "¿Estás seguro que querés cerrar sesión?",
-                "Cerrar sesión",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (confirmacion == DialogResult.Yes)
-            {
-                Sesion.CerrarSesion();
-                this.Hide();
-                FrmLogin login = new FrmLogin();
-
-                if (login.ShowDialog() == DialogResult.OK)
-                    this.Show();
-                else
-                    Application.Exit();
-            }
-        }
-
-        // =====================================================================
-        // 6. ANIMACIÓN DEL MENÚ LATERAL
-        // =====================================================================
-        private void btnMenu_Click(object sender, EventArgs e)
-        {
-            if (menuExpandido)
-            {
-                pnlLateral.Width = 65;
-                lblOperacion.Visible = lblAdministracion.Visible = lblSistema.Visible = false;
-
-                foreach (Control control in pnlLateral.Controls)
-                {
-                    if (control is Button btn)
-                    {
-                        if (btn.Tag == null || string.IsNullOrEmpty(btn.Tag.ToString()))
-                            btn.Tag = btn.Text;
-                        btn.Text = "";
-                    }
-                }
-                menuExpandido = false;
-            }
-            else
-            {
-                pnlLateral.Width = 250;
-                lblOperacion.Visible = lblAdministracion.Visible = lblSistema.Visible = true;
-
-                foreach (Control control in pnlLateral.Controls)
-                {
-                    if (control is Button btn && btn.Tag != null)
-                        btn.Text = btn.Tag.ToString();
-                }
-                menuExpandido = true;
-            }
-        }
-
-        private void pnlContenedor_Paint(object sender, PaintEventArgs e)
-        {
-        
-
-
+            ProcesarCierreSesion();
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
+            ProcesarCierreSesion();
+        }
+
+        // Metodo centralizado para manejar la salida del usuario
+        private void ProcesarCierreSesion()
+        {
             var confirmacion = MessageBox.Show(
                 "¿Estás seguro que querés cerrar sesión?",
                 "Cerrar sesión",
@@ -269,16 +249,21 @@ namespace SistemaRecaudacionOMSA
 
                 if (login.ShowDialog() == DialogResult.OK)
                 {
-                    // Login exitoso, volvé a aplicar permisos y mostrá el principal
+                    // Login exitoso, se aplican permisos y se muestra el entorno
                     AplicarPermisos();
                     this.Show();
                 }
                 else
                 {
-                    // Cerró el login sin entrar, salir del programa
+                    // Cierre definitivo del sistema
                     Application.Exit();
                 }
             }
+        }
+
+        private void pnlContenedor_Paint(object sender, PaintEventArgs e)
+        {
+            // Evento reservado para renderizado personalizado del contenedor si se requiere en el futuro
         }
     }
 }

@@ -5,29 +5,25 @@ namespace SistemaRecaudacionOMSA
 {
     internal static class Program
     {
-        /// <summary>
-        /// Punto de entrada principal para la aplicación.
-        /// Gestiona el ciclo de vida inicial y la seguridad de acceso.
-        /// </summary>
+        // Punto de entrada principal de la aplicación
         [STAThread]
         static void Main()
         {
+            // Configuración visual inicial de Windows Forms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // TODO: [REQUISITO] - Control de flujo de seguridad (Login previo al inicio)
-            // Ejecutamos el Login de manera modal antes de iniciar el loop principal de la aplicación.
+            // Control de seguridad: Inicia el Login antes del sistema principal
             using (FrmLogin login = new FrmLogin())
             {
-                // Solo si el usuario se autentica correctamente (DialogResult.OK)
                 if (login.ShowDialog() == DialogResult.OK)
                 {
-                    // Iniciamos el formulario principal de la aplicación
+                    // Autenticación exitosa, carga el entorno de trabajo
                     Application.Run(new FrmPrincipal());
                 }
                 else
                 {
-                    // Si el login se cancela o se cierra, terminamos la ejecución
+                    // Cierre del programa si el usuario cancela el acceso
                     Application.Exit();
                 }
             }

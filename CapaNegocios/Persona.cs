@@ -2,30 +2,33 @@
 
 namespace CapaNegocios
 {
-    // TODO: [REQUISITO] - Abstracción (Uso de clase base abstracta)
-    // Representa la estructura base para cualquier individuo registrado en el sistema
+    // TODO: [REQUISITO] - Clase Abstracta: Definición de una estructura base que no puede ser instanciada directamente.
+
+    // Clase base abstracta para entidades físicas del sistema (Aplicación de Abstracción)
     public abstract class Persona
     {
-        // TODO: [REQUISITO] - Encapsulamiento (Uso de propiedades con modificadores de acceso)
+        // Protección de datos mediante propiedades (Aplicación de Encapsulamiento)
         public string Cedula { get; set; }
         public string NombreCompleto { get; set; }
 
-        // Inicializa los atributos fundamentales de la persona
+        // Constructor base para la inicialización de atributos fundamentales
         public Persona(string cedula, string nombreCompleto)
         {
             Cedula = cedula;
             NombreCompleto = nombreCompleto;
         }
 
-        // TODO: [REQUISITO] - Polimorfismo (Método virtual)
-        // Retorna la información básica, permitiendo que las clases hijas expandan el comportamiento
+        // TODO: [REQUISITO] - Método Virtual: Permite la sobreescritura (Polimorfismo) en clases derivadas.
+
+        // Método base expandible por las clases derivadas (Aplicación de Polimorfismo Virtual)
         public virtual string ObtenerDetalles()
         {
             return $"Cédula: {Cedula} - Nombre: {NombreCompleto}";
         }
 
-        // TODO: [REQUISITO] - Polimorfismo (Método abstracto)
-        // Contrato que obliga a las clases derivadas a definir su rol específico en la empresa
+        // TODO: [REQUISITO] - Método Abstracto: Obliga a las clases hijas a definir su propio comportamiento.
+
+        // Contrato estructural de implementación obligatoria para clases hijas (Polimorfismo Abstracto)
         public abstract string ObtenerTipoEmpleado();
     }
 }

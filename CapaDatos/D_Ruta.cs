@@ -5,13 +5,19 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    // TODO: [REQUISITO] - Clases creadas según su uso sin código ajeno (Separación de responsabilidades)
-    // Gestiona exclusivamente las operaciones de base de datos para la entidad Ruta
+    // TODO: [REQUISITO] - Responsabilidad Única: Clase creada exclusivamente para el manejo de la entidad Ruta.
+
+    // Persistencia de datos para la gestión de rutas (Implementación del contrato ICrud)
+    // Clase diseñada bajo el principio de responsabilidad única (SRP)
     public class D_Ruta : ICrud
     {
         private ConexionBD conexion = new ConexionBD();
 
-        // Obtiene la lista de rutas activas
+        // ==========================================================
+        // CONSULTAS DE DATOS
+        // ==========================================================
+
+        // Recupera el catálogo de rutas que se encuentran en estado operativo
         public async Task<DataTable> MostrarAsync()
         {
             DataTable tabla = new DataTable();
@@ -36,7 +42,33 @@ namespace CapaDatos
             return tabla;
         }
 
-        // Inserta una nueva ruta en el sistema
+        // Verifica si una ruta ya existe en el sistema para prevenir redundancia
+        public async Task<bool> ExisteRutaAsync(string nombreRuta)
+        {
+            int conteo = 0;
+            try
+            {
+                using (SqlCommand comando = new SqlCommand())
+                {
+                    comando.Connection = conexion.AbrirConexion();
+                    comando.CommandText = "SELECT COUNT(*) FROM Ruta WHERE NombreRuta = @nombre AND Estado != 'Inactivo'";
+                    comando.Parameters.AddWithValue("@nombre", nombreRuta);
+
+                    conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
+                }
+            }
+            finally
+            {
+                conexion.CerrarConexion();
+            }
+            return conteo > 0;
+        }
+
+        // ==========================================================
+        // OPERACIONES TRANSACCIONALES
+        // ==========================================================
+
+        // Registra una nueva ruta logística en la base de datos
         public async Task InsertarAsync(params object[] parametros)
         {
             string nombre = parametros[0].ToString();
@@ -65,7 +97,7 @@ namespace CapaDatos
             }
         }
 
-        // Modifica los datos de una ruta existente
+        // Actualiza los parámetros operativos de una ruta existente
         public async Task EditarAsync(params object[] parametros)
         {
             int id = Convert.ToInt32(parametros[0]);
@@ -96,7 +128,7 @@ namespace CapaDatos
             }
         }
 
-        // Realiza un borrado lógico de la ruta
+        // Ejecuta la baja lógica de la ruta en la base de datos
         public async Task EliminarAsync(int id)
         {
             try
@@ -114,28 +146,6 @@ namespace CapaDatos
             {
                 conexion.CerrarConexion();
             }
-        }
-
-        // Verifica la existencia de una ruta para evitar duplicados
-        public async Task<bool> ExisteRutaAsync(string nombreRuta)
-        {
-            int conteo = 0;
-            try
-            {
-                using (SqlCommand comando = new SqlCommand())
-                {
-                    comando.Connection = conexion.AbrirConexion();
-                    comando.CommandText = "SELECT COUNT(*) FROM Ruta WHERE NombreRuta = @nombre AND Estado != 'Inactivo'";
-                    comando.Parameters.AddWithValue("@nombre", nombreRuta);
-
-                    conteo = Convert.ToInt32(await comando.ExecuteScalarAsync());
-                }
-            }
-            finally
-            {
-                conexion.CerrarConexion();
-            }
-            return conteo > 0;
         }
     }
 }

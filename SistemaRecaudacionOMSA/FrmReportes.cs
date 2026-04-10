@@ -6,25 +6,32 @@ using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
-    // Formulario de visualización de reportes operativos y financieros
+    // Visualización de reportes operativos y financieros
     public partial class FrmReportes : Form
     {
+        // Instancia de la capa de negocios
         private N_Reporte objReporte = new N_Reporte();
 
         public FrmReportes()
         {
             InitializeComponent();
 
-            // Configura la tabla para que ocupe todo el espacio disponible en el panel contenedor
+            // Expansión automática de la cuadrícula al contenedor
             dgvReporte.Dock = DockStyle.Fill;
         }
 
+        // Evento de inicialización del formulario
         private async void FrmReportes_Load(object sender, EventArgs e)
         {
+            // Carga asíncrona para no bloquear la interfaz
             await CargarReporteRecaudacionAsync();
         }
 
-        // Obtiene los datos consolidados de recaudación y aplica el formato visual financiero
+        // ==========================================================
+        // CARGA DE DATOS Y FORMATEO
+        // ==========================================================
+
+        // Obtiene los datos consolidados y aplica formato visual
         private async Task CargarReporteRecaudacionAsync()
         {
             try
@@ -33,21 +40,19 @@ namespace SistemaRecaudacionOMSA
 
                 AplicarEstiloTabla();
 
-                // Formateo avanzado de columnas financieras y de conteo
+                // Formateo de métricas de flujo de pasajeros
                 if (dgvReporte.Columns["Pasajeros"] != null)
                 {
                     dgvReporte.Columns["Pasajeros"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
 
+                // Formateo de métricas financieras
                 if (dgvReporte.Columns["Total Recaudado RD$"] != null)
                 {
                     var columnaDinero = dgvReporte.Columns["Total Recaudado RD$"];
 
-                    // Formato de moneda y alineación contable
                     columnaDinero.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    columnaDinero.DefaultCellStyle.Format = "N2"; // Formato numérico con dos decimales
-
-                    // Resaltado visual para métricas financieras
+                    columnaDinero.DefaultCellStyle.Format = "N2";
                     columnaDinero.DefaultCellStyle.ForeColor = Color.LightGreen;
                     columnaDinero.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
                 }
@@ -58,7 +63,11 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
-        // Aplica el diseño visual oscuro y profesional a la cuadrícula de datos
+        // ==========================================================
+        // DISEÑO VISUAL
+        // ==========================================================
+
+        // Aplica el diseño corporativo (Dark Mode) a la cuadrícula
         private void AplicarEstiloTabla()
         {
             dgvReporte.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -67,7 +76,6 @@ namespace SistemaRecaudacionOMSA
             dgvReporte.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvReporte.GridColor = Color.FromArgb(64, 64, 64);
 
-            // Estilo de encabezados
             dgvReporte.EnableHeadersVisualStyles = false;
             dgvReporte.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvReporte.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
@@ -75,7 +83,6 @@ namespace SistemaRecaudacionOMSA
             dgvReporte.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvReporte.ColumnHeadersHeight = 40;
 
-            // Estilo de filas y selección
             dgvReporte.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
             dgvReporte.DefaultCellStyle.ForeColor = Color.White;
             dgvReporte.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204);

@@ -5,15 +5,16 @@ using CapaDatos;
 
 namespace CapaNegocios
 {
-    // TODO: [REQUISITO] - Herencia (Chofer hereda de la clase base Persona)
-    // Entidad que representa a un conductor del sistema
+    // TODO: [REQUISITO] - Herencia: La clase Chofer extiende las funcionalidades de la clase base Persona.
+
+    // Entidad que representa a un conductor operativo (Aplicación de Herencia desde Persona)
     public class Chofer : Persona
     {
         public int ID_Chofer { get; set; }
         public string NumeroLicencia { get; set; }
         public string Telefono { get; set; }
 
-        // Constructor que inicializa datos base (padre) y específicos (hijo)
+        // Constructor que inicializa atributos de la clase base (padre) y locales (hijo)
         public Chofer(int idChofer, string cedula, string nombreCompleto, string numeroLicencia, string telefono)
             : base(cedula, nombreCompleto)
         {
@@ -22,48 +23,57 @@ namespace CapaNegocios
             Telefono = telefono;
         }
 
-        // TODO: [REQUISITO] - Métodos virtuales (Sobreescritura por polimorfismo)
-        // Personaliza el método de la clase padre para incluir datos específicos del chofer
+        // Extensión del método de la clase base para incluir datos del hijo (Polimorfismo / Override)
         public override string ObtenerDetalles()
         {
             return base.ObtenerDetalles() + $" - Licencia: {NumeroLicencia} - Tel: {Telefono}";
         }
 
-        // Implementación obligatoria del método abstracto de la clase base
+        // Implementación del contrato establecido por la clase base (Polimorfismo Abstracto)
         public override string ObtenerTipoEmpleado()
         {
             return "Chofer de Ruta OMSA";
         }
     }
 
-    // Gestiona la lógica de negocio y validaciones para los choferes
+    // Reglas de negocio y orquestación de operaciones para la gestión de choferes
     public class N_Chofer
     {
+        // Enlace de comunicación con la capa de persistencia de datos
         private D_Chofer objDatos = new D_Chofer();
 
+        // Recupera el listado completo de conductores activos
         public async Task<DataTable> MostrarChoferesAsync()
         {
             return await objDatos.MostrarAsync();
         }
 
-        // Empaqueta los datos en un objeto y los envía a la capa de datos
+        // Valida y encapsula los datos en la entidad antes de su persistencia
         public async Task InsertarChoferAsync(string cedula, string nombreCompleto, string numeroLicencia, string telefono)
         {
             Chofer nuevoChofer = new Chofer(0, cedula, nombreCompleto, numeroLicencia, telefono);
-            await objDatos.InsertarAsync(nuevoChofer.Cedula, nuevoChofer.NombreCompleto, nuevoChofer.NumeroLicencia, nuevoChofer.Telefono);
+
+            await objDatos.InsertarAsync(
+                nuevoChofer.Cedula,
+                nuevoChofer.NombreCompleto,
+                nuevoChofer.NumeroLicencia,
+                nuevoChofer.Telefono
+            );
         }
 
+        // Procesa y formatea la modificación de un registro existente
         public async Task EditarChoferAsync(int id, string cedula, string nombre, string licencia, string telefono)
         {
             await objDatos.EditarAsync(id, cedula, nombre, licencia, telefono);
         }
 
+        // Ejecuta la baja lógica o física del conductor en el sistema
         public async Task EliminarChoferAsync(int id)
         {
             await objDatos.EliminarAsync(id);
         }
 
-        // Valida en la base de datos si la cédula ingresada ya existe
+        // Verifica la unicidad de la cédula de identidad para evitar duplicidades
         public async Task<bool> VerificarSiExisteCedula(string cedula)
         {
             return await objDatos.ExisteCedulaAsync(cedula);

@@ -2,6 +2,7 @@
 
 namespace OMSA_Recaudacion.CapaNegocio
 {
+    // Gestiona la lógica de seguridad y validación de acceso al sistema
     public class N_Usuario
     {
         public bool ValidarUsuario(string nombreUsuario, string contrasena)

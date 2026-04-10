@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Data;
-using System.Threading.Tasks; // Obligatorio para el asincronismo
+using System.Threading.Tasks;
 using CapaDatos;
 
 namespace CapaNegocios
 {
-    // TODO: Requisito - Creación de Entidad/Clase
+    // Entidad que representa un boleto vendido a un pasajero
     public class Ticket
     {
-        // Propiedades del boleto vendido
         public int ID_Ticket { get; set; }
         public int ID_Viaje { get; set; }
         public DateTime HoraEmision { get; set; }
         public decimal MontoPagado { get; set; }
 
-        // Constructor
         public Ticket(int id, int viaje, DateTime hora, decimal monto)
         {
             ID_Ticket = id;
@@ -24,13 +22,12 @@ namespace CapaNegocios
         }
     }
 
+    // Gestiona la lógica de negocio para las ventas de boletos
     public class N_Ticket
     {
-        // Conexión con la Capa de Datos
         private D_Ticket objDatos = new D_Ticket();
 
-        // TODO: Requisito - Llamada Asíncrona (Async/Await) en Capa de Negocios
-        // Método para pedir la lista de tickets vendidos de forma asíncrona
+        // Obtiene el registro histórico de tickets vendidos
         public async Task<DataTable> MostrarTicketsAsync()
         {
             try
@@ -39,12 +36,11 @@ namespace CapaNegocios
             }
             catch (Exception ex)
             {
-                // TODO: Requisito - Manejo de excepciones (Try/Catch)
-                throw new Exception("Error al intentar mostrar los tickets: " + ex.Message);
+                throw new Exception("Error al consultar el historial de ventas: " + ex.Message);
             }
         }
 
-        // NUEVO MÉTODO: Para llenar el ComboBox inteligente con solo viajes "Activos"
+        // Obtiene la lista de viajes disponibles para asociar la venta
         public async Task<DataTable> MostrarViajesActivosAsync()
         {
             try
@@ -53,34 +49,30 @@ namespace CapaNegocios
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al cargar los viajes disponibles: " + ex.Message);
+                throw new Exception("Error al cargar la cartelera de viajes: " + ex.Message);
             }
         }
 
-        // MODIFICADO: Procesa la venta basada en CANTIDAD
+        // Procesa la transacción de venta, generando los registros correspondientes
         public async Task VenderTicketsAsync(string idViaje, string tarifaPorTicket, string cantidadTickets)
         {
             try
             {
-                // 1. Validaciones básicas
                 if (string.IsNullOrWhiteSpace(idViaje) || string.IsNullOrWhiteSpace(tarifaPorTicket) || string.IsNullOrWhiteSpace(cantidadTickets))
                 {
-                    throw new Exception("Debe seleccionar un viaje, tarifa y cantidad de tickets.");
+                    throw new Exception("Debe seleccionar un viaje e indicar la cantidad a vender.");
                 }
 
-                // 2. Conversiones
                 int viajeId = Convert.ToInt32(idViaje);
                 decimal tarifa = Convert.ToDecimal(tarifaPorTicket);
                 int cantidad = Convert.ToInt32(cantidadTickets);
 
-                // 3. Reglas de negocio restrictivas
                 if (tarifa <= 0) throw new Exception("La tarifa del pasaje debe ser mayor a cero.");
                 if (cantidad <= 0) throw new Exception("Debe vender al menos 1 ticket.");
 
                 DateTime fechaActual = DateTime.Now;
 
-                // 4. El Ciclo de Venta (El "Truco" del Punto de Venta)
-                // Si el cliente pide 4 tickets, guardamos 4 registros individuales para que la auditoría cuadre
+                // Generamos un registro de base de datos individual por cada ticket solicitado
                 for (int i = 0; i < cantidad; i++)
                 {
                     Ticket nuevoTicket = new Ticket(0, viajeId, fechaActual, tarifa);
@@ -93,7 +85,7 @@ namespace CapaNegocios
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al registrar la venta: " + ex.Message);
+                throw new Exception("Error al registrar la transacción de venta: " + ex.Message);
             }
         }
     }

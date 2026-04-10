@@ -1,71 +1,68 @@
 ﻿using System;
 using System.Data;
-using System.Threading.Tasks; // Obligatorio para el asincronismo
+using System.Threading.Tasks;
 using CapaDatos;
 
 namespace CapaNegocios
 {
-    // TODO: Requisito - Creación de Entidad/Clase con el diseño 2x2
+    // TODO: [REQUISITO] - Clases (Entidad de negocio)
+    // Entidad que representa una ruta de transporte en el sistema
     public class Ruta
     {
-        // Propiedades de la ruta
         public int ID_Ruta { get; set; }
         public string NombreRuta { get; set; }
         public decimal Tarifa { get; set; }
-        public string Origen { get; set; }  // <-- NUEVO
-        public string Destino { get; set; } // <-- NUEVO
+        public int TiempoMinutos { get; set; }
+        public decimal DistanciaKM { get; set; }
 
-        // Constructor actualizado
-        public Ruta(int id, string nombre, decimal tarifa, string origen, string destino)
+        public Ruta(int id, string nombre, decimal tarifa, int tiempo, decimal distancia)
         {
             ID_Ruta = id;
             NombreRuta = nombre;
             Tarifa = tarifa;
-            Origen = origen;
-            Destino = destino;
+            TiempoMinutos = tiempo;
+            DistanciaKM = distancia;
         }
     }
 
+    // Gestiona la lógica de negocio y validaciones para las rutas
     public class N_Ruta
     {
-        // Conexión con la Capa de Datos
         private D_Ruta objDatos = new D_Ruta();
 
-        // --- MÉTODOS ASÍNCRONOS ---
-
-        // Pedir la lista de rutas activas
         public async Task<DataTable> MostrarRutasAsync()
         {
             return await objDatos.MostrarAsync();
         }
 
-        // Insertar procesando los 4 campos
-        public async Task InsertarRutaAsync(string nombre, string tarifaText, string origen, string destino)
-        {
-            // Convertimos la tarifa (viene de un MaskedTextBox como string)
-            decimal tarifa = Convert.ToDecimal(tarifaText);
-
-            // Instanciamos el objeto con la nueva estructura
-            Ruta nuevaRuta = new Ruta(0, nombre, tarifa, origen, destino);
-
-            // Mandamos los 4 datos a la Capa de Datos
-            await objDatos.InsertarAsync(nuevaRuta.NombreRuta, nuevaRuta.Tarifa, nuevaRuta.Origen, nuevaRuta.Destino);
-        }
-
-        // Editar procesando ID + los 4 campos
-        public async Task EditarRutaAsync(int id, string nombre, string tarifaText, string origen, string destino)
+        // Empaqueta los datos en el objeto Ruta y los envía a guardar
+        public async Task InsertarRutaAsync(string nombre, string tarifaText, string tiempoText, string distanciaText)
         {
             decimal tarifa = Convert.ToDecimal(tarifaText);
-            await objDatos.EditarAsync(id, nombre, tarifa, origen, destino);
+            int tiempo = Convert.ToInt32(tiempoText);
+            decimal distancia = Convert.ToDecimal(distanciaText);
+
+            Ruta nuevaRuta = new Ruta(0, nombre, tarifa, tiempo, distancia);
+
+            await objDatos.InsertarAsync(nuevaRuta.NombreRuta, nuevaRuta.Tarifa, nuevaRuta.TiempoMinutos, nuevaRuta.DistanciaKM);
         }
 
-        // Eliminar (Borrado Lógico)
+        // Modifica los datos de una ruta existente
+        public async Task EditarRutaAsync(int id, string nombre, string tarifaText, string tiempoText, string distanciaText)
+        {
+            decimal tarifa = Convert.ToDecimal(tarifaText);
+            int tiempo = Convert.ToInt32(tiempoText);
+            decimal distancia = Convert.ToDecimal(distanciaText);
+
+            await objDatos.EditarAsync(id, nombre, tarifa, tiempo, distancia);
+        }
+
         public async Task EliminarRutaAsync(int id)
         {
             await objDatos.EliminarAsync(id);
         }
 
-        // MÉTODO EXTRA: Para que el formulario pueda validar duplicados antes de guardar
+        // Valida en la base de datos si el nombre de la ruta ya existe
         public async Task<bool> VerificarSiExiste(string nombreRuta)
         {
             return await objDatos.ExisteRutaAsync(nombreRuta);

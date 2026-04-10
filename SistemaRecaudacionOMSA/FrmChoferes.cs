@@ -6,11 +6,12 @@ using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
+    // Formulario para la gestión (CRUD) de los choferes del sistema
     public partial class FrmChoferes : Form
     {
-        // Instancia para la comunicación con la Capa de Negocio
         private N_Chofer objNegocio = new N_Chofer();
 
+        // Variables de control de estado para el modo edición
         private int idChofer = 0;
         private string cedulaOriginal = "";
         private string nombreOriginal = "";
@@ -19,33 +20,22 @@ namespace SistemaRecaudacionOMSA
         public FrmChoferes()
         {
             InitializeComponent();
-
-            // Estética inicial de la tabla (Igual que en Viajes)
-            dgvChoferes.BackgroundColor = Color.FromArgb(28, 28, 28);
-            dgvChoferes.BorderStyle = BorderStyle.None;
-            dgvChoferes.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dgvChoferes.DefaultCellStyle.ForeColor = Color.White;
-
-            AplicarEstiloTabla();
         }
 
         private async void FrmChoferes_Load(object sender, EventArgs e)
         {
-            // Ocultamos la tabla al inicio
             dgvChoferes.Visible = false;
-
             await MostrarChoferesTablaAsync();
 
-            // Bloqueamos los campos y apagamos los botones al inicio
             HabilitarCampos(false);
             btnGuardar.Enabled = false;
             btnActualizar.Enabled = false;
-            btnEliminar.Enabled = false; // Este es tu botón Eliminar
+            btnEliminar.Enabled = false;
+
             AplicarEstiloTabla();
         }
 
-        // --- LÓGICA DE INTERFAZ (EL CANDADO Y EL OJO) ---
-
+        // Alterna la visibilidad de la tabla de registros
         private void btnVerTabla_Click(object sender, EventArgs e)
         {
             dgvChoferes.Visible = !dgvChoferes.Visible;
@@ -53,7 +43,7 @@ namespace SistemaRecaudacionOMSA
             if (dgvChoferes.Visible)
             {
                 btnVerTabla.Text = "Ocultar Tabla";
-                btnVerTabla.ForeColor = Color.Yellow; // Un amarillo brillante y vivo
+                btnVerTabla.ForeColor = Color.Yellow;
                 btnVerTabla.Image = Properties.Resources.view_off;
             }
             else
@@ -64,12 +54,13 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Alterna entre el modo de lectura y el modo de edición de datos
         private void btnModoEdicion_Click(object sender, EventArgs e)
         {
-            bool estaAbriendo = !txtCedula.Enabled;
-            HabilitarCampos(estaAbriendo);
+            bool habilitar = !txtCedula.Enabled;
+            HabilitarCampos(habilitar);
 
-            if (estaAbriendo)
+            if (habilitar)
             {
                 btnModoEdicion.Text = "Cerrar Edición";
                 btnModoEdicion.ForeColor = Color.Tomato;
@@ -80,130 +71,103 @@ namespace SistemaRecaudacionOMSA
                 btnModoEdicion.Text = "Editar Datos";
                 btnModoEdicion.ForeColor = Color.White;
                 btnModoEdicion.Image = Properties.Resources.closed_lock;
-
-                // ¡LA MAGIA AQUÍ! Al cerrar edición, se limpia lo que estaba escrito
             }
         }
 
-        private bool HayCambiosReales()
-        {
-            // Compara lo que está escrito ahora con la foto original
-            return (txtCedula.Text != cedulaOriginal) ||
-                   (txtNombre.Text != nombreOriginal) ||
-                   (txtLicencia.Text != licenciaOriginal);
-        }
-
+        // Gestiona el estado visual y funcional de los controles de entrada
         private void HabilitarCampos(bool estado)
         {
-            // Colores definidos
             Color colorLabel = estado ? Color.White : Color.Gray;
-            Color colorBotonApagado = Color.FromArgb(45, 45, 48); // Gris oscuro
+            Color colorBotonApagado = Color.FromArgb(45, 45, 48);
 
-            // 1. Color para los Labels
             lblNombre.ForeColor = colorLabel;
             lblCedula.ForeColor = colorLabel;
             lblTelefono.ForeColor = colorLabel;
             lblLicencia.ForeColor = colorLabel;
 
-            // 2. Control de los campos
             txtNombre.Enabled = estado;
             txtCedula.Enabled = estado;
             txtTelefono.Enabled = estado;
             txtLicencia.Enabled = estado;
 
-            // 3. Control de los botones CRUD
             btnGuardar.Enabled = estado;
             btnActualizar.Enabled = estado;
             btnEliminar.Enabled = estado;
 
-            // 4. Color de Fondo de los Botones
             btnGuardar.BackColor = estado ? Color.SeaGreen : colorBotonApagado;
             btnActualizar.BackColor = estado ? Color.Goldenrod : colorBotonApagado;
             btnEliminar.BackColor = estado ? Color.IndianRed : colorBotonApagado;
 
-            // 5. Color del Texto de los Botones
             btnGuardar.ForeColor = colorLabel;
             btnActualizar.ForeColor = colorLabel;
             btnEliminar.ForeColor = colorLabel;
         }
 
-        // --- EVENTOS DE LA TABLA Y EL DETECTOR ---
-
+        // Carga los datos de la fila seleccionada en los campos del formulario
         private void dgvChoferes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Evita errores al tocar el encabezado
+            if (e.RowIndex >= 0)
             {
                 DataGridViewRow fila = dgvChoferes.Rows[e.RowIndex];
 
-                // Revisa estos nombres en tu BD. Si se llaman distinto, cámbialos aquí:
                 idChofer = Convert.ToInt32(fila.Cells["ID_Chofer"].Value);
                 txtCedula.Text = fila.Cells["Cedula"].Value.ToString();
                 txtNombre.Text = fila.Cells["NombreCompleto"].Value.ToString();
                 txtLicencia.Text = fila.Cells["NumeroLicencia"].Value.ToString();
                 txtTelefono.Text = fila.Cells["Telefono"].Value.ToString();
 
-                // Guardamos la memoria para saber si luego el usuario cambia algo
                 cedulaOriginal = txtCedula.Text;
                 nombreOriginal = txtNombre.Text;
                 licenciaOriginal = txtLicencia.Text;
             }
         }
 
-        // --- MÉTODOS CRUD ASÍNCRONOS ---
-
+        // Consulta la base de datos y refresca la tabla
         private async Task MostrarChoferesTablaAsync()
         {
             try
             {
                 dgvChoferes.DataSource = await objNegocio.MostrarChoferesAsync();
-
-                // Orden de las columnas
-                if (dgvChoferes.Columns["NombreCompleto"] != null) dgvChoferes.Columns["NombreCompleto"].DisplayIndex = 0;
-                if (dgvChoferes.Columns["Telefono"] != null) dgvChoferes.Columns["Telefono"].DisplayIndex = 1;
-                if (dgvChoferes.Columns["Cedula"] != null) dgvChoferes.Columns["Cedula"].DisplayIndex = 2;
-                if (dgvChoferes.Columns["Estado"] != null) dgvChoferes.Columns["Estado"].Visible = false;
-
-                // Renombrar
-                if (dgvChoferes.Columns["NombreCompleto"] != null) dgvChoferes.Columns["NombreCompleto"].HeaderText = "Nombre";
-
-                // Ocultar
-                if (dgvChoferes.Columns["ID_Chofer"] != null) dgvChoferes.Columns["ID_Chofer"].Visible = false;
-                if (dgvChoferes.Columns["NumeroLicencia"] != null) dgvChoferes.Columns["NumeroLicencia"].Visible = false;
-
                 AplicarEstiloTabla();
             }
-            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
+        // Procesa el registro de un nuevo chofer
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            // ... validaciones de campos vacíos que ya tienes ...
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) || !txtCedula.MaskCompleted || !txtTelefono.MaskCompleted || string.IsNullOrWhiteSpace(txtLicencia.Text))
+            {
+                MessageBox.Show("Por favor, complete todos los campos obligatorios con el formato correcto.", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             try
             {
-                // EL FILTRO ANTIDUPLICADOS:
                 bool yaExiste = await objNegocio.VerificarSiExisteCedula(txtCedula.Text);
 
                 if (yaExiste)
                 {
-                    MessageBox.Show("¡Error! Ya existe un chofer registrado con esta cédula.",
-                                    "Registro Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return; // Detiene el proceso, no guarda nada
+                    MessageBox.Show("Error: Ya existe un chofer registrado con esta cédula.", "Registro Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                // Si no existe, procedemos a guardar normal
                 await objNegocio.InsertarChoferAsync(txtCedula.Text, txtNombre.Text, txtLicencia.Text, txtTelefono.Text);
 
-                MessageBox.Show("¡Chofer guardado exitosamente!");
+                MessageBox.Show("Chofer registrado exitosamente.", "Operación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await MostrarChoferesTablaAsync();
                 LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error al guardar: " + ex.Message, "Error del Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        // Procesa la actualización de datos de un chofer seleccionado
         private async void btnActualizar_Click(object sender, EventArgs e)
         {
             if (!txtCedula.Enabled)
@@ -214,124 +178,126 @@ namespace SistemaRecaudacionOMSA
 
             if (idChofer == 0)
             {
-                MessageBox.Show("Debe seleccionar un chofer de la tabla para poder actualizar sus datos.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Debe seleccionar un chofer de la tabla para actualizar sus datos.", "Selección Requerida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (txtCedula.Text == cedulaOriginal && txtNombre.Text == nombreOriginal && txtLicencia.Text == licenciaOriginal)
+            if (txtCedula.Text == cedulaOriginal && txtNombre.Text == nombreOriginal && txtLicencia.Text == licenciaOriginal && txtTelefono.Text != "") // Se asume verificación simple
             {
-                MessageBox.Show("No se ha realizado ningún cambio en los datos actuales.", "Sin Cambios", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No se han detectado cambios en la información actual.", "Sin Cambios", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            // --- AQUÍ VA LA LÓGICA CON EL AWAIT ---
             try
             {
-                // El 'await' manda el ID y los 4 datos modificados
                 await objNegocio.EditarChoferAsync(idChofer, txtCedula.Text, txtNombre.Text, txtLicencia.Text, txtTelefono.Text);
 
-                MessageBox.Show("¡Datos actualizados correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Recargamos la tabla para ver los cambios
+                MessageBox.Show("Datos actualizados correctamente.", "Operación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await MostrarChoferesTablaAsync();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al actualizar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al actualizar: " + ex.Message, "Error del Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private async void btnEliminar_Click(object sender, EventArgs e) // Recomiendo cambiarle el nombre en diseño a btnEliminar
+        // Procesa el borrado lógico de un chofer seleccionado
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            // 1. Si intenta eliminar sin haber seleccionado a nadie
             if (idChofer == 0)
             {
-                MessageBox.Show("Seleccione en la tabla el chofer que desea eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Seleccione en la tabla el chofer que desea eliminar.", "Selección Requerida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            DialogResult respuesta = MessageBox.Show("¿Desea eliminar definitivamente este chofer?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+            DialogResult respuesta = MessageBox.Show("¿Está seguro de que desea eliminar definitivamente este chofer?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (respuesta == DialogResult.Yes)
             {
                 try
                 {
                     await objNegocio.EliminarChoferAsync(idChofer);
-                    MessageBox.Show("¡Eliminado del sistema!");
+                    MessageBox.Show("El registro ha sido eliminado del sistema.", "Eliminación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     await MostrarChoferesTablaAsync();
+                    LimpiarCampos();
                 }
-                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error del Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
-        // --- ESTILO Y RESTRICCIONES ---
-
+        // Aplica el diseño visual corporativo a la cuadrícula de datos
         private void AplicarEstiloTabla()
         {
-            // 1. Colores de fondo y bordes generales
             dgvChoferes.BackgroundColor = Color.FromArgb(30, 30, 30);
             dgvChoferes.BorderStyle = BorderStyle.None;
-
-            // Cambiamos el estilo de celda a solo horizontal (quita las líneas verticales blancas)
             dgvChoferes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvChoferes.GridColor = Color.FromArgb(64, 64, 64); // Un gris oscuro para las líneas
+            dgvChoferes.GridColor = Color.FromArgb(64, 64, 64);
 
-            // 2. Estilo de la Cabecera (Headers)
-            dgvChoferes.EnableHeadersVisualStyles = false; // Permite personalizar el color
+            dgvChoferes.EnableHeadersVisualStyles = false;
             dgvChoferes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvChoferes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
             dgvChoferes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvChoferes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvChoferes.ColumnHeadersHeight = 40;
 
-            // 3. Estilo de las Celdas y Filas
             dgvChoferes.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
             dgvChoferes.DefaultCellStyle.ForeColor = Color.White;
-            dgvChoferes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204); // El azul de Windows
+            dgvChoferes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 122, 204);
             dgvChoferes.DefaultCellStyle.SelectionForeColor = Color.White;
             dgvChoferes.DefaultCellStyle.Font = new Font("Segoe UI", 10);
 
             dgvChoferes.RowTemplate.Height = 35;
-            dgvChoferes.RowHeadersVisible = false; // Quita la flechita de la izquierda
+            dgvChoferes.RowHeadersVisible = false;
 
-            // 4. Comportamiento y Ajuste
             dgvChoferes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvChoferes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvChoferes.ReadOnly = true;
             dgvChoferes.MultiSelect = false;
 
-            // 5. Gestión de Columnas (Ocultar y Renombrar)
+            // Organización de columnas
             if (dgvChoferes.Columns["ID_Chofer"] != null) dgvChoferes.Columns["ID_Chofer"].Visible = false;
             if (dgvChoferes.Columns["Estado"] != null) dgvChoferes.Columns["Estado"].Visible = false;
             if (dgvChoferes.Columns["NumeroLicencia"] != null) dgvChoferes.Columns["NumeroLicencia"].Visible = false;
 
             if (dgvChoferes.Columns["NombreCompleto"] != null)
+            {
                 dgvChoferes.Columns["NombreCompleto"].HeaderText = "Nombre";
+                dgvChoferes.Columns["NombreCompleto"].DisplayIndex = 0;
+            }
 
             if (dgvChoferes.Columns["Telefono"] != null)
+            {
                 dgvChoferes.Columns["Telefono"].HeaderText = "Teléfono";
+                dgvChoferes.Columns["Telefono"].DisplayIndex = 1;
+            }
 
             if (dgvChoferes.Columns["Cedula"] != null)
+            {
                 dgvChoferes.Columns["Cedula"].HeaderText = "Cédula";
+                dgvChoferes.Columns["Cedula"].DisplayIndex = 2;
+            }
         }
 
+        // Posiciona el cursor al inicio del área de edición en las máscaras de texto
         private void AcomodarCursor_Click(object sender, EventArgs e)
         {
             MaskedTextBox mascara = sender as MaskedTextBox;
 
             if (mascara != null)
             {
-                // Esto busca automáticamente cuál es el primer espacio que el usuario no ha llenado
                 int primeraPosicionVacia = mascara.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
 
-                // Si encontró un espacio vacío, y el usuario hizo clic más adelante de ese espacio,
-                // lo regresamos a donde debe ir.
                 if (primeraPosicionVacia != -1 && mascara.SelectionStart > primeraPosicionVacia)
                 {
                     mascara.SelectionStart = primeraPosicionVacia;
                 }
             }
         }
+
         private void LimpiarCampos()
         {
             idChofer = 0;
@@ -340,7 +306,6 @@ namespace SistemaRecaudacionOMSA
             txtLicencia.Clear();
             txtTelefono.Clear();
 
-            // Devolvemos las variables de control a blanco
             cedulaOriginal = "";
             nombreOriginal = "";
             licenciaOriginal = "";

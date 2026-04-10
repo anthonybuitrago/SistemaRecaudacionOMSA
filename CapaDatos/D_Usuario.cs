@@ -3,6 +3,8 @@ using System.Data.SqlClient;
 
 namespace CapaDatos
 {
+    // TODO: [REQUISITO] - Login para el acceso de la aplicación con conexión a base de datos
+    // Gestiona la validación de credenciales de los usuarios en el sistema
     public class D_Usuario
     {
         // Propiedades

@@ -5,22 +5,19 @@ using System.Configuration;
 
 namespace CapaDatos
 {
-    // Probando y ya
+    // TODO: [REQUISITO] - Conexión a base de datos
+    // Clase para gestionar el enlace con SQL Server
     public class ConexionBD
     {
-        // Ruta de acceso extraída de las configuraciones del sistema (App.config)
         private readonly string cadenaConexion = ConfigurationManager.ConnectionStrings["ConexionOMSA"].ConnectionString;
-
-        // Objeto que maneja la comunicación con SQL Server
         private SqlConnection conexion;
 
-        // Constructor que prepara la conexión con el servidor
         public ConexionBD()
         {
             conexion = new SqlConnection(cadenaConexion);
         }
 
-        // Método para abrir el canal de comunicación con la base de datos
+        // Abre el canal de datos
         public SqlConnection AbrirConexion()
         {
             if (conexion.State == ConnectionState.Closed)
@@ -30,7 +27,7 @@ namespace CapaDatos
             return conexion;
         }
 
-        // Método para cerrar de forma segura la conexión con la base de datos
+        // Cierra el canal de datos
         public SqlConnection CerrarConexion()
         {
             if (conexion.State == ConnectionState.Open)

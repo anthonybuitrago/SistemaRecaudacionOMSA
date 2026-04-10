@@ -4,17 +4,20 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    // TODO: Requisito - Creación de Interfaz para estandarizar el CRUD asíncrono
+    // TODO: [REQUISITO] - Interfaces
+    // Contrato base para estandarizar las operaciones CRUD en todas las clases de datos
     public interface ICrud
     {
-        // Método para leer datos (Devuelve una tabla de forma asíncrona)
+        // Obtiene un conjunto de datos estructurado
         Task<DataTable> MostrarAsync();
 
-        // Utilizamos 'params object[]' para permitir que cada clase reciba la cantidad exacta de datos que necesita
+        // Inserta un nuevo registro utilizando un arreglo dinámico de parámetros
         Task InsertarAsync(params object[] parametros);
 
+        // Modifica un registro existente
         Task EditarAsync(params object[] parametros);
 
+        // Elimina física o lógicamente un registro según el identificador
         Task EliminarAsync(int id);
     }
 }

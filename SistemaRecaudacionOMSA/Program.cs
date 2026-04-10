@@ -1,35 +1,35 @@
-﻿using CapaPresentacion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
     internal static class Program
     {
-        // Punto de entrada principal para la ejecución de la aplicación
+        /// <summary>
+        /// Punto de entrada principal para la aplicación.
+        /// Gestiona el ciclo de vida inicial y la seguridad de acceso.
+        /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // 1. Instanciamos el formulario de Login de Elvis
-            FrmLogin login = new FrmLogin();
-
-            // 2. Le decimos que se muestre como un cuadro de diálogo (obligatorio responderle)
-            // Y verificamos si el resultado fue un éxito (DialogResult.OK)
-            if (login.ShowDialog() == DialogResult.OK)
+            // TODO: [REQUISITO] - Control de flujo de seguridad (Login previo al inicio)
+            // Ejecutamos el Login de manera modal antes de iniciar el loop principal de la aplicación.
+            using (FrmLogin login = new FrmLogin())
             {
-                // 3. Solo si el login fue exitoso, arrancamos el Menú Principal
-                Application.Run(new FrmPrincipal());
-            }
-            else
-            {
-                // Si el usuario cerró el login con la "X", cerramos la app por completo
-                Application.Exit();
+                // Solo si el usuario se autentica correctamente (DialogResult.OK)
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    // Iniciamos el formulario principal de la aplicación
+                    Application.Run(new FrmPrincipal());
+                }
+                else
+                {
+                    // Si el login se cancela o se cierra, terminamos la ejecución
+                    Application.Exit();
+                }
             }
         }
     }

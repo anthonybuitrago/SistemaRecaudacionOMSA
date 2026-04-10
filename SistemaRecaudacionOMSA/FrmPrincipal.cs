@@ -6,9 +6,10 @@ using System.Windows.Forms;
 
 namespace SistemaRecaudacionOMSA
 {
+    // Formulario contenedor principal con menú lateral animado y panel de navegación
     public partial class FrmPrincipal : Form
     {
-        // Variables de estado
+        // Gestión de estado de la interfaz
         private Button botonActivo = null;
         private Form formularioActivo = null;
 
@@ -16,16 +17,19 @@ namespace SistemaRecaudacionOMSA
         private Color colorInactivo = ColorTranslator.FromHtml("#2D2D2D");
         private Color colorActivo = ColorTranslator.FromHtml("#1C1C1C");
 
-        bool menuExpandido = true;
-
         public FrmPrincipal()
         {
             InitializeComponent();
         }
 
-        // =====================================================================
-        // 1. MOTOR PRINCIPAL: ABRIR FORMULARIOS EN EL PANEL CENTRAL
-        // =====================================================================
+        private void FrmPrincipal_Load(object sender, EventArgs e)
+        {
+            // Carga inicial del Dashboard
+            ActivarBoton(btnDashboard);
+            AbrirFormularioEnPanel(new FrmDashboard());
+        }
+
+        // Carga un formulario hijo dentro del panel contenedor central
         private void AbrirFormularioEnPanel(Form formularioHijo)
         {
             if (formularioActivo != null)
@@ -45,9 +49,7 @@ namespace SistemaRecaudacionOMSA
             formularioHijo.Show();
         }
 
-        // =====================================================================
-        // 2. EFECTOS VISUALES: GESTIÓN DE BOTONES
-        // =====================================================================
+        // Resalta visualmente el botón seleccionado en el menú lateral
         private void ActivarBoton(Button btn)
         {
             if (btn != null)
@@ -58,6 +60,7 @@ namespace SistemaRecaudacionOMSA
             }
         }
 
+        // Restablece el color de fondo de todos los botones del menú
         private void RestaurarColoresBotones()
         {
             foreach (Control control in pnlLateral.Controls)
